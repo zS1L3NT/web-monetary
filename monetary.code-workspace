@@ -1,0 +1,37 @@
+{
+	"folders": [
+		{
+			"name": "web-laravel-account",
+			"path": "web-laravel-account"
+		},
+		{
+			"name": "web-laravel-authentication",
+			"path": "web-laravel-authentication"
+		},
+		{
+			"name": "web-laravel-budget",
+			"path": "web-laravel-budget"
+		},
+		{
+			"name": "web-laravel-category",
+			"path": "web-laravel-category"
+		},
+		{
+			"name": "web-laravel-debt",
+			"path": "web-laravel-debt"
+		},
+		{
+			"name": "web-laravel-recurrance",
+			"path": "web-laravel-recurrance"
+		},
+		{
+			"name": "web-laravel-transaction",
+			"path": "web-laravel-transaction"
+		},
+		{
+			"name": "web-react",
+			"path": "web-react"
+		}
+	],
+	"settings": {}
+}
