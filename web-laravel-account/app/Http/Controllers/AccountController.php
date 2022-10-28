@@ -2,27 +2,28 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\Account;
 
 class AccountController extends Controller
 {
     public function index()
     {
+        return Account::query()->where('user_id', request()->user_id)->get();
     }
 
-    public function store(Request $request)
+    public function store()
     {
     }
 
-    public function show($id)
+    public function show(Account $account)
     {
     }
 
-    public function update(Request $request, $id)
+    public function update(Account $account)
     {
     }
 
-    public function destroy($id)
+    public function destroy(Account $account)
     {
     }
 }

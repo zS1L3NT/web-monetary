@@ -15,6 +15,10 @@ return new class extends Migration
     {
         Schema::create('accounts', function (Blueprint $table) {
             $table->uuid('id');
+            $table->foreignId('user_id')->references('id')->on('users');
+            $table->string('name');
+            $table->decimal('balance', 8, 2);
+            $table->string('color');
             $table->timestamps();
         });
     }

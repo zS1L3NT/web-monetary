@@ -9,4 +9,11 @@ use Illuminate\Database\Eloquent\Model;
 class Account extends Model
 {
     use HasFactory, Uuid;
+
+    protected $fillable = [
+        'user_id',
+        'name',
+        'balance',
+        'color',
+    ];
 }

@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -16,6 +17,11 @@ class AccountFactory extends Factory
      */
     public function definition()
     {
-        return [];
+        return [
+            'user_id' => User::query()->first()->id,
+            'name' => $this->faker->name,
+            'balance' => $this->faker->randomFloat(2, 0, 100000),
+            'color' => $this->faker->hexColor,
+        ];
     }
 }
