@@ -16,8 +16,6 @@ class DebtFactory extends Factory
      */
     public function definition()
     {
-        return [
-            //
-        ];
+        return [];
     }
 }

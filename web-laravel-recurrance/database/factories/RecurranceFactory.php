@@ -16,8 +16,6 @@ class RecurranceFactory extends Factory
      */
     public function definition()
     {
-        return [
-            //
-        ];
+        return [];
     }
 }

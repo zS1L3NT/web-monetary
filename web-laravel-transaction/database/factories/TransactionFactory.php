@@ -16,8 +16,6 @@ class TransactionFactory extends Factory
      */
     public function definition()
     {
-        return [
-            //
-        ];
+        return [];
     }
 }

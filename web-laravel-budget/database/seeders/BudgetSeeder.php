@@ -13,6 +13,5 @@ class BudgetSeeder extends Seeder
      */
     public function run()
     {
-        //
     }
 }

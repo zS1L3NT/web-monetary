@@ -13,6 +13,5 @@ class RecurranceSeeder extends Seeder
      */
     public function run()
     {
-        //
     }
 }

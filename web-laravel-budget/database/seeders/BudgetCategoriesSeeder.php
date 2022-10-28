@@ -13,6 +13,5 @@ class BudgetCategoriesSeeder extends Seeder
      */
     public function run()
     {
-        //
     }
 }

@@ -13,6 +13,5 @@ class AccountSeeder extends Seeder
      */
     public function run()
     {
-        //
     }
 }

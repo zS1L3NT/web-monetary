@@ -13,6 +13,5 @@ class BudgetAccountsSeeder extends Seeder
      */
     public function run()
     {
-        //
     }
 }

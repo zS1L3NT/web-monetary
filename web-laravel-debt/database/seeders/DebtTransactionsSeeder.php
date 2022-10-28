@@ -13,6 +13,5 @@ class DebtTransactionsSeeder extends Seeder
      */
     public function run()
     {
-        //
     }
 }
