@@ -21,11 +21,19 @@ class User extends Authenticatable implements JWTSubject
         'password',
     ];
 
-    protected function getJWTIdentifier() {
+    public function getJWTIdentifier()
+    {
         return $this->getKey();
     }
 
-    protected function getJWTCustomClaims() {
+    public function getJWTCustomClaims()
+    {
         return [];
+    }
+    public function setPasswordAttribute(string $password)
+    {
+        if (!empty($password)) {
+            $this->attributes["password"] = bcrypt($password);
+        }
     }
 }
