@@ -17,7 +17,7 @@ class Controller extends BaseController
     public function validate(string $route, array $rules) {
         $this
             ->middleware(function (Request $request, Closure $next) use ($rules) {
-                $validator = Validator::make(request(), $rules);
+                $validator = Validator::make(request()->all(), $rules);
 
                 if ($validator->fails()) {
                     return response([
