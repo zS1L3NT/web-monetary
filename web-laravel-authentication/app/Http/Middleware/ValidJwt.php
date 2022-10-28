@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 
-class HasJwt
+class ValidJwt
 {
     /**
      * Handle an incoming request.
@@ -17,17 +17,17 @@ class HasJwt
     public function handle(Request $request, Closure $next)
     {
         if (auth()->user()) {
-			return $next($request);
-		} else if (request()->header("Authorization")) {
-			return response([
-				"type" => "Unauthorized",
-				"message" => "Invalid authorization token"
-			], 403);
-		} else {
-			return response([
-				"type" => "Unauthorized",
-				"message" => "This route requires authentication"
-			], 403);
-		}
+            return $next($request);
+        } else if (request()->header("Authorization")) {
+            return response([
+                "type" => "Unauthorized",
+                "message" => "Invalid authorization token"
+            ], 403);
+        } else {
+            return response([
+                "type" => "Unauthorized",
+                "message" => "This route requires authentication"
+            ], 403);
+        }
     }
 }
