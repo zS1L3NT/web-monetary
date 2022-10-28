@@ -9,6 +9,23 @@ class UserController extends Controller
     public function __construct()
     {
         $this->middleware('auth.jwt')->only(['logout', 'current', 'update', 'destroy']);
+
+        $this->validate('login', [
+            'email' => 'required|email',
+            'password' => 'required'
+        ]);
+
+        $this->validate('register', [
+            'username' => 'required|string',
+            'email' => 'required|email|unique:users',
+            'password' => 'required'
+        ]);
+
+        $this->validate('update', [
+            'username' => 'string',
+            'email' => 'email|unique:users',
+            'password' => 'string'
+        ]);
     }
 
     public function login()
@@ -31,17 +48,17 @@ class UserController extends Controller
     {
         $user = User::create(request()->all());
 
-		return [
-			"message" => "Registered successfully!",
-			"token" => auth()->login($user),
-			"user" => $user
-		];
+        return [
+            "message" => "Registered successfully!",
+            "token" => auth()->login($user),
+            "user" => $user
+        ];
     }
 
-	/**
-	 * Middleware:
-	 * - auth.jwt
-	 */
+    /**
+     * Middleware:
+     * - auth.jwt
+     */
     public function logout()
     {
         auth()->logout();
@@ -51,35 +68,35 @@ class UserController extends Controller
         ];
     }
 
-	/**
-	 * Middleware:
-	 * - auth.jwt
-	 */
-	public function current()
-	{
-		return auth()->user();
-	}
+    /**
+     * Middleware:
+     * - auth.jwt
+     */
+    public function current()
+    {
+        return auth()->user();
+    }
 
-	/**
-	 * Middleware:
-	 * - auth.jwt
-	 */
+    /**
+     * Middleware:
+     * - auth.jwt
+     */
     public function update()
     {
         auth()->user()->update(request()->all());
     }
 
-	/**
-	 * Middleware:
-	 * - auth.jwt
-	 */
+    /**
+     * Middleware:
+     * - auth.jwt
+     */
     public function destroy()
     {
-		auth()->user()->delete();
-		auth()->logout();
+        auth()->user()->delete();
+        auth()->logout();
 
-		return [
-			"message" => "User deleted successfully!"
-		];
+        return [
+            "message" => "User deleted successfully!"
+        ];
     }
 }
