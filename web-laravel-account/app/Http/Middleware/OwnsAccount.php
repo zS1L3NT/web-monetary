@@ -17,7 +17,13 @@ class OwnsAccount
      */
     public function handle(Request $request, Closure $next)
     {
-        (new ConsoleOutput)->writeln(json_encode($request->route()->parameter("account")));
+        if (request()->route('account')->user_id !== request()->user_id) {
+            return response([
+                'type' => 'Unauthorized',
+                'message' => 'You do not own this account.',
+            ], 403);
+        }
+
         return $next($request);
     }
 }

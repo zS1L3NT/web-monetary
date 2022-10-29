@@ -2,8 +2,8 @@
 
 namespace Database\Factories;
 
-use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\DB;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Account>
@@ -18,7 +18,7 @@ class AccountFactory extends Factory
     public function definition()
     {
         return [
-            'user_id' => User::query()->first()->id,
+            'user_id' => DB::table('users')->first()->id,
             'name' => $this->faker->name,
             'balance' => $this->faker->randomFloat(2, 0, 100000),
             'color' => $this->faker->hexColor,

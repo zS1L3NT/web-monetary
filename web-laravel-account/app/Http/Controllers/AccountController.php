@@ -8,9 +8,15 @@ class AccountController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('owns.account')->only('index', 'show', 'update', 'destroy');
+        $this->middleware('owns.account')->only(['show', 'update', 'destroy']);
 
         $this->validate('store', [
+            'name' => 'required',
+            'balance' => 'required|numeric',
+            'color' => 'required',
+        ]);
+
+        $this->validate('update', [
             'name' => 'required',
             'balance' => 'required|numeric',
             'color' => 'required',
@@ -42,9 +48,20 @@ class AccountController extends Controller
 
     public function update(Account $account)
     {
+        $account->update(request()->all());
+
+        return [
+            "message" => "Account updated successfully!",
+            "account" => $account,
+        ];
     }
 
     public function destroy(Account $account)
     {
+        $account->delete();
+
+        return [
+            "message" => "Account deleted successfully!",
+        ];
     }
 }
