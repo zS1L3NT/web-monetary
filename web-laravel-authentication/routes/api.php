@@ -1,6 +1,6 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,3 +14,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::controller(UserController::class)->group(function () {
+	Route::post("login", "login");
+	Route::post("register", "register");
+	Route::post("logout", "logout");
+	Route::get("user", "current");
+	Route::put("user", "update");
+	Route::delete("user", "destroy");
+});
+
+Route::fallback(fn () => response([
+	"type" => "Page Not Found",
+	"message" => "The route you requested could not be found"
+], 404));
