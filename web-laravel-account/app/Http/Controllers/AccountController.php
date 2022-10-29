@@ -11,15 +11,15 @@ class AccountController extends Controller
         $this->middleware('owns.account')->only(['show', 'update', 'destroy']);
 
         $this->validate('store', [
-            'name' => 'required',
+            'name' => 'required|string',
             'balance' => 'required|numeric',
-            'color' => 'required',
+            'color' => 'required|string',
         ]);
 
         $this->validate('update', [
-            'name' => 'required',
-            'balance' => 'required|numeric',
-            'color' => 'required',
+            'name' => 'string',
+            'balance' => 'numeric',
+            'color' => 'string',
         ]);
     }
 
@@ -30,7 +30,7 @@ class AccountController extends Controller
 
     public function store()
     {
-        $account = Account::new ([
+        $account = Account::create([
             'user_id' => request()->user_id,
             ...request()->all(),
         ]);
