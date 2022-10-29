@@ -10,13 +10,13 @@ class CategoryController extends Controller
         $this->middleware('auth.jwt')->only(['show', 'update', 'delete']);
 
         $this->validate('store', [
-            'parent_category_id' => 'nullable|exists:categories,id',
+            'parent_category_id' => 'exists:categories,id',
             'name' => 'required|string',
             'color' => 'required|string',
         ]);
 
         $this->validate('update', [
-            'parent_category_id' => 'nullable|exists:categories,id',
+            'parent_category_id' => 'exists:categories,id',
             'name' => 'string',
             'color' => 'string',
         ]);
