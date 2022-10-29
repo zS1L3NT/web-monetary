@@ -16,9 +16,9 @@ return new class extends Migration
         Schema::create('transactions', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->foreignUuid('user_id')->constrained('users')->cascadeOnDelete();
-            $table->foreignUuid('category_id')->constrained('categories')->cascadeOnDelete();
-            $table->foreignUuid('from_account_id')->constrained('accounts')->cascadeOnDelete();
-            $table->foreignUuid('to_account_id')->nullable()->constrained('accounts')->cascadeOnDelete();
+            $table->foreignUuid('category_id')->constrained('categories');
+            $table->foreignUuid('from_account_id')->constrained('accounts');
+            $table->foreignUuid('to_account_id')->nullable()->constrained('accounts');
             $table->enum('type', ['Incoming', 'Outgoing', 'Transfer']);
             $table->decimal('amount', 8, 2);
             $table->timestamp('date');
