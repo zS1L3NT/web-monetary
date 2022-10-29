@@ -22,12 +22,12 @@ class ValidJwt
             return response([
                 "type" => "Unauthorized",
                 "message" => "Invalid authorization token"
-            ], 403);
+            ], 401);
         } else {
             return response([
                 "type" => "Unauthorized",
                 "message" => "This route requires authentication"
-            ], 403);
+            ], 401);
         }
     }
 }
