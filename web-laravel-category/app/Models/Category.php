@@ -9,4 +9,11 @@ use Illuminate\Database\Eloquent\Model;
 class Category extends Model
 {
     use HasFactory, Uuid;
+
+    protected $fillable = [
+        'user_id',
+        'parent_category_id',
+        'name',
+        'color',
+    ];
 }

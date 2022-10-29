@@ -2,27 +2,65 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\Category;
 
 class CategoryController extends Controller
 {
+    public function __construct() {
+        $this->middleware('auth.jwt')->only(['show', 'update', 'delete']);
+
+        $this->validate('store', [
+            'parent_category_id' => 'nullable|exists:categories,id',
+            'name' => 'required|string',
+            'color' => 'required|string',
+        ]);
+
+        $this->validate('update', [
+            'parent_category_id' => 'nullable|exists:categories,id',
+            'name' => 'string',
+            'color' => 'string',
+        ]);
+    }
+
     public function index()
     {
+        return Category::query()->where('user_id', request()->user_id)->get();
     }
 
-    public function store(Request $request)
+    public function store()
     {
+        $category = Category::create([
+            'user_id' => request()->user_id,
+            ...request()->all(),
+        ]);
+
+        return [
+            "message" => "Category created successfully!",
+            "category" => $category,
+        ];
     }
 
-    public function show($id)
+    public function show(Category $category)
     {
+        return $category;
     }
 
-    public function update(Request $request, $id)
+    public function update(Category $category)
     {
+        $category->update(request()->all());
+
+        return [
+            "message" => "Category updated successfully!",
+            "category" => $category,
+        ];
     }
 
-    public function destroy($id)
+    public function destroy(Category $category)
     {
+        $category->delete();
+
+        return [
+            "message" => "Category deleted successfully!",
+        ];
     }
 }
