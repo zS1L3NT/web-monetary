@@ -15,22 +15,13 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        Transaction::factory()->create([
-            'category_id' => DB::table('categories')->first()->id,
-            'from_account_id' => DB::table('accounts')->first()->id,
-            'to_account_id' => DB::table('accounts')->skip(1)->first()->id,
+        Transaction::factory(5)->create([
             'type' => 'Transfer',
         ]);
-
-        Transaction::factory()->create([
-            'category_id' => DB::table('categories')->first()->id,
-            'from_account_id' => DB::table('accounts')->first()->id,
+        Transaction::factory(5)->create([
             'type' => 'Outgoing',
         ]);
-
-        Transaction::factory()->create([
-            'category_id' => DB::table('categories')->first()->id,
-            'from_account_id' => DB::table('accounts')->first()->id,
+        Transaction::factory(5)->create([
             'type' => 'Incoming',
         ]);
     }
