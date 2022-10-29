@@ -14,7 +14,11 @@ return new class extends Migration
     public function up()
     {
         Schema::create('accounts', function (Blueprint $table) {
-            $table->uuid('id');
+            $table->uuid('id')->primary();
+            $table->foreignUuid('user_id')->references('id')->on('users')->cascadeOnDelete();
+            $table->string('name');
+            $table->decimal('balance', 8, 2);
+            $table->string('color');
             $table->timestamps();
         });
     }
