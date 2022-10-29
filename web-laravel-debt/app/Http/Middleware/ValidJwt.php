@@ -20,7 +20,7 @@ class ValidJwt
         try {
             $request['user_id'] = JWTAuth::getPayload(JWTAuth::getToken())['sub'];
             return $next($request);
-        } catch (e) {
+        } catch (\Exception $e) {
             if (request()->header("Authorization")) {
                 return response([
                     "type" => "Unauthorized",
