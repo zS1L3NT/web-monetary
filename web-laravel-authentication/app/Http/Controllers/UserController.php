@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Illuminate\Validation\Rules\Password;
 
 class UserController extends Controller
 {
@@ -12,19 +13,41 @@ class UserController extends Controller
 
         $this->validate('login', [
             'email' => 'required|email',
-            'password' => 'required'
+            'password' => [
+                'required',
+                'string',
+                Password::min(8)
+                    ->mixedCase()
+                    ->numbers()
+                    ->symbols(),
+            ]
         ]);
 
         $this->validate('register', [
             'username' => 'required|string',
-            'email' => 'required|email|unique:users',
-            'password' => 'required'
+            'email' => 'required|email|unique:users,email',
+            'password' => [
+                'required',
+                'string',
+                Password::min(8)
+                    ->mixedCase()
+                    ->numbers()
+                    ->symbols()
+                    ->uncompromised(),
+            ]
         ]);
 
         $this->validate('update', [
             'username' => 'string',
-            'email' => 'email|unique:users',
-            'password' => 'string'
+            'email' => 'email',
+            'password' => [
+                'string',
+                Password::min(8)
+                    ->mixedCase()
+                    ->numbers()
+                    ->symbols()
+                    ->uncompromised(),
+            ]
         ]);
     }
 
