@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Recurrance;
+use App\Models\RecurranceTransactions;
 
 class RecurranceController extends Controller
 {
@@ -71,7 +72,10 @@ class RecurranceController extends Controller
 
     public function show(Recurrance $recurrance)
     {
-        return $recurrance;
+        return [
+            ...$recurrance->toArray(),
+            "transactions" => RecurranceTransactions::query()->where("recurrance_id", $recurrance->id)->get('transaction_id'),
+        ];
     }
 
     public function update(Recurrance $recurrance)
