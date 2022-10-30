@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use Illuminate\Database\QueryException;
 
 class CategoryController extends Controller
 {
@@ -77,7 +78,18 @@ class CategoryController extends Controller
 
     public function destroy(Category $category)
     {
-        $category->delete();
+        try {
+            $category->delete();
+        } catch (QueryException $e) {
+            if ($e->errorInfo[1] === 1451) {
+                return response([
+                    "type" => "Transactions with this category exist",
+                    "message" => "You cannot delete a category that has transactions associated with it.",
+                ], 400);
+            } else {
+                throw $e;
+            }
+        }
 
         return [
             "message" => "Category deleted successfully!",
