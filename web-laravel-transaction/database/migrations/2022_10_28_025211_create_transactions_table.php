@@ -22,7 +22,7 @@ return new class extends Migration
             $table->enum('type', ['Incoming', 'Outgoing', 'Transfer']);
             $table->decimal('amount', 8, 2);
             $table->timestamp('date');
-            $table->string('description', '');
+            $table->string('description')->default('');
             $table->timestamps();
         });
     }

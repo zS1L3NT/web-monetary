@@ -19,7 +19,6 @@ class CategoryFactory extends Factory
     {
         return [
             'user_id' => DB::table('users')->first()->id,
-            'parent_category_id' => $this->faker->randomElement([null, DB::table('categories')->inRandomOrder()->first()->id]),
             'name' => $this->faker->word,
             'color' => $this->faker->hexColor,
         ];
