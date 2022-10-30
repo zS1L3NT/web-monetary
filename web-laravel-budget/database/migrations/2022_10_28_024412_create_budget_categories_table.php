@@ -14,8 +14,9 @@ return new class extends Migration
     public function up()
     {
         Schema::create('budget_categories', function (Blueprint $table) {
-            $table->uuid('id');
-            $table->timestamps();
+            $table->foreignUuid('budget_id')->references('id')->on('budgets')->cascadeOnDelete();
+            $table->foreignUuid('category_id')->references('id')->on('categories')->cascadeOnDelete();
+            $table->primary(['budget_id', 'category_id']);
         });
     }
 
