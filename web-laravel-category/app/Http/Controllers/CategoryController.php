@@ -7,7 +7,7 @@ use App\Models\Category;
 class CategoryController extends Controller
 {
     public function __construct() {
-        $this->middleware('auth.jwt')->only(['show', 'update', 'delete']);
+        $this->middleware('owns.category')->only(['show', 'update', 'delete']);
 
         $this->validate('store', [
             'parent_category_id' => 'exists:categories,id',

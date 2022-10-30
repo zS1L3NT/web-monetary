@@ -14,7 +14,11 @@ return new class extends Migration
     public function up()
     {
         Schema::create('budgets', function (Blueprint $table) {
-            $table->uuid('id');
+            $table->uuid('id')->primary();
+            $table->foreignUuid('user_id')->constrained('users')->cascadeOnDelete();
+            $table->string('name');
+            $table->decimal('amount', 10, 2);
+            $table->enum('period_type', ['Day', 'Week', 'Month', 'Year']);
             $table->timestamps();
         });
     }

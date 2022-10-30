@@ -16,4 +16,8 @@ class Account extends Model
         'balance',
         'color',
     ];
+
+    protected $casts = [
+        'balance' => 'integer',
+    ];
 }
