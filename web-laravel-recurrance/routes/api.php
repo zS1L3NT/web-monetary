@@ -1,6 +1,6 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\RecurranceController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,3 +14,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
+Route::apiResource("recurrances", RecurranceController::class)->middleware('auth.jwt');
+
+Route::fallback(fn () => response([
+	"type" => "Page Not Found",
+	"message" => "The route you requested could not be found"
+], 404));

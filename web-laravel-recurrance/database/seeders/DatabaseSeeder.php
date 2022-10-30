@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Recurrance;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -13,5 +14,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        Recurrance::factory(10)->create();
     }
 }
