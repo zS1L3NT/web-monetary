@@ -22,7 +22,7 @@ return new class extends Migration
             $table->enum('type', ['Incoming', 'Outgoing', 'Transfer']);
             $table->string('name');
             $table->decimal('amount', 8, 2);
-            $table->string('description', '');
+            $table->string('description')->default('');
             $table->boolean('automatic');
             $table->timestamp('period_start_date');
             $table->enum('period_type', ['Day', 'Week', 'Month', 'Year']);

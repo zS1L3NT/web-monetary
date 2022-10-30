@@ -16,7 +16,7 @@ class OwnsRecurrance
      */
     public function handle(Request $request, Closure $next)
     {
-        if (request()->route('recurrances')->user_id !== request()->user_id) {
+        if (request()->route('recurrance')->user_id !== request()->user_id) {
             return response([
                 "type" => "Unauthorized",
                 "message" => "You do not own this recurrance."

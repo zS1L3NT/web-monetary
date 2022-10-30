@@ -19,7 +19,7 @@ class RecurranceController extends Controller
             'name' => 'required|string',
             'amount' => 'required|numeric',
             'description' => 'string',
-            'automatic' => 'boolean',
+            'automatic' => 'required|boolean',
             'period_start_date' => 'required|date',
             'period_type' => 'required|in:Day,Week,Month,Year',
             'period_interval' => 'required|integer',
@@ -54,7 +54,10 @@ class RecurranceController extends Controller
 
     public function index()
     {
-        return Recurrance::query()->where('user_id', request()->user_id)->get();
+        return Recurrance::query()
+            ->where('user_id', request()->user_id)
+            ->orderBy('name')
+            ->get();
     }
 
     public function store()

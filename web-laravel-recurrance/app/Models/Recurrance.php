@@ -29,4 +29,14 @@ class Recurrance extends Model
         'period_end_date',
         'period_end_count',
     ];
+
+    protected $casts = [
+        'amount' => 'integer',
+        'automatic' => 'boolean',
+        'period_start_date' => 'date',
+        'period_week_days' => 'array',
+        'period_interval' => 'integer',
+        'period_end_date' => 'date',
+        'period_end_count' => 'integer',
+    ];
 }

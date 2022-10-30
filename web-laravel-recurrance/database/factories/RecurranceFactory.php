@@ -24,12 +24,12 @@ class RecurranceFactory extends Factory
 
         return [
             'user_id' => DB::table('users')->first()->id,
-            'category_id' => DB::table('categories')->inRandomOrder()->first(),
+            'category_id' => DB::table('categories')->inRandomOrder()->first()->id,
             'from_account_id' => $fromAccountId,
             'to_account_id' => $type === 'Transfer' ? DB::table('accounts')->whereNot('id', $fromAccountId)->inRandomOrder()->first()->id : null,
             'type' => $type,
             'name' => $this->faker->word,
-            'amount' => $this->faker->randomFloat(),
+            'amount' => $this->faker->randomFloat(2, 0, 100000),
             'description' => $this->faker->sentence,
             'automatic' => $this->faker->boolean,
             'period_start_date' => $this->faker->date(),
