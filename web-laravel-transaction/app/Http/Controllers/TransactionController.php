@@ -11,9 +11,9 @@ class TransactionController extends Controller
         $this->middleware('owns.transaction')->only(['show', 'update', 'destroy']);
 
         $this->validate('store', [
-            'category_id' => 'required|exists:categories,id',
-            'from_account_id' => 'required|exists:accounts,id',
-            'to_account_id' => 'required_if:type,Transfer|prohibited_unless:type,Transfer|exists:accounts,id',
+            'category_id' => 'required|uuid|exists:categories,id',
+            'from_account_id' => 'required|uuid|exists:accounts,id',
+            'to_account_id' => 'required_if:type,Transfer|prohibited_unless:type,Transfer|uuid|exists:accounts,id',
             'type' => 'required|in:Incoming,Outgoing,Transfer',
             'amount' => 'required|numeric',
             'date' => 'required|date',
@@ -21,9 +21,9 @@ class TransactionController extends Controller
         ]);
 
         $this->validate('update', [
-            'category_id' => 'exists:categories,id',
-            'from_account_id' => 'exists:accounts,id',
-            'to_account_id' => 'required_if:type,Transfer|prohibited_unless:type,Transfer|exists:accounts,id',
+            'category_id' => 'uuid|exists:categories,id',
+            'from_account_id' => 'uuid|exists:accounts,id',
+            'to_account_id' => 'required_if:type,Transfer|prohibited_unless:type,Transfer|uuid|exists:accounts,id',
             'type' => 'in:Incoming,Outgoing,Transfer',
             'amount' => 'numeric',
             'date' => 'date',

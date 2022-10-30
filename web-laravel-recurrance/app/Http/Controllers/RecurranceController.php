@@ -12,9 +12,9 @@ class RecurranceController extends Controller
         $this->middleware('owns.recurrance')->only(['show', 'update', 'delete']);
 
         $this->validate('store', [
-            'category_id' => 'required|exists:categories,id',
-            'from_account_id' => 'required|exists:accounts,id',
-            'to_account_id' => 'required_if:type,Transfer|prohibited_unless:type,Transfer|exists:accounts,id',
+            'category_id' => 'required|uuid|exists:categories,id',
+            'from_account_id' => 'required|uuid|exists:accounts,id',
+            'to_account_id' => 'required_if:type,Transfer|prohibited_unless:type,Transfer|uuid|exists:accounts,id',
             'type' => 'required|in:Incoming,Outgoing,Transfer',
             'name' => 'required|string',
             'amount' => 'required|numeric',
@@ -32,9 +32,9 @@ class RecurranceController extends Controller
         ]);
 
         $this->validate('update', [
-            'category_id' => 'exists:categories,id',
-            'from_account_id' => 'exists:accounts,id',
-            'to_account_id' => 'required_if:type,Transfer|prohibited_unless:type,Transfer|exists:accounts,id',
+            'category_id' => 'uuid|exists:categories,id',
+            'from_account_id' => 'uuid|exists:accounts,id',
+            'to_account_id' => 'required_if:type,Transfer|prohibited_unless:type,Transfer|uuid|exists:accounts,id',
             'type' => 'in:Incoming,Outgoing,Transfer',
             'name' => 'string',
             'amount' => 'numeric',
@@ -77,7 +77,7 @@ class RecurranceController extends Controller
     {
         return [
             ...$recurrance->toArray(),
-            "transactions" => RecurranceTransactions::query()->where("recurrance_id", $recurrance->id)->get('transaction_id'),
+            "transaction_ids" => RecurranceTransactions::query()->where("recurrance_id", $recurrance->id)->get('transaction_id'),
         ];
     }
 

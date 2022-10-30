@@ -78,10 +78,6 @@ class UserController extends Controller
         ];
     }
 
-    /**
-     * Middleware:
-     * - auth.jwt
-     */
     public function logout()
     {
         auth()->logout();
@@ -91,28 +87,16 @@ class UserController extends Controller
         ];
     }
 
-    /**
-     * Middleware:
-     * - auth.jwt
-     */
     public function current()
     {
         return auth()->user();
     }
 
-    /**
-     * Middleware:
-     * - auth.jwt
-     */
     public function update()
     {
         auth()->user()->update(request()->all());
     }
 
-    /**
-     * Middleware:
-     * - auth.jwt
-     */
     public function destroy()
     {
         auth()->user()->delete();
