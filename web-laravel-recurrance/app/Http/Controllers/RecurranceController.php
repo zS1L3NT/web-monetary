@@ -13,8 +13,8 @@ class RecurranceController extends Controller
 
         $this->validate('store', [
             'category_id' => 'required|uuid|exists:categories,id',
-            'from_account_id' => 'required|uuid|exists:accounts,id',
-            'to_account_id' => 'required_if:type,Transfer|prohibited_unless:type,Transfer|uuid|exists:accounts,id',
+            'from_account_id' => 'required_unless:type,Transfer|uuid|exists:accounts,id',
+            'to_account_id' => 'required_if:from_account_id,null|prohibited_unless:type,Transfer|uuid|exists:accounts,id',
             'type' => 'required|in:Incoming,Outgoing,Transfer',
             'name' => 'required|string',
             'amount' => 'required|numeric',
@@ -34,7 +34,7 @@ class RecurranceController extends Controller
         $this->validate('update', [
             'category_id' => 'uuid|exists:categories,id',
             'from_account_id' => 'uuid|exists:accounts,id',
-            'to_account_id' => 'required_if:type,Transfer|prohibited_unless:type,Transfer|uuid|exists:accounts,id',
+            'to_account_id' => 'uuid|exists:accounts,id',
             'type' => 'in:Incoming,Outgoing,Transfer',
             'name' => 'string',
             'amount' => 'numeric',

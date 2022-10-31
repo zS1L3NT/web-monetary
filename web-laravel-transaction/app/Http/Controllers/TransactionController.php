@@ -12,8 +12,8 @@ class TransactionController extends Controller
 
         $this->validate('store', [
             'category_id' => 'required|uuid|exists:categories,id',
-            'from_account_id' => 'required|uuid|exists:accounts,id',
-            'to_account_id' => 'required_if:type,Transfer|prohibited_unless:type,Transfer|uuid|exists:accounts,id',
+            'from_account_id' => 'required_unless:type,Transfer|uuid|exists:accounts,id',
+            'to_account_id' => 'required_if:from_account_id,null|prohibited_unless:type,Transfer|uuid|exists:accounts,id',
             'type' => 'required|in:Incoming,Outgoing,Transfer',
             'amount' => 'required|numeric',
             'date' => 'required|date',
@@ -23,7 +23,7 @@ class TransactionController extends Controller
         $this->validate('update', [
             'category_id' => 'uuid|exists:categories,id',
             'from_account_id' => 'uuid|exists:accounts,id',
-            'to_account_id' => 'required_if:type,Transfer|prohibited_unless:type,Transfer|uuid|exists:accounts,id',
+            'to_account_id' => 'uuid|exists:accounts,id',
             'type' => 'in:Incoming,Outgoing,Transfer',
             'amount' => 'numeric',
             'date' => 'date',
@@ -94,12 +94,6 @@ class TransactionController extends Controller
     public function update(Transaction $transaction)
     {
         $transaction->update(request()->all());
-
-        if ($transaction['type'] !== "Transfer") {
-            $transaction->update([
-                'to_account_id' => null
-            ]);
-        }
 
         return [
             "message" => "Transaction updated successfully!",
