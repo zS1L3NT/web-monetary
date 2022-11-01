@@ -35,22 +35,21 @@ class TransactionController extends Controller
     {
         $query = Transaction::query()
             ->where('user_id', request()->user_id)
-            ->orderByDesc('date')
-            ->limit(100);
+            ->orderByDesc('date');
 
-        if ($from_account_id = request()->from_account_id) {
-            $query->where('from_account_id', $from_account_id);
+        if ($from_account_id = request('from_account_id')) {
+            $query->where('from_account_id', strtolower($from_account_id) === "null" ? null : $from_account_id);
         }
 
-        if ($to_account_id = request()->to_account_id) {
-            $query->where('to_account_id', $to_account_id);
+        if ($to_account_id = request('to_account_id')) {
+            $query->where('to_account_id', strtolower($to_account_id) === "null" ? null : $to_account_id);
         }
 
-        if ($category_ids = request()->category_ids) {
-            $query->whereIn('category_id', $category_ids);
+        if ($category_ids = request('category_ids')) {
+            $query->whereIn('category_id', explode(",", $category_ids));
         }
 
-        if ($limit = request()->query("limit")) {
+        if ($limit = request("limit")) {
             if (is_numeric($limit)) {
                 $query->limit($limit);
             } else {
@@ -60,7 +59,7 @@ class TransactionController extends Controller
             }
         }
 
-        if ($offset = request()->query("offset")) {
+        if ($offset = request("offset")) {
             if (is_numeric($offset)) {
                 $query->offset($offset);
             } else {
