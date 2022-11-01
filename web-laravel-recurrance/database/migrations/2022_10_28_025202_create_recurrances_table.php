@@ -17,8 +17,8 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->foreignUuid('user_id')->constrained('users')->cascadeOnDelete();
             $table->foreignUuid('category_id')->constrained('categories');
-            $table->foreignUuid('from_account_id')->constrained('accounts');
-            $table->foreignUuid('to_account_id')->nullable()->constrained('accounts');
+            $table->foreignUuid('from_account_id')->nullable()->constrained('accounts')->nullOnDelete();
+            $table->foreignUuid('to_account_id')->nullable()->constrained('accounts')->nullOnDelete();
             $table->enum('type', ['Incoming', 'Outgoing', 'Transfer']);
             $table->string('name');
             $table->decimal('amount', 8, 2);

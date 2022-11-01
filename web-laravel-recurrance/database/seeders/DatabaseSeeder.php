@@ -14,6 +14,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        Recurrance::factory(10)->create();
+        for ($i = 0; $i < 10; $i++) {
+            try {
+                Recurrance::factory(1)->create();
+            } catch (\Exception $e) {
+            }
+        }
     }
 }

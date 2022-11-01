@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Models\Transaction;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
 class DatabaseSeeder extends Seeder
 {
@@ -15,14 +14,31 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        Transaction::factory(5)->create([
-            'type' => 'Transfer',
-        ]);
-        Transaction::factory(5)->create([
-            'type' => 'Outgoing',
-        ]);
-        Transaction::factory(5)->create([
-            'type' => 'Incoming',
-        ]);
+        for ($i = 0; $i < 5; $i++) {
+            try {
+                Transaction::factory(1)->create(
+                    [
+                        'type' => 'Incoming',
+                    ]
+                );
+            } catch (\Exception $e) {
+            }
+            try {
+                Transaction::factory(1)->create(
+                    [
+                        'type' => 'Outgoing',
+                    ]
+                );
+            } catch (\Exception $e) {
+            }
+            try {
+                Transaction::factory(1)->create(
+                    [
+                        'type' => 'Transfer',
+                    ]
+                );
+            } catch (\Exception $e) {
+            }
+        }
     }
 }
