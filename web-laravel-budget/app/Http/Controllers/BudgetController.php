@@ -36,27 +36,24 @@ class BudgetController extends Controller
     public function index()
     {
         return Budget::query()
-            ->where('user_id', request()->user_id)
+            ->where('user_id', request('user_id'))
             ->orderBy('name')
             ->get();
     }
 
     public function store()
     {
-        $budget = Budget::create([
-            'user_id' => request()->user_id,
-            ...request()->all(),
-        ]);
+        $budget = Budget::query()->create(request()->all());
 
         foreach (request('account_ids') as $account_id) {
-            BudgetAccounts::create([
+            BudgetAccounts::query()->create([
                 'budget_id' => $budget->id,
                 'account_id' => $account_id,
             ]);
         }
 
         foreach (request('category_ids') as $category_id) {
-            BudgetCategories::create([
+            BudgetCategories::query()->create([
                 'budget_id' => $budget->id,
                 'category_id' => $category_id,
             ]);
@@ -92,7 +89,7 @@ class BudgetController extends Controller
         if ($account_ids = request('account_ids')) {
             BudgetAccounts::where('budget_id', $budget->id)->delete();
             foreach ($account_ids as $account_id) {
-                BudgetAccounts::create([
+                BudgetAccounts::query()->create([
                     'budget_id' => $budget->id,
                     'account_id' => $account_id,
                 ]);
@@ -102,7 +99,7 @@ class BudgetController extends Controller
         if ($category_ids = request('category_ids')) {
             BudgetCategories::where('budget_id', $budget->id)->delete();
             foreach ($category_ids as $category_id) {
-                BudgetCategories::create([
+                BudgetCategories::query()->create([
                     'budget_id' => $budget->id,
                     'category_id' => $category_id,
                 ]);

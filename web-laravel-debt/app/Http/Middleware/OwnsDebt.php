@@ -16,7 +16,7 @@ class OwnsDebt
      */
     public function handle(Request $request, Closure $next)
     {
-        if (request()->route('debt')->user_id !== request()->user_id) {
+        if (request('debt')->user_id !== request('user_id')) {
             return response([
                 "type" => "Unauthorized",
                 "message" => "You do not own this debt."

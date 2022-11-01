@@ -16,7 +16,7 @@ class OwnsAccount
      */
     public function handle(Request $request, Closure $next)
     {
-        if (request()->route('account')->user_id !== request()->user_id) {
+        if (request('account')->user_id !== request('user_id')) {
             return response([
                 'type' => 'Unauthorized',
                 'message' => 'You do not own this account.',

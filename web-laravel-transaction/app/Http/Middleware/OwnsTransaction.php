@@ -16,7 +16,7 @@ class OwnsTransaction
      */
     public function handle(Request $request, Closure $next)
     {
-        if (request()->route('transaction')->user_id !== request()->user_id) {
+        if (request('transaction')->user_id !== request('user_id')) {
             return response([
                 "type" => "Unauthorized",
                 "message" => "You do not own this transaction."

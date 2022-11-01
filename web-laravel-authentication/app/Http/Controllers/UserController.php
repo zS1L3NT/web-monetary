@@ -69,7 +69,7 @@ class UserController extends Controller
 
     public function register()
     {
-        $user = User::create(request()->all());
+        $user = User::query()->create(request()->all());
 
         return [
             "message" => "Registered successfully!",

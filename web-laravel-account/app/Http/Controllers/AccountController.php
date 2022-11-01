@@ -27,17 +27,14 @@ class AccountController extends Controller
     public function index()
     {
         return Account::query()
-            ->where('user_id', request()->user_id)
+            ->where('user_id', request('user_id'))
             ->orderBy('name')
             ->get();
     }
 
     public function store()
     {
-        $account = Account::create([
-            'user_id' => request()->user_id,
-            ...request()->all(),
-        ]);
+        $account = Account::query()->create(request()->all());
 
         return [
             "message" => "Account created successfully!",

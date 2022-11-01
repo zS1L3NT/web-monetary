@@ -16,7 +16,7 @@ class OwnsBudget
      */
     public function handle(Request $request, Closure $next)
     {
-        if (request()->route('budget')->user_id !== request()->user_id) {
+        if (request('budget')->user_id !== request('user_id')) {
             return response([
                 'type' => 'Unauthorized',
                 'message' => 'You do not own this budget.',

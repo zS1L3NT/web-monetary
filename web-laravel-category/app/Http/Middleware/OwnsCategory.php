@@ -16,7 +16,7 @@ class OwnsCategory
      */
     public function handle(Request $request, Closure $next)
     {
-        if (request()->route('category')->user_id !== request()->user_id) {
+        if (request('category')->user_id !== request('user_id')) {
             return response([
                 "type" => "Unauthorized",
                 "message" => "You do not own this category."

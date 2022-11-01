@@ -40,7 +40,7 @@ class CategoryController extends Controller
     public function index()
     {
         return Category::query()
-            ->where('user_id', request()->user_id)
+            ->where('user_id', request('user_id'))
             ->whereNull('parent_category_id')
             ->get()
             ->map(function ($category) {
@@ -50,10 +50,7 @@ class CategoryController extends Controller
 
     public function store()
     {
-        $category = Category::create([
-            'user_id' => request()->user_id,
-            ...request()->all(),
-        ]);
+        $category = Category::query()->create(request()->all());
 
         return [
             "message" => "Category created successfully!",

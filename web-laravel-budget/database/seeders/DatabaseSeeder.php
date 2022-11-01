@@ -20,14 +20,14 @@ class DatabaseSeeder extends Seeder
         $budget = Budget::factory(1)->create()->first();
         foreach (DB::table('accounts')->where('user_id', $budget->user_id)->get() as $account) {
             /** @var object $account */
-            BudgetAccounts::create([
+            BudgetAccounts::query()->create([
                 'budget_id' => $budget->id,
                 'account_id' => $account->id,
             ]);
         }
         foreach (DB::table('categories')->where('user_id', $budget->user_id)->get() as $category) {
             /** @var object $category */
-            BudgetCategories::create([
+            BudgetCategories::query()->create([
                 'budget_id' => $budget->id,
                 'category_id' => $category->id,
             ]);

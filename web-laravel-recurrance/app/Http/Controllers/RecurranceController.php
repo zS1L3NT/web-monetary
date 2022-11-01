@@ -55,17 +55,14 @@ class RecurranceController extends Controller
     public function index()
     {
         return Recurrance::query()
-            ->where('user_id', request()->user_id)
+            ->where('user_id', request('user_id'))
             ->orderBy('name')
             ->get();
     }
 
     public function store()
     {
-        $recurrance = Recurrance::create([
-            'user_id' => request()->user_id,
-            ...request()->all(),
-        ]);
+        $recurrance = Recurrance::query()->create(request()->all());
 
         return [
             "message" => "Recurrance created successfully!",

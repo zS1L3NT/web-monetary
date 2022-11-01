@@ -34,7 +34,7 @@ class TransactionController extends Controller
     public function index()
     {
         $query = Transaction::query()
-            ->where('user_id', request()->user_id)
+            ->where('user_id', request('user_id'))
             ->orderByDesc('date');
 
         if ($from_account_id = request('from_account_id')) {
@@ -74,10 +74,7 @@ class TransactionController extends Controller
 
     public function store()
     {
-        $transaction = Transaction::create([
-            'user_id' => request()->user_id,
-            ...request()->all(),
-        ]);
+        $transaction = Transaction::query()->create(request()->all());
 
         return [
             "message" => "Transaction created successfully!",

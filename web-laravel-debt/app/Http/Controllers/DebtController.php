@@ -27,7 +27,7 @@ class DebtController extends Controller
     public function index()
     {
         $query = Debt::query()
-            ->where('user_id', request()->user_id)
+            ->where('user_id', request('user_id'))
             ->orderBy('type', 'desc');
 
         if ($active = request('active')) {
@@ -50,10 +50,7 @@ class DebtController extends Controller
 
     public function store()
     {
-        $debt = Debt::create([
-            'user_id' => request()->user_id,
-            ...request()->all(),
-        ]);
+        $debt = Debt::query()->create(request()->all());
 
         return [
             'message' => 'Debt created successfully!',
