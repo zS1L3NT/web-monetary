@@ -9,4 +9,17 @@ use Illuminate\Database\Eloquent\Model;
 class Debt extends Model
 {
     use HasFactory, Uuid;
+
+    protected $fillable = [
+        'user_id',
+        'type',
+        'amount',
+        'description',
+        'active',
+    ];
+
+    protected $casts = [
+        'amount' => 'integer',
+        'active' => 'boolean',
+    ];
 }

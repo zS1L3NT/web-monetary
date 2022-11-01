@@ -14,8 +14,9 @@ return new class extends Migration
     public function up()
     {
         Schema::create('debt_transactions', function (Blueprint $table) {
-            $table->uuid('id');
-            $table->timestamps();
+            $table->foreignUuid('debt_id')->constrained('debts')->cascadeOnDelete();
+            $table->foreignUuid('transaction_id')->constrained('transactions')->cascadeOnDelete();
+            $table->primary(['debt_id', 'transaction_id']);
         });
     }
 

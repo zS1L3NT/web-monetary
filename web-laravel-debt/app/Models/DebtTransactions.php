@@ -2,11 +2,14 @@
 
 namespace App\Models;
 
-use App\Traits\Uuid;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class DebtTransactions extends Model
 {
-    use HasFactory, Uuid;
+    public $timestamps = false;
+
+    protected $fillable = [
+        'debt_id',
+        'transaction_id',
+    ];
 }
