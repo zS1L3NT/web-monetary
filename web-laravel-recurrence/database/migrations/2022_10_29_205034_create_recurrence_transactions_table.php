@@ -13,10 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('recurrance_transactions', function (Blueprint $table) {
-            $table->foreignUuid('recurrance_id')->constrained('recurrances')->cascadeOnDelete();
+        Schema::create('recurrence_transactions', function (Blueprint $table) {
+            $table->foreignUuid('recurrence_id')->constrained('recurrences')->cascadeOnDelete();
             $table->foreignUuid('transaction_id')->constrained('transactions')->cascadeOnDelete();
-            $table->primary(['recurrance_id', 'transaction_id']);
+            $table->primary(['recurrence_id', 'transaction_id']);
         });
     }
 
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('recurrance_transactions');
+        Schema::dropIfExists('recurrence_transactions');
     }
 };

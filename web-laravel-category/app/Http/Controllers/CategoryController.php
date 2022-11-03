@@ -79,10 +79,10 @@ class CategoryController extends Controller
             $category->delete();
         } catch (QueryException $e) {
             if ($e->errorInfo[1] === 1451) {
-                if (str_contains($e->getMessage(), "recurrance")) {
+                if (str_contains($e->getMessage(), "recurrence")) {
                     return response([
-                        "type" => "Recurrances associated with this category exist",
-                        "message" => "You cannot delete a category that has recurrances associated with it.",
+                        "type" => "Recurrences associated with this category exist",
+                        "message" => "You cannot delete a category that has recurrences associated with it.",
                     ], 400);
                 }
 

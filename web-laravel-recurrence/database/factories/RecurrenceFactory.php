@@ -6,9 +6,9 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\DB;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Recurrance>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Recurrence>
  */
-class RecurranceFactory extends Factory
+class RecurrenceFactory extends Factory
 {
     /**
      * Define the model's default state.
