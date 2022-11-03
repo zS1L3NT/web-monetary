@@ -17,7 +17,7 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->foreignUuid('user_id')->constrained('users')->cascadeOnDelete();
             $table->string('name');
-            $table->decimal('balance', 8, 2);
+            $table->decimal('initial_balance', 8, 2);
             $table->string('color');
             $table->timestamps();
         });

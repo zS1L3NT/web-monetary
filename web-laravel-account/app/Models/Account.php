@@ -13,11 +13,11 @@ class Account extends Model
     protected $fillable = [
         'user_id',
         'name',
-        'balance',
+        'initial_balance',
         'color',
     ];
 
     protected $casts = [
-        'balance' => 'integer',
+        'initial_balance' => 'integer',
     ];
 }
