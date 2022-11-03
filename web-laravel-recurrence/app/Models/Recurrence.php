@@ -6,7 +6,7 @@ use App\Traits\Uuid;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Recurrance extends Model
+class Recurrence extends Model
 {
     use HasFactory, Uuid;
 
@@ -45,13 +45,13 @@ class Recurrance extends Model
         switch ($type) {
             case "Transfer":
                 if ($this->from_account_id === null && $this->to_account_id === null) {
-                    throw new \Exception("Transfer recurrances must have a from_account_id or a to_account_id");
+                    throw new \Exception("Transfer recurrences must have a from_account_id or a to_account_id");
                 }
                 break;
             case "Incoming":
             case "Outgoing":
                 if ($this->from_account_id === null) {
-                    throw new \Exception("Non-transfer recurrances must not have a null from_account_id");
+                    throw new \Exception("Non-transfer recurrences must not have a null from_account_id");
                 }
                 $this->attributes['to_account_id'] = null;
                 break;
@@ -64,13 +64,13 @@ class Recurrance extends Model
         switch ($this->type) {
             case "Transfer":
                 if ($fromAccountId === null && $this->to_account_id === null) {
-                    throw new \Exception("Transfer recurrances must have a from_account_id or a to_account_id");
+                    throw new \Exception("Transfer recurrences must have a from_account_id or a to_account_id");
                 }
                 break;
             case "Incoming":
             case "Outgoing":
                 if ($fromAccountId === null) {
-                    throw new \Exception("Non-transfer recurrances must not have a null from_account_id");
+                    throw new \Exception("Non-transfer recurrences must not have a null from_account_id");
                 }
                 $this->attributes['to_account_id'] = null;
                 break;
@@ -83,13 +83,13 @@ class Recurrance extends Model
         switch ($this->type) {
             case "Transfer":
                 if ($this->from_account_id === null && $toAccountId === null) {
-                    throw new \Exception("Transfer recurrances must have a from_account_id or a to_account_id");
+                    throw new \Exception("Transfer recurrences must have a from_account_id or a to_account_id");
                 }
                 break;
             case "Incoming":
             case "Outgoing":
                 if ($toAccountId !== null) {
-                    throw new \Exception("Non-transfer recurrances must not have a to_account_id");
+                    throw new \Exception("Non-transfer recurrences must not have a to_account_id");
                 }
                 break;
         }

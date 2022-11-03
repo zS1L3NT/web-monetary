@@ -16,7 +16,7 @@
 			"path": "web-laravel-debt"
 		},
 		{
-			"path": "web-laravel-recurrance"
+			"path": "web-laravel-recurrence"
 		},
 		{
 			"path": "web-laravel-transaction"
@@ -53,6 +53,7 @@
 			"**/routes/web.php": true,
 			"**/storage": true,
 			"**/tests": true
-		}
+		},
+		"powershell.cwd": "c:\\Projects\\monetary\\web-laravel-recurrence"
 	}
 }

@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Recurrance;
-use App\Models\RecurranceTransactions;
+use App\Models\Recurrence;
+use App\Models\RecurrenceTransactions;
 
-class RecurranceController extends Controller
+class RecurrenceController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('owns.recurrance')->only(['show', 'update', 'delete']);
+        $this->middleware('owns.recurrence')->only(['show', 'update', 'delete']);
 
         $this->validate('store', [
             'category_id' => 'required|uuid|exists:categories,id',
@@ -54,7 +54,7 @@ class RecurranceController extends Controller
 
     public function index()
     {
-        return Recurrance::query()
+        return Recurrence::query()
             ->where('user_id', request('user_id'))
             ->orderBy('name')
             ->get();
@@ -62,38 +62,38 @@ class RecurranceController extends Controller
 
     public function store()
     {
-        $recurrance = Recurrance::query()->create(request()->all());
+        $recurrence = Recurrence::query()->create(request()->all());
 
         return [
-            "message" => "Recurrance created successfully!",
-            "recurrance" => $recurrance,
+            "message" => "Recurrence created successfully!",
+            "recurrence" => $recurrence,
         ];
     }
 
-    public function show(Recurrance $recurrance)
+    public function show(Recurrence $recurrence)
     {
         return [
-            ...$recurrance->toArray(),
-            "transaction_ids" => RecurranceTransactions::query()->where("recurrance_id", $recurrance->id)->get('transaction_id'),
+            ...$recurrence->toArray(),
+            "transaction_ids" => RecurrenceTransactions::query()->where("recurrence_id", $recurrence->id)->get('transaction_id'),
         ];
     }
 
-    public function update(Recurrance $recurrance)
+    public function update(Recurrence $recurrence)
     {
-        $recurrance->update(request()->all());
+        $recurrence->update(request()->all());
 
         return [
-            "message" => "Recurrance updated successfully!",
-            "recurrance" => $recurrance,
+            "message" => "Recurrence updated successfully!",
+            "recurrence" => $recurrence,
         ];
     }
 
-    public function destroy(Recurrance $recurrance)
+    public function destroy(Recurrence $recurrence)
     {
-        $recurrance->delete();
+        $recurrence->delete();
 
         return [
-            "message" => "Recurrance deleted successfully!",
+            "message" => "Recurrence deleted successfully!",
         ];
     }
 }

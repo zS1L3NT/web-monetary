@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 
-class OwnsRecurrance
+class OwnsRecurrence
 {
     /**
      * Handle an incoming request.
@@ -16,10 +16,10 @@ class OwnsRecurrance
      */
     public function handle(Request $request, Closure $next)
     {
-        if (request('recurrance')->user_id !== request('user_id')) {
+        if (request('recurrence')->user_id !== request('user_id')) {
             return response([
                 "type" => "Unauthorized",
-                "message" => "You do not own this recurrance."
+                "message" => "You do not own this recurrence."
             ], 403);
         }
 
