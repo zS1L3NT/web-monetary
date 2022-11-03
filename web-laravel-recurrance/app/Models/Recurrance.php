@@ -95,4 +95,30 @@ class Recurrance extends Model
         }
         $this->attributes['to_account_id'] = $toAccountId;
     }
+
+    public function setPeriodTypeAttribute(string $periodType)
+    {
+        if ($periodType !== "Week") {
+            $this->attributes['period_week_days'] = null;
+        }
+
+        if ($periodType !== "Month") {
+            $this->attributes['period_month_day_of'] = null;
+        }
+
+        $this->attributes['period_type'] = $periodType;
+    }
+
+    public function setPeriodEndTypeAttribute(string $periodEndType)
+    {
+        if ($periodEndType !== 'Date') {
+            $this->attributes['period_end_date'] = null;
+        }
+
+        if ($periodEndType !== 'Count') {
+            $this->attributes['period_end_count'] = null;
+        }
+
+        $this->attributes['period_end_type'] = $periodEndType;
+    }
 }
