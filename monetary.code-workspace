@@ -1,28 +1,28 @@
 {
 	"folders": [
 		{
-			"path": "web-laravel-account"
+			"path": "laravel-account"
 		},
 		{
-			"path": "web-laravel-authentication"
+			"path": "laravel-authentication"
 		},
 		{
-			"path": "web-laravel-budget"
+			"path": "laravel-budget"
 		},
 		{
-			"path": "web-laravel-category"
+			"path": "laravel-category"
 		},
 		{
-			"path": "web-laravel-debt"
+			"path": "laravel-debt"
 		},
 		{
-			"path": "web-laravel-recurrence"
+			"path": "laravel-recurrence"
 		},
 		{
-			"path": "web-laravel-transaction"
+			"path": "laravel-transaction"
 		},
 		{
-			"path": "web-react"
+			"path": "react"
 		},
 		{
 			"path": "."
@@ -54,6 +54,5 @@
 			"**/storage": true,
 			"**/tests": true
 		},
-		"powershell.cwd": "c:\\Projects\\monetary\\web-laravel-recurrence"
 	}
 }
