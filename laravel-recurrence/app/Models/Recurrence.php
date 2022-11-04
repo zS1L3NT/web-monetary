@@ -40,6 +40,20 @@ class Recurrence extends Model
         'period_end_count' => 'integer',
     ];
 
+    public function getTransactionIdsAttribute() {
+        return RecurrenceTransactions::query()->where("recurrence_id", $this->id)->pluck('transaction_id');
+    }
+
+    public function setTransactionIdsAttribute(array $transactionIds) {
+        RecurrenceTransactions::query()->whereIn("transaction_id", $transactionIds)->delete();
+        foreach ($transactionIds as $transactionId) {
+            RecurrenceTransactions::query()->create([
+                'recurrence_id' => $this->id,
+                'transaction_id' => $transactionId
+            ]);
+        }
+    }
+
     public function setTypeAttribute(string $type)
     {
         switch ($type) {

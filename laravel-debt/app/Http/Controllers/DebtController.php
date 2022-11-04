@@ -14,6 +14,8 @@ class DebtController extends Controller
             'amount' => 'required|integer',
             'description' => 'string',
             'active' => 'boolean',
+            'transaction_ids' => 'required|array',
+            'transaction_ids.*' => 'uuid|exists:transactions,id|distinct'
         ]);
 
         $this->validate('update', [
@@ -21,6 +23,8 @@ class DebtController extends Controller
             'amount' => 'integer',
             'description' => 'string',
             'active' => 'boolean',
+            'transaction_ids' => 'array',
+            'transaction_ids.*' => 'uuid|exists:transactions,id|distinct'
         ]);
     }
 

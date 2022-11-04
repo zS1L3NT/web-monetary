@@ -23,6 +23,7 @@ class DebtFactory extends Factory
             'amount' => $this->faker->randomFloat(2, 0, 1000),
             'description' => $this->faker->sentence,
             'active' => $this->faker->boolean,
+            'transaction_ids' => []
         ];
     }
 }

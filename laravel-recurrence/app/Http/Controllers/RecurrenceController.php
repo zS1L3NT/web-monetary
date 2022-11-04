@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Recurrence;
-use App\Models\RecurrenceTransactions;
 
 class RecurrenceController extends Controller
 {
@@ -29,6 +28,8 @@ class RecurrenceController extends Controller
             'period_end_type' => 'required|in:Never,Date,Count',
             'period_end_date' => 'required_if:period_end_type,Date|prohibited_unless:period_end_type,Date|date',
             'period_end_count' => 'required_if:period_end_type,Count|prohibited_unless:period_end_type,Count|integer',
+            'transaction_ids' => 'required|array',
+            'transaction_ids.*' => 'uuid|exists:transaction,id|distinct'
         ]);
 
         $this->validate('update', [
@@ -49,6 +50,8 @@ class RecurrenceController extends Controller
             'period_end_type' => 'in:Never,Date,Count',
             'period_end_date' => 'required_if:period_end_type,Date|prohibited_unless:period_end_type,Date|date',
             'period_end_count' => 'required_if:period_end_type,Count|prohibited_unless:period_end_type,Count|integer',
+            'transaction_ids' => 'array',
+            'transaction_ids.*' => 'uuid|exists:transaction,id|distinct'
         ]);
     }
 
@@ -72,10 +75,7 @@ class RecurrenceController extends Controller
 
     public function show(Recurrence $recurrence)
     {
-        return [
-            ...$recurrence->toArray(),
-            "transaction_ids" => RecurrenceTransactions::query()->where("recurrence_id", $recurrence->id)->get('transaction_id'),
-        ];
+        return $recurrence;
     }
 
     public function update(Recurrence $recurrence)

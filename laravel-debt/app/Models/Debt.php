@@ -22,4 +22,18 @@ class Debt extends Model
         'amount' => 'integer',
         'active' => 'boolean',
     ];
+
+    public function getTransactionIdsAttribute() {
+        return DebtTransactions::query()->where('debt_id', $this->id)->pluck('transaction_id');
+    }
+
+    public function setTransactionIdsAttribute(array $transactionIds) {
+        DebtTransactions::query()->whereIn("transaction_id", $transactionIds)->delete();
+        foreach ($transactionIds as $transactionId) {
+            DebtTransactions::query()->create([
+                'debt_id' => $this->id,
+                'transaction_id' => $transactionId
+            ]);
+        }
+    }
 }

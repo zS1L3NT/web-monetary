@@ -45,78 +45,24 @@ class BudgetController extends Controller
     {
         $budget = Budget::query()->create(request()->all());
 
-        foreach (request('account_ids') as $account_id) {
-            BudgetAccounts::query()->create([
-                'budget_id' => $budget->id,
-                'account_id' => $account_id,
-            ]);
-        }
-
-        foreach (request('category_ids') as $category_id) {
-            BudgetCategories::query()->create([
-                'budget_id' => $budget->id,
-                'category_id' => $category_id,
-            ]);
-        }
-
         return [
             "message" => "Budget created successfully!",
-            "budget" => [
-                ...$budget->toArray(),
-                'account_ids' => request('account_ids'),
-                'category_ids' => request('category_ids')
-            ],
+            "budget" => $budget,
         ];
     }
 
     public function show(Budget $budget)
     {
-        return [
-            ...$budget->toArray(),
-            "account_ids" => BudgetAccounts::query()
-                ->where('budget_id', $budget->id)
-                ->pluck('account_id'),
-            "category_ids" => BudgetCategories::query()
-                ->where('budget_id', $budget->id)
-                ->pluck('category_id'),
-        ];
+        return $budget;
     }
 
     public function update(Budget $budget)
     {
         $budget->update(request()->all());
 
-        if ($account_ids = request('account_ids')) {
-            BudgetAccounts::where('budget_id', $budget->id)->delete();
-            foreach ($account_ids as $account_id) {
-                BudgetAccounts::query()->create([
-                    'budget_id' => $budget->id,
-                    'account_id' => $account_id,
-                ]);
-            }
-        }
-
-        if ($category_ids = request('category_ids')) {
-            BudgetCategories::where('budget_id', $budget->id)->delete();
-            foreach ($category_ids as $category_id) {
-                BudgetCategories::query()->create([
-                    'budget_id' => $budget->id,
-                    'category_id' => $category_id,
-                ]);
-            }
-        }
-
         return [
             "message" => "Budget updated successfully!",
-            "budget" => [
-                ...$budget->toArray(),
-                "account_ids" => BudgetAccounts::query()
-                    ->where('budget_id', $budget->id)
-                    ->pluck('account_id'),
-                "category_ids" => BudgetCategories::query()
-                    ->where('budget_id', $budget->id)
-                    ->pluck('category_id'),
-            ],
+            "budget" => $budget,
         ];
     }
 

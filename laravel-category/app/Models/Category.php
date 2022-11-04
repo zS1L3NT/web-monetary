@@ -16,4 +16,11 @@ class Category extends Model
         'name',
         'color',
     ];
+
+    public function getCategoriesAttribute()
+    {
+        $this::query()
+            ->where("parent_category_id", $this->id)
+            ->get();
+    }
 }
