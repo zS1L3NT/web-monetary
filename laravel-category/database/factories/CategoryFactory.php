@@ -21,6 +21,7 @@ class CategoryFactory extends Factory
             'user_id' => DB::table('users')->first()->id,
             'name' => $this->faker->word,
             'color' => $this->faker->hexColor,
+            'category_ids' => [],
         ];
     }
 }
