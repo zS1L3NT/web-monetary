@@ -1,5 +1,14 @@
-import { iBudget } from "../models/Budget"
-import api, { ApiResponse, optimistic, RequireToken } from "./api"
+import api, { ApiResponse, optimistic, RequireToken, WithTimestamps } from "./api"
+
+export type iBudget<WT extends boolean = false> = {
+	id: string
+	user_id: string
+	name: string
+	amount: number
+	period_type: "Day" | "Week" | "Month" | "Year"
+	account_ids: string[]
+	category_ids: string[]
+} & WithTimestamps<WT>
 
 const budgets = api.injectEndpoints({
 	endpoints: builder => ({
@@ -53,14 +62,10 @@ const budgets = api.injectEndpoints({
 							...budget
 						}
 					}),
-					budgets.util.updateQueryData(
-						"getBudget",
-						{ token, budget_id },
-						_budget => ({
-							..._budget,
-							...budget
-						})
-					)
+					budgets.util.updateQueryData("getBudget", { token, budget_id }, _budget => ({
+						..._budget,
+						...budget
+					}))
 				)
 			},
 			invalidatesTags: ["Budget"]

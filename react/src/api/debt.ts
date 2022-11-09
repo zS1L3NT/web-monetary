@@ -1,5 +1,15 @@
-import { iDebt } from "../models/Debt"
-import api, { ApiResponse, optimistic, RequireToken } from "./api"
+import api, { ApiResponse, optimistic, RequireToken, WithTimestamps } from "./api"
+
+export type iDebt<WT extends boolean = false> = {
+	id: string
+	user_id: string
+	type: "Loan" | "Debt"
+	amount: number
+	description: string
+	active: boolean
+	transaction_ids: string[]
+} & WithTimestamps<WT>
+
 
 const debts = api.injectEndpoints({
 	endpoints: builder => ({

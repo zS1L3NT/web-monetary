@@ -1,5 +1,12 @@
-import { iAccount } from "../models/Account"
-import api, { ApiResponse, optimistic, RequireToken } from "./api"
+import api, { ApiResponse, optimistic, RequireToken, WithTimestamps } from "./api"
+
+export type iAccount<WT extends boolean = false> = {
+	id: string
+	user_id: string
+	name: string
+	initial_balance: number
+	color: string
+} & WithTimestamps<WT>
 
 const accounts = api.injectEndpoints({
 	endpoints: builder => ({

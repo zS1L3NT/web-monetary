@@ -1,5 +1,10 @@
-import { iUser } from "../models/User"
-import api, { ApiResponse, RequireToken } from "./api"
+import api, { ApiResponse, RequireToken, WithTimestamps } from "./api"
+
+export type iUser<WT extends boolean = false> = {
+	id: string
+	username: string
+	email: string
+} & WithTimestamps<WT>
 
 const authentication = api.injectEndpoints({
 	endpoints: builder => ({

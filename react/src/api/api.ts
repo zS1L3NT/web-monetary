@@ -5,6 +5,10 @@ import { createApi } from "@reduxjs/toolkit/query/react"
 
 import axiosBaseQuery from "../utils/axiosBaseQuery"
 
+export type WithTimestamps<WT extends boolean> = WT extends true
+	? { created_at: string; updated_at: string }
+	: {}
+
 export type ApiResponse = {
 	message: string
 }
