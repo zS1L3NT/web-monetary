@@ -12,40 +12,25 @@ class CategoryController extends Controller
         $this->middleware('owns.category')->only(['show', 'update', 'delete']);
 
         $this->validate('store', [
-            'parent_category_id' => 'uuid|exists:categories,id',
             'name' => 'required|string',
             'color' => 'required|string',
+            'category_ids' => 'required|array',
+            'category_ids.*' => 'uuid|exists:categories,id|distinct'
         ]);
 
         $this->validate('update', [
-            'parent_category_id' => 'uuid|exists:categories,id',
             'name' => 'string',
             'color' => 'string',
+            'category_ids' => 'array',
+            'category_ids.*' => 'uuid|exists:categories,id|distinct'
         ]);
-    }
-
-    private function getNestedCategory(Category $category)
-    {
-        return [
-            ...$category->toArray(),
-            "categories" => Category::query()
-                ->where("parent_category_id", $category->id)
-                ->get()
-                ->map(function ($category) {
-                    return $this->getNestedCategory($category);
-                }),
-        ];
     }
 
     public function index()
     {
         return Category::query()
             ->where('user_id', request('user_id'))
-            ->whereNull('parent_category_id')
-            ->get()
-            ->map(function ($category) {
-                return $this->getNestedCategory($category);
-            });
+            ->get();
     }
 
     public function store()
@@ -60,7 +45,7 @@ class CategoryController extends Controller
 
     public function show(Category $category)
     {
-        return $this->getNestedCategory($category);
+        return $category;
     }
 
     public function update(Category $category)

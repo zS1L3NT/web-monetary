@@ -17,20 +17,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $budget = Budget::factory(1)->create()->first();
-        foreach (DB::table('accounts')->where('user_id', $budget->user_id)->get() as $account) {
-            /** @var object $account */
-            BudgetAccounts::query()->create([
-                'budget_id' => $budget->id,
-                'account_id' => $account->id,
-            ]);
-        }
-        foreach (DB::table('categories')->where('user_id', $budget->user_id)->get() as $category) {
-            /** @var object $category */
-            BudgetCategories::query()->create([
-                'budget_id' => $budget->id,
-                'category_id' => $category->id,
-            ]);
-        }
+        Budget::factory(1)->create();
     }
 }

@@ -17,11 +17,15 @@ class BudgetFactory extends Factory
      */
     public function definition()
     {
+        $userId = DB::table('users')->first()->id;
+
         return [
-            'user_id' => DB::table('users')->first()->id,
+            'user_id' => $userId,
             'name' => $this->faker->word,
             'amount' => $this->faker->numberBetween(100, 1000),
             'period_type' => $this->faker->randomElement(['Day', 'Week', 'Month', 'Year']),
+            'account_ids' => DB::table('accounts')->where('user_id', $userId)->pluck('id'),
+            'category_ids' => DB::table('categories')->where('user_id', $userId)->pluck('id'),
         ];
     }
 }
