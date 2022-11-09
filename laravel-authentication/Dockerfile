@@ -13,7 +13,9 @@ RUN apt update \
         && docker-php-ext-install \
             intl \
             opcache \
+            mysqli \
             pdo \
+            pdo_mysql \
             pdo_pgsql \
             pgsql
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
