@@ -121,6 +121,7 @@ const Navigator = () => {
 						{items.map(item =>
 							item.render ? (
 								<Button
+									key={item.navigate}
 									w="full"
 									display="flex"
 									justifyContent="start"
