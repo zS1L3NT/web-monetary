@@ -10,7 +10,6 @@ export type iDebt<WT extends boolean = false> = {
 	transaction_ids: string[]
 } & WithTimestamps<WT>
 
-
 const debts = api.injectEndpoints({
 	endpoints: builder => ({
 		getDebts: builder.query<iDebt<true>[], { active?: boolean } & RequireToken>({
@@ -63,14 +62,10 @@ const debts = api.injectEndpoints({
 							...debt
 						}
 					}),
-					debts.util.updateQueryData(
-						"getDebt",
-						{ token, debt_id },
-						_debt => ({
-							..._debt,
-							...debt
-						})
-					)
+					debts.util.updateQueryData("getDebt", { token, debt_id }, _debt => ({
+						..._debt,
+						...debt
+					}))
 				)
 			},
 			invalidatesTags: ["Debt"]

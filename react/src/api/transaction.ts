@@ -24,12 +24,34 @@ export type iTransaction<WT extends boolean = false, RT extends TransactionType 
 
 const transactions = api.injectEndpoints({
 	endpoints: builder => ({
-		getTransactions: builder.query<iTransaction<true>[], { active?: boolean } & RequireToken>({
-			query: ({ token, active }) => ({
-				url: `/transactions` + (active !== undefined ? `?active=${active}` : ``),
-				method: "GET",
-				token
-			}),
+		getTransactions: builder.query<
+			iTransaction<true>[],
+			{
+				from_account_id?: string | null
+				to_account_id?: string | null
+				category_ids?: string[]
+				limit?: number
+				offset?: number
+			} & RequireToken
+		>({
+			query: ({ token, from_account_id, to_account_id, category_ids, limit, offset }) => {
+				const searchParams = new URLSearchParams()
+
+				if (from_account_id !== undefined)
+					searchParams.append("from_account_id", from_account_id ?? "null")
+				if (to_account_id !== undefined)
+					searchParams.append("to_account_id", to_account_id ?? "null")
+				if (category_ids !== undefined)
+					searchParams.append("category_ids", category_ids.join(","))
+				if (limit !== undefined) searchParams.append("limit", limit + "")
+				if (offset !== undefined) searchParams.append("offset", offset + "")
+
+				return {
+					url: `/transactions?${searchParams}`,
+					method: "GET",
+					token
+				}
+			},
 			providesTags: ["Transaction"]
 		}),
 		createTransaction: builder.mutation<
@@ -44,7 +66,10 @@ const transactions = api.injectEndpoints({
 			}),
 			invalidatesTags: ["Transaction"]
 		}),
-		getTransaction: builder.query<iTransaction<true>, { transaction_id: string } & RequireToken>({
+		getTransaction: builder.query<
+			iTransaction<true>,
+			{ transaction_id: string } & RequireToken
+		>({
 			query: ({ token, transaction_id }) => ({
 				url: `/transactions/${transaction_id}`,
 				method: "GET",
@@ -54,7 +79,9 @@ const transactions = api.injectEndpoints({
 		}),
 		updateTransaction: builder.mutation<
 			ApiResponse & { transaction: iTransaction<true> },
-			Partial<Omit<iTransaction, "id" | "user_id">> & { transaction_id: string } & RequireToken
+			Partial<Omit<iTransaction, "id" | "user_id">> & {
+				transaction_id: string
+			} & RequireToken
 		>({
 			query: ({ token, transaction_id, ...transaction }) => ({
 				url: `/transactions/${transaction_id}`,
@@ -65,16 +92,20 @@ const transactions = api.injectEndpoints({
 			onQueryStarted: async ({ token, transaction_id, ...transaction }, mutators) => {
 				await optimistic(
 					mutators,
-					transactions.util.updateQueryData("getTransactions", { token }, _transactions => {
-						const index = _transactions.findIndex(a => a.id === transaction_id)
-						if (index === -1) return
+					transactions.util.updateQueryData(
+						"getTransactions",
+						{ token },
+						_transactions => {
+							const index = _transactions.findIndex(a => a.id === transaction_id)
+							if (index === -1) return
 
-						// @ts-ignore
-						_transactions[index] = {
-							..._transactions[index]!,
-							...transaction
+							// @ts-ignore
+							_transactions[index] = {
+								..._transactions[index]!,
+								...transaction
+							}
 						}
-					}),
+					),
 					transactions.util.updateQueryData(
 						"getTransaction",
 						{ token, transaction_id },
@@ -88,25 +119,31 @@ const transactions = api.injectEndpoints({
 			},
 			invalidatesTags: ["Transaction"]
 		}),
-		deleteTransaction: builder.mutation<ApiResponse, { transaction_id: string } & RequireToken>({
-			query: ({ token, transaction_id }) => ({
-				url: `/transactions/${transaction_id}`,
-				method: "DELETE",
-				token
-			}),
-			onQueryStarted: async ({ token, transaction_id }, mutators) => {
-				await optimistic(
-					mutators,
-					transactions.util.updateQueryData("getTransactions", { token }, _transactions => {
-						const transaction = _transactions.find(a => a.id === transaction_id)
-						if (!transaction) return
+		deleteTransaction: builder.mutation<ApiResponse, { transaction_id: string } & RequireToken>(
+			{
+				query: ({ token, transaction_id }) => ({
+					url: `/transactions/${transaction_id}`,
+					method: "DELETE",
+					token
+				}),
+				onQueryStarted: async ({ token, transaction_id }, mutators) => {
+					await optimistic(
+						mutators,
+						transactions.util.updateQueryData(
+							"getTransactions",
+							{ token },
+							_transactions => {
+								const transaction = _transactions.find(a => a.id === transaction_id)
+								if (!transaction) return
 
-						_transactions.splice(_transactions.indexOf(transaction), 1)
-					})
-				)
-			},
-			invalidatesTags: ["Transaction"]
-		})
+								_transactions.splice(_transactions.indexOf(transaction), 1)
+							}
+						)
+					)
+				},
+				invalidatesTags: ["Transaction"]
+			}
+		)
 	})
 })
 
