@@ -4,9 +4,12 @@ import { HiDotsVertical } from "react-icons/hi"
 import { Box, Checkbox, Flex, GridItem, Icon, Text } from "@chakra-ui/react"
 
 import { iAccount } from "../../../api/accounts"
+import textColorOnBackground from "../../../utils/textColorOnBackground"
 
 const Account = ({ account }: { account: iAccount }) => {
 	const [checked, setChecked] = useState(false)
+
+	const textColor = textColorOnBackground(account.color)
 
 	return (
 		<GridItem
@@ -27,12 +30,21 @@ const Account = ({ account }: { account: iAccount }) => {
 			<Flex direction="row">
 				<Checkbox
 					isChecked={checked}
-					iconColor="white"
+					iconColor={textColor}
+					borderColor={textColor}
 					colorScheme={account.color}
 				/>
 				<Box ml={3}>
-					<Text fontSize={17}>{account.name}</Text>
-					<Text fontWeight="bold">${account.initial_balance}</Text>
+					<Text
+						color={textColor}
+						fontSize={17}>
+						{account.name}
+					</Text>
+					<Text
+						color={textColor}
+						fontWeight="bold">
+						${account.initial_balance}
+					</Text>
 				</Box>
 			</Flex>
 			<Icon as={HiDotsVertical} />
