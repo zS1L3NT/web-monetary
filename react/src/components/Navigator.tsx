@@ -94,7 +94,9 @@ const Navigator = () => {
 				fontFamily="heading"
 				fontWeight="medium"
 				fontSize="xl"
-				ml={2}>
+				ml={2}
+				_hover={{ cursor: "pointer" }}
+				onClick={() => navigate("/")}>
 				Monetary
 			</Text>
 
@@ -115,7 +117,14 @@ const Navigator = () => {
 				isOpen={isOpen}>
 				<DrawerOverlay />
 				<DrawerContent>
-					<DrawerHeader>Monetary</DrawerHeader>
+					<DrawerHeader
+						_hover={{ cursor: "pointer" }}
+						onClick={() => {
+							navigate("/")
+							onClose()
+						}}>
+						Monetary
+					</DrawerHeader>
 					<DrawerBody>
 						<Divider mt={-2} />
 						{items.map(item =>
