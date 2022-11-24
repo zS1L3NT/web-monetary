@@ -6,6 +6,8 @@ import Navigator from "./components/Navigator"
 import Login from "./features/authentication/pages/Login"
 import Logout from "./features/authentication/pages/Logout"
 import Register from "./features/authentication/pages/Register"
+import Dashboard from "./features/dashboard/pages/Dashboard"
+import Landing from "./features/landing/pages/Landing"
 
 const App = () => {
 	return (
@@ -19,6 +21,10 @@ const App = () => {
 				overflowY="scroll">
 				<Routes>
 					<Route
+						path="/"
+						element={<Landing />}
+					/>
+					<Route
 						path="login"
 						element={<Login />}
 					/>
@@ -29,6 +35,10 @@ const App = () => {
 					<Route
 						path="logout"
 						element={<Logout />}
+					/>
+					<Route
+						path="dashboard"
+						element={<Dashboard />}
 					/>
 				</Routes>
 			</Flex>
