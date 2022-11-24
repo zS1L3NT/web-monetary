@@ -1,28 +1,28 @@
 {
 	"folders": [
 		{
-			"path": "web-laravel-account"
+			"path": "laravel-account"
 		},
 		{
-			"path": "web-laravel-authentication"
+			"path": "laravel-authentication"
 		},
 		{
-			"path": "web-laravel-budget"
+			"path": "laravel-budget"
 		},
 		{
-			"path": "web-laravel-category"
+			"path": "laravel-category"
 		},
 		{
-			"path": "web-laravel-debt"
+			"path": "laravel-debt"
 		},
 		{
-			"path": "web-laravel-recurrance"
+			"path": "laravel-recurrence"
 		},
 		{
-			"path": "web-laravel-transaction"
+			"path": "laravel-transaction"
 		},
 		{
-			"path": "web-react"
+			"path": "react"
 		},
 		{
 			"path": "."
@@ -53,6 +53,6 @@
 			"**/routes/web.php": true,
 			"**/storage": true,
 			"**/tests": true
-		}
+		},
 	}
 }
