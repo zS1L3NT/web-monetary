@@ -21,8 +21,9 @@ class Controller extends BaseController
 
                 if ($validator->fails()) {
                     return response([
-                        "message" => "Invalid data",
-                        "errors" => $validator->errors()->messages()
+                        "type" => "Invalid data",
+                        "message" => "The data provided in the request is invalid",
+                        "fields" => $validator->errors()->messages()
                     ], 400);
                 } else {
                     return $next($request);
