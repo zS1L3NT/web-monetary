@@ -1,28 +1,28 @@
 {
 	"folders": [
 		{
-			"path": "laravel-account"
+			"path": "web-laravel-monetary-account"
 		},
 		{
-			"path": "laravel-authentication"
+			"path": "web-laravel-monetary-authentication"
 		},
 		{
-			"path": "laravel-budget"
+			"path": "web-laravel-monetary-budget"
 		},
 		{
-			"path": "laravel-category"
+			"path": "web-laravel-monetary-category"
 		},
 		{
-			"path": "laravel-debt"
+			"path": "web-laravel-monetary-debt"
 		},
 		{
-			"path": "laravel-recurrence"
+			"path": "web-laravel-monetary-recurrence"
 		},
 		{
-			"path": "laravel-transaction"
+			"path": "web-laravel-monetary-transaction"
 		},
 		{
-			"path": "react"
+			"path": "web-react-monetary"
 		},
 		{
 			"path": "."
