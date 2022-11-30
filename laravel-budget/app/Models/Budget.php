@@ -21,6 +21,11 @@ class Budget extends Model
         'amount' => 'integer',
     ];
 
+    protected $appends = [
+        'account_ids',
+        'category_ids'
+    ];
+
     public function getAccountIdsAttribute() {
         return BudgetAccounts::query()->where("budget_id", $this->id)->pluck('account_id');
     }

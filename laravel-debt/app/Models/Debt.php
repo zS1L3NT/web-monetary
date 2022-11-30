@@ -23,6 +23,10 @@ class Debt extends Model
         'active' => 'boolean',
     ];
 
+    protected $appends = [
+        'transaction_ids'
+    ];
+
     public function getTransactionIdsAttribute() {
         return DebtTransactions::query()->where('debt_id', $this->id)->pluck('transaction_id');
     }

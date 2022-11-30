@@ -65,9 +65,9 @@ export type iRecurrence<
 
 const recurrences = api.injectEndpoints({
 	endpoints: builder => ({
-		getRecurrences: builder.query<iRecurrence<true>[], { active?: boolean } & RequireToken>({
-			query: ({ token, active }) => ({
-				url: `/recurrences` + (active !== undefined ? `?active=${active}` : ``),
+		getRecurrences: builder.query<iRecurrence<true>[], RequireToken>({
+			query: ({ token }) => ({
+				url: `/recurrences`,
 				method: "GET",
 				token
 			}),

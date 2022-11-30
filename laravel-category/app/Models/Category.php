@@ -16,6 +16,10 @@ class Category extends Model
         'color',
     ];
 
+    protected $appends = [
+        'category_ids'
+    ];
+
     public function getCategoryIdsAttribute()
     {
         return NestedCategory::query()->where('parent_category_id', $this->id)->pluck('child_category_id');

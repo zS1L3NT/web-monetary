@@ -40,6 +40,10 @@ class Recurrence extends Model
         'period_end_count' => 'integer',
     ];
 
+    protected $appends = [
+        'transaction_ids'
+    ];
+
     public function getTransactionIdsAttribute() {
         return RecurrenceTransactions::query()->where("recurrence_id", $this->id)->pluck('transaction_id');
     }
