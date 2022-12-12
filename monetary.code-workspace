@@ -52,7 +52,9 @@
 			"**/routes/console.php": true,
 			"**/routes/web.php": true,
 			"**/storage": true,
-			"**/tests": true
+			"**/tests": true,
+			"web-laravel-monetary-*": true,
+			"web-react-monetary": true
 		},
 	}
 }
