@@ -27,12 +27,14 @@ class Category extends Model
 
     public function setCategoryIdsAttribute(array $categoryIds)
     {
-        NestedCategory::query()->where('parent_category_id', $this->id)->delete();
-        foreach ($categoryIds as $categoryId) {
-            NestedCategory::query()->create([
-                'parent_category_id' => $this->id,
-                'child_category_id' => $categoryId,
-            ]);
+        if (isset($this->id)) {
+            NestedCategory::query()->where('parent_category_id', $this->id)->delete();
+            foreach ($categoryIds as $categoryId) {
+                NestedCategory::query()->create([
+                    'parent_category_id' => $this->id,
+                    'child_category_id' => $categoryId,
+                ]);
+            }
         }
     }
 }

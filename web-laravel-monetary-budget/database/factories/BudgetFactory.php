@@ -24,8 +24,8 @@ class BudgetFactory extends Factory
             'name' => $this->faker->word,
             'amount' => $this->faker->numberBetween(100, 1000),
             'period_type' => $this->faker->randomElement(['Day', 'Week', 'Month', 'Year']),
-            'account_ids' => DB::table('accounts')->where('user_id', $userId)->pluck('id'),
-            'category_ids' => DB::table('categories')->where('user_id', $userId)->pluck('id'),
+            'account_ids' => DB::table('accounts')->where('user_id', $userId)->pluck('id')->toArray(),
+            'category_ids' => DB::table('categories')->where('user_id', $userId)->pluck('id')->toArray(),
         ];
     }
 }

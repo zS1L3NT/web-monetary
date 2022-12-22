@@ -44,17 +44,21 @@ class Recurrence extends Model
         'transaction_ids'
     ];
 
-    public function getTransactionIdsAttribute() {
+    public function getTransactionIdsAttribute()
+    {
         return RecurrenceTransactions::query()->where("recurrence_id", $this->id)->pluck('transaction_id');
     }
 
-    public function setTransactionIdsAttribute(array $transactionIds) {
-        RecurrenceTransactions::query()->whereIn("transaction_id", $transactionIds)->delete();
-        foreach ($transactionIds as $transactionId) {
-            RecurrenceTransactions::query()->create([
-                'recurrence_id' => $this->id,
-                'transaction_id' => $transactionId
-            ]);
+    public function setTransactionIdsAttribute(array $transactionIds)
+    {
+        if (isset($this->id)) {
+            RecurrenceTransactions::query()->whereIn("transaction_id", $transactionIds)->delete();
+            foreach ($transactionIds as $transactionId) {
+                RecurrenceTransactions::query()->create([
+                    'recurrence_id' => $this->id,
+                    'transaction_id' => $transactionId
+                ]);
+            }
         }
     }
 
