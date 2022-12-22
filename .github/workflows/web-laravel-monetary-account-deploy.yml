@@ -28,11 +28,8 @@ jobs:
       - name: Build and Push to Docker Hub
         uses: docker/build-push-action@v2
         with:
-          context: .
-          file: ./web-laravel-monetary-account/Dockerfile
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          tags: zs1l3nt/web-laravel-monetary-account:latest
 
   update_linode:
     name: Update Linode
