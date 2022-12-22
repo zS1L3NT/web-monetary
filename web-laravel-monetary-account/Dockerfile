@@ -17,3 +17,4 @@ RUN chmod -R 755 bootstrap/cache
 RUN a2enmod rewrite
 
 EXPOSE 80
+CMD apache2ctl -D foreground
