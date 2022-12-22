@@ -44,11 +44,11 @@ jobs:
             docker rmi zs1l3nt/web-laravel-monetary-account:latest
             docker pull zs1l3nt/web-laravel-monetary-account:latest
             docker run -t -d -p 80:80 --name web-laravel-monetary-account zs1l3nt/web-laravel-monetary-account:latest \
-              -e APP_KEY=${{ env.APP_KEY }} \
-              -e DB_CONNECTION=${{ env.DB_CONNECTION }} \
-              -e DB_HOST=${{ env.DB_HOST }} \
-              -e DB_PORT=${{ env.DB_PORT }} \
-              -e DB_DATABASE=${{ env.DB_DATABASE }} \
-              -e DB_USERNAME=${{ env.DB_USERNAME }} \
-              -e DB_PASSWORD=${{ env.DB_PASSWORD }} \
-              -e JWT_SECRET=${{ env.JWT_SECRET }}
+              -e APP_KEY="${{ env.APP_KEY }}" \
+              -e DB_CONNECTION="${{ env.DB_CONNECTION }}" \
+              -e DB_HOST="${{ env.DB_HOST }}" \
+              -e DB_PORT="${{ env.DB_PORT }}" \
+              -e DB_DATABASE="${{ env.DB_DATABASE }}" \
+              -e DB_USERNAME="${{ env.DB_USERNAME }}" \
+              -e DB_PASSWORD="${{ env.DB_PASSWORD }}" \
+              -e JWT_SECRET="${{ env.JWT_SECRET }}"
