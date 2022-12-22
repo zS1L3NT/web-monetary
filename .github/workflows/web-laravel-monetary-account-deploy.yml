@@ -7,6 +7,7 @@ on:
       - deployment
     paths:
       - 'web-laravel-monetary-account/**'
+      - '.github/workflows/web-laravel-monetary-account-deploy.yml'
 
 jobs:
   push_to_docker_hub:
