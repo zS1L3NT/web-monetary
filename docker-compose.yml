@@ -1,57 +1,71 @@
 services:
   web-laravel-monetary-account:
-    build: ./web-laravel-monetary-account
+    build: 
+      context: web-laravel-monetary-account
+      dockerfile: ../Dockerfile
     container_name: web-laravel-monetary-account
-    image: zs1l3nt/web-laravel-monetary-account
+    image: web-laravel-monetary-account
     ports:
       - 8001:80
     env_file:
-      - ./web-laravel-monetary-account/.env
+      - .env
   web-laravel-monetary-authentication:
-    build: ./web-laravel-monetary-authentication
+    build: 
+      context: web-laravel-monetary-authentication
+      dockerfile: ../Dockerfile
     container_name: web-laravel-monetary-authentication
-    image: zs1l3nt/web-laravel-monetary-authentication
+    image: web-laravel-monetary-authentication
     ports:
       - 8002:80
     env_file:
-      - ./web-laravel-monetary-authentication/.env
+      - .env
   web-laravel-monetary-budget:
-    build: ./web-laravel-monetary-budget
+    build: 
+      context: web-laravel-monetary-budget
+      dockerfile: ../Dockerfile
     container_name: web-laravel-monetary-budget
-    image: zs1l3nt/web-laravel-monetary-budget
+    image: web-laravel-monetary-budget
     ports:
       - 8003:80
     env_file:
-      - ./web-laravel-monetary-budget/.env
+      - .env
   web-laravel-monetary-category:
-    build: ./web-laravel-monetary-category
+    build: 
+      context: web-laravel-monetary-category
+      dockerfile: ../Dockerfile
     container_name: web-laravel-monetary-category
-    image: zs1l3nt/web-laravel-monetary-category
+    image: web-laravel-monetary-category
     ports:
       - 8004:80
     env_file:
-      - ./web-laravel-monetary-category/.env
+      - .env
   web-laravel-monetary-debt:
-    build: ./web-laravel-monetary-debt
+    build: 
+      context: web-laravel-monetary-debt
+      dockerfile: ../Dockerfile
     container_name: web-laravel-monetary-debt
-    image: zs1l3nt/web-laravel-monetary-debt
+    image: web-laravel-monetary-debt
     ports:
       - 8005:80
     env_file:
-      - ./web-laravel-monetary-debt/.env
+      - .env
   web-laravel-monetary-recurrence:
-    build: ./web-laravel-monetary-recurrence
+    build: 
+      context: web-laravel-monetary-recurrence
+      dockerfile: ../Dockerfile
     container_name: web-laravel-monetary-recurrence
-    image: zs1l3nt/web-laravel-monetary-recurrence
+    image: web-laravel-monetary-recurrence
     ports:
       - 8006:80
     env_file:
-      - ./web-laravel-monetary-recurrence/.env
+      - .env
   web-laravel-monetary-transaction:
-    build: ./web-laravel-monetary-transaction
+    build: 
+      context: web-laravel-monetary-transaction
+      dockerfile: ../Dockerfile
     container_name: web-laravel-monetary-transaction
-    image: zs1l3nt/web-laravel-monetary-transaction
+    image: web-laravel-monetary-transaction
     ports:
       - 8007:80
     env_file:
-      - ./web-laravel-monetary-transaction/.env
+      - .env
