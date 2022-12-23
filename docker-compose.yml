@@ -1,6 +1,8 @@
 services:
   web-laravel-monetary-account:
-    build: ./web-laravel-monetary-account
+    build: 
+      context: web-laravel-monetary-account
+      dockerfile: ../Dockerfile
     container_name: web-laravel-monetary-account
     image: web-laravel-monetary-account
     ports:
@@ -8,7 +10,9 @@ services:
     env_file:
       - ./web-laravel-monetary-account/.env
   web-laravel-monetary-authentication:
-    build: ./web-laravel-monetary-authentication
+    build: 
+      context: web-laravel-monetary-authentication
+      dockerfile: ../Dockerfile
     container_name: web-laravel-monetary-authentication
     image: web-laravel-monetary-authentication
     ports:
@@ -16,7 +20,9 @@ services:
     env_file:
       - ./web-laravel-monetary-authentication/.env
   web-laravel-monetary-budget:
-    build: ./web-laravel-monetary-budget
+    build: 
+      context: web-laravel-monetary-budget
+      dockerfile: ../Dockerfile
     container_name: web-laravel-monetary-budget
     image: web-laravel-monetary-budget
     ports:
@@ -24,7 +30,9 @@ services:
     env_file:
       - ./web-laravel-monetary-budget/.env
   web-laravel-monetary-category:
-    build: ./web-laravel-monetary-category
+    build: 
+      context: web-laravel-monetary-category
+      dockerfile: ../Dockerfile
     container_name: web-laravel-monetary-category
     image: web-laravel-monetary-category
     ports:
@@ -32,7 +40,9 @@ services:
     env_file:
       - ./web-laravel-monetary-category/.env
   web-laravel-monetary-debt:
-    build: ./web-laravel-monetary-debt
+    build: 
+      context: web-laravel-monetary-debt
+      dockerfile: ../Dockerfile
     container_name: web-laravel-monetary-debt
     image: web-laravel-monetary-debt
     ports:
@@ -40,7 +50,9 @@ services:
     env_file:
       - ./web-laravel-monetary-debt/.env
   web-laravel-monetary-recurrence:
-    build: ./web-laravel-monetary-recurrence
+    build: 
+      context: web-laravel-monetary-recurrence
+      dockerfile: ../Dockerfile
     container_name: web-laravel-monetary-recurrence
     image: web-laravel-monetary-recurrence
     ports:
@@ -48,7 +60,9 @@ services:
     env_file:
       - ./web-laravel-monetary-recurrence/.env
   web-laravel-monetary-transaction:
-    build: ./web-laravel-monetary-transaction
+    build: 
+      context: web-laravel-monetary-transaction
+      dockerfile: ../Dockerfile
     container_name: web-laravel-monetary-transaction
     image: web-laravel-monetary-transaction
     ports:
