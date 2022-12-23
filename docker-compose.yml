@@ -8,7 +8,7 @@ services:
     ports:
       - 8001:80
     env_file:
-      - ./web-laravel-monetary-account/.env
+      - .env
   web-laravel-monetary-authentication:
     build: 
       context: web-laravel-monetary-authentication
@@ -18,7 +18,7 @@ services:
     ports:
       - 8002:80
     env_file:
-      - ./web-laravel-monetary-authentication/.env
+      - .env
   web-laravel-monetary-budget:
     build: 
       context: web-laravel-monetary-budget
@@ -28,7 +28,7 @@ services:
     ports:
       - 8003:80
     env_file:
-      - ./web-laravel-monetary-budget/.env
+      - .env
   web-laravel-monetary-category:
     build: 
       context: web-laravel-monetary-category
@@ -38,7 +38,7 @@ services:
     ports:
       - 8004:80
     env_file:
-      - ./web-laravel-monetary-category/.env
+      - .env
   web-laravel-monetary-debt:
     build: 
       context: web-laravel-monetary-debt
@@ -48,7 +48,7 @@ services:
     ports:
       - 8005:80
     env_file:
-      - ./web-laravel-monetary-debt/.env
+      - .env
   web-laravel-monetary-recurrence:
     build: 
       context: web-laravel-monetary-recurrence
@@ -58,7 +58,7 @@ services:
     ports:
       - 8006:80
     env_file:
-      - ./web-laravel-monetary-recurrence/.env
+      - .env
   web-laravel-monetary-transaction:
     build: 
       context: web-laravel-monetary-transaction
@@ -68,4 +68,4 @@ services:
     ports:
       - 8007:80
     env_file:
-      - ./web-laravel-monetary-transaction/.env
+      - .env
