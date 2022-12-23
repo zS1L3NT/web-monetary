@@ -10,6 +10,7 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 COPY . .
 COPY apache.conf /etc/apache2/sites-enabled/000-default.conf
 
+RUN composer install
 RUN chown -R $USER:www-data storage
 RUN chown -R $USER:www-data bootstrap/cache
 RUN chmod -R 775 storage
