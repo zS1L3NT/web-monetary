@@ -6,29 +6,13 @@ on:
       - main
       - deployment
     paths:
-      - 'web-laravel-monetary-account/**'
-      - '.github/workflows/web-laravel-monetary-account-deploy.yml'
+      - web-laravel-monetary-account/**
+      - .github/workflows/web-laravel-monetary-account-deploy.yml
+      - docker-compose.yml
+      - Dockerfile
 
 jobs:
-  push_to_docker_hub:
-    name: Push Docker Image to Docker Hub
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
-
-      - name: Login to Docker Hub
-        run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-
-      - name: Build Docker Image
-        run: docker build -t zs1l3nt/web-laravel-monetary-account web-laravel-monetary-account
-      
-      - name: Push Docker Image to Docker Hub
-        run: docker push zs1l3nt/web-laravel-monetary-account
-
-  update_linode:
-    name: Update Linode
-    needs: push_to_docker_hub
+  deploy:
     runs-on: ubuntu-latest
     environment: production
     steps:
@@ -39,16 +23,14 @@ jobs:
           username: ${{ secrets.LINODE_USERNAME }}
           password: ${{ secrets.LINODE_PASSWORD }}
           script: |
-            docker stop web-laravel-monetary-account
-            docker rm web-laravel-monetary-account
-            docker rmi zs1l3nt/web-laravel-monetary-account:latest
-            docker pull zs1l3nt/web-laravel-monetary-account:latest
-            docker run -t -d -p 80:80 --name web-laravel-monetary-account zs1l3nt/web-laravel-monetary-account:latest \
-              -e APP_KEY="${{ secrets.APP_KEY }}" \
-              -e DB_CONNECTION="${{ secrets.DB_CONNECTION }}" \
-              -e DB_HOST="${{ secrets.DB_HOST }}" \
-              -e DB_PORT="${{ secrets.DB_PORT }}" \
-              -e DB_DATABASE="${{ secrets.DB_DATABASE }}" \
-              -e DB_USERNAME="${{ secrets.DB_USERNAME }}" \
-              -e DB_PASSWORD="${{ secrets.DB_PASSWORD }}" \
-              -e JWT_SECRET="${{ secrets.JWT_SECRET }}"
+            cd /home/web-monetary
+            echo APP_KEY="${{ secrets.APP_KEY }}" > .env
+            echo DB_CONNECTION="${{ secrets.DB_CONNECTION }}" >> .env
+            echo DB_HOST="${{ secrets.DB_HOST }}" >> .env
+            echo DB_PORT="${{ secrets.DB_PORT }}" >> .env
+            echo DB_DATABASE="${{ secrets.DB_DATABASE }}" >> .env
+            echo DB_USERNAME="${{ secrets.DB_USERNAME }}" >> .env
+            echo DB_PASSWORD="${{ secrets.DB_PASSWORD }}" >> .env
+            echo JWT_SECRET="${{ secrets.JWT_SECRET }}" >> .env
+            git pull origin main
+            docker-compose up -d --build
