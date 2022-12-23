@@ -18,7 +18,7 @@ jobs:
       - name: Run update command
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.LINODE_AUTHENTICATION_HOST }}
+          host: ${{ secrets.LINODE_HOST_AUTHENTICATION }}
           username: ${{ secrets.LINODE_USERNAME }}
           password: ${{ secrets.LINODE_PASSWORD }}
           script: |
