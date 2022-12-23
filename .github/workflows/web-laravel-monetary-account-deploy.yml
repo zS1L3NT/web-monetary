@@ -33,4 +33,4 @@ jobs:
             echo DB_PASSWORD="${{ secrets.DB_PASSWORD }}" >> .env
             echo JWT_SECRET="${{ secrets.JWT_SECRET }}" >> .env
             git pull origin main
-            docker-compose up -d --build
+            docker-compose up -d --build web-laravel-monetary-account
