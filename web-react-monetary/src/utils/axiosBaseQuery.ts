@@ -33,7 +33,7 @@ export default <
 >(async ({ url, method, body, params, token }) => {
 	try {
 		const result = await axios({
-			url: "http://localhost:8000/api" + url,
+			url: "/api" + url,
 			headers: token ? { Authorization: `Bearer ${token}` } : undefined,
 			method,
 			params,
