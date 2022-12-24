@@ -1,3 +1,4 @@
+#!/bin/bash
 php web-laravel-monetary-authentication/artisan migrate:fresh --seed
 php web-laravel-monetary-account/artisan migrate --seed
 php web-laravel-monetary-category/artisan migrate --seed

@@ -30,6 +30,13 @@
 	],
 	"settings": {
 		"files.exclude": {
+			"**/.git": true,
+			"**/.svn": true,
+			"**/.hg": true,
+			"**/CVS": true,
+			"**/.DS_Store": true,
+			"**/Thumbs.db": true,
+			"**/.vscode": true,
 			"**/app/Exceptions": true,
 			"**/app/Http/Middleware/Authenticate.php": true,
 			"**/app/Http/Middleware/EncryptCookies.php": true,
@@ -52,7 +59,8 @@
 			"**/routes/console.php": true,
 			"**/routes/web.php": true,
 			"**/storage": true,
-			"**/tests": true
-		},
+			"**/tests": true,
+			"web-react-monetary": true
+		}
 	}
 }
