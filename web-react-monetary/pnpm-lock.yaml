@@ -19,6 +19,7 @@ specifiers:
   immer: ^9.0.16
   luxon: ^3.1.1
   react: ^18.2.0
+  react-chartjs-2: ^5.1.0
   react-dom: ^18.2.0
   react-icons: ^4.7.1
   react-redux: ^8.0.5
@@ -40,6 +41,7 @@ dependencies:
   immer: 9.0.16
   luxon: 3.1.1
   react: 18.2.0
+  react-chartjs-2: 5.1.0_dxa6kz4w32vmgoazz4fv7vwm2e
   react-dom: 18.2.0_react@18.2.0
   react-icons: 4.7.1_react@18.2.0
   react-redux: 8.0.5_ie75ejlwqy5zh3tldgt7pftwcu
@@ -2244,6 +2246,16 @@ packages:
 
   /proxy-from-env/1.1.0:
     resolution: {integrity: sha512-D+zkORCbA9f1tdWRK0RaCR3GPv50cMxcrz4X8k5LTSUD1Dkw47mKJEZQNunItRTkWwgtaUSo1RVFRIG9ZXiFYg==}
+    dev: false
+
+  /react-chartjs-2/5.1.0_dxa6kz4w32vmgoazz4fv7vwm2e:
+    resolution: {integrity: sha512-Gt76b7+p7nMQq0MvkWfUSNAzIm/TLAnAO32zIpSzrQyc9JWRbVCtq8qOzPJmfpDzPcIJ7Y9Gp5g+VdTRrGITsQ==}
+    peerDependencies:
+      chart.js: ^4.1.1
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+    dependencies:
+      chart.js: 4.1.1
+      react: 18.2.0
     dev: false
 
   /react-clientside-effect/1.2.6_react@18.2.0:

@@ -2,7 +2,7 @@ import api, { ApiResponse, optimistic, RequireToken, WithTimestamps } from "./ap
 
 export type TransactionType = "Incoming" | "Outgoing" | "Transfer"
 
-export type iTransaction<WT extends boolean = false, RT extends TransactionType = any> = {
+export type iTransaction<WT extends boolean = false, RT extends TransactionType = TransactionType> = {
 	id: string
 	user_id: string
 	category_id: string
@@ -19,6 +19,7 @@ export type iTransaction<WT extends boolean = false, RT extends TransactionType 
 	  }
 	: {
 			from_account_id: string
+			to_account_id: null
 	  }) &
 	WithTimestamps<WT>
 
