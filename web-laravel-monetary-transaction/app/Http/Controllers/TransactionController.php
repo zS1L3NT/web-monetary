@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Transaction;
+use Symfony\Component\Console\Output\ConsoleOutput;
 
 class TransactionController extends Controller
 {
@@ -37,12 +38,30 @@ class TransactionController extends Controller
             ->where('user_id', request('user_id'))
             ->orderByDesc('date');
 
-        if ($from_account_id = request('from_account_id')) {
-            $query->where('from_account_id', strtolower($from_account_id) === "null" ? null : $from_account_id);
+        if ($from_account_ids = request('from_account_ids')) {
+            $from_account_ids = explode(',', $from_account_ids);
+            if (in_array('null', $from_account_ids)) {
+                if (count($from_account_ids) === 1) {
+                    $query->whereNull('from_account_id');
+                } else {
+                    $query->whereIn('from_account_id', array_filter($from_account_ids, fn($a) => strtolower($a) !== "null"))->orWhereNull('from_account_id');
+                }
+            } else {
+                $query->whereIn('from_account_id', $from_account_ids);
+            }
         }
 
-        if ($to_account_id = request('to_account_id')) {
-            $query->where('to_account_id', strtolower($to_account_id) === "null" ? null : $to_account_id);
+        if ($to_account_ids = request('to_account_ids')) {
+            $to_account_ids = explode(',', $to_account_ids);
+            if (in_array('null', $to_account_ids)) {
+                if (count($to_account_ids) === 1) {
+                    $query->whereNull('to_account_id');
+                } else {
+                    $query->whereIn('to_account_id', array_filter($to_account_ids, fn($a) => strtolower($a) !== "null"))->orWhereNull('to_account_id');
+                }
+            } else {
+                $query->whereIn('to_account_id', $to_account_ids);
+            }
         }
 
         if ($category_ids = request('category_ids')) {
