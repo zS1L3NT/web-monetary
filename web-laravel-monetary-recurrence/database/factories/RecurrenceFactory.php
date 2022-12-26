@@ -29,7 +29,7 @@ class RecurrenceFactory extends Factory
             'to_account_id' => $type === 'Transfer' ? DB::table('accounts')->whereNot('id', $fromAccountId)->inRandomOrder()->first()->id : null,
             'type' => $type,
             'name' => $this->faker->word,
-            'amount' => $this->faker->randomFloat(2, 0, 100000),
+            'amount' => $this->faker->randomFloat(2, 0, 100),
             'description' => $this->faker->sentence,
             'automatic' => $this->faker->boolean,
             'period_start_date' => $this->faker->date(),
