@@ -17,11 +17,7 @@ class UserController extends Controller
                 'email' => 'required|email',
                 'password' => [
                     'required',
-                    'string',
-                    Password::min(8)
-                        ->mixedCase()
-                        ->numbers()
-                        ->symbols(),
+                    'string'
                 ]
             ]
         );
