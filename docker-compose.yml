@@ -6,6 +6,11 @@ services:
       target: base
     container_name: web-laravel-monetary-account
     image: web-laravel-monetary-account
+    volumes:
+      - ./web-laravel-monetary-account:/var/www/html
+      - ./web-laravel-monetary-account/apache.conf:/etc/apache/sites-enabled/000-default.conf
+    ports:
+      - 8001:80
     env_file:
       - .env
   web-laravel-monetary-authentication:
@@ -15,6 +20,11 @@ services:
       target: base
     container_name: web-laravel-monetary-authentication
     image: web-laravel-monetary-authentication
+    volumes:
+      - ./web-laravel-monetary-authentication:/var/www/html
+      - ./web-laravel-monetary-authentication/apache.conf:/etc/apache/sites-enabled/000-default.conf
+    ports:
+      - 8002:80
     env_file:
       - .env
   web-laravel-monetary-budget:
@@ -24,6 +34,11 @@ services:
       target: base
     container_name: web-laravel-monetary-budget
     image: web-laravel-monetary-budget
+    volumes:
+      - ./web-laravel-monetary-budget:/var/www/html
+      - ./web-laravel-monetary-budget/apache.conf:/etc/apache/sites-enabled/000-default.conf
+    ports:
+      - 8003:80
     env_file:
       - .env
   web-laravel-monetary-category:
@@ -33,6 +48,11 @@ services:
       target: base
     container_name: web-laravel-monetary-category
     image: web-laravel-monetary-category
+    volumes:
+      - ./web-laravel-monetary-category:/var/www/html
+      - ./web-laravel-monetary-category/apache.conf:/etc/apache/sites-enabled/000-default.conf
+    ports:
+      - 8004:80
     env_file:
       - .env
   web-laravel-monetary-debt:
@@ -42,6 +62,11 @@ services:
       target: base
     container_name: web-laravel-monetary-debt
     image: web-laravel-monetary-debt
+    volumes:
+      - ./web-laravel-monetary-debt:/var/www/html
+      - ./web-laravel-monetary-debt/apache.conf:/etc/apache/sites-enabled/000-default.conf
+    ports:
+      - 8005:80
     env_file:
       - .env
   web-laravel-monetary-recurrence:
@@ -51,6 +76,11 @@ services:
       target: base
     container_name: web-laravel-monetary-recurrence
     image: web-laravel-monetary-recurrence
+    volumes:
+      - ./web-laravel-monetary-recurrence:/var/www/html
+      - ./web-laravel-monetary-recurrence/apache.conf:/etc/apache/sites-enabled/000-default.conf
+    ports:
+      - 8006:80
     env_file:
       - .env
   web-laravel-monetary-transaction:
@@ -60,5 +90,10 @@ services:
       target: base
     container_name: web-laravel-monetary-transaction
     image: web-laravel-monetary-transaction
+    volumes:
+      - ./web-laravel-monetary-transaction:/var/www/html
+      - ./web-laravel-monetary-transaction/apache.conf:/etc/apache/sites-enabled/000-default.conf
+    ports:
+      - 8007:80
     env_file:
       - .env
