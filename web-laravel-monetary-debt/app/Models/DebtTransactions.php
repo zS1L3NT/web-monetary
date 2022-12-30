@@ -8,6 +8,10 @@ class DebtTransactions extends Model
 {
     public $timestamps = false;
 
+    public $primaryKey = null;
+
+    public $incrementing = false;
+
     protected $fillable = [
         'debt_id',
         'transaction_id',

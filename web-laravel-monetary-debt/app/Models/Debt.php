@@ -29,19 +29,17 @@ class Debt extends Model
 
     public function getTransactionIdsAttribute()
     {
-        return DebtTransactions::query()->where('debt_id', $this->id)->pluck('transaction_id');
+        return DebtTransactions::query()->where('debt_id', $this->id)->pluck('transaction_id')->toArray();
     }
 
     public function setTransactionIdsAttribute(array $transactionIds)
     {
-        if (isset($this->id)) {
-            DebtTransactions::query()->whereIn("transaction_id", $transactionIds)->delete();
-            foreach ($transactionIds as $transactionId) {
-                DebtTransactions::query()->create([
-                    'debt_id' => $this->id,
-                    'transaction_id' => $transactionId
-                ]);
-            }
+        DebtTransactions::query()->whereIn("transaction_id", $transactionIds)->delete();
+        foreach ($transactionIds as $transactionId) {
+            DebtTransactions::query()->create([
+                'debt_id' => $this->id,
+                'transaction_id' => $transactionId
+            ]);
         }
     }
 }

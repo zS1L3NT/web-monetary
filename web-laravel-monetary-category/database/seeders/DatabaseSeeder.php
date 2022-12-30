@@ -14,31 +14,17 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        Category::factory()->create([
-            'name' => 'Meals',
-            'category_ids' => [
-                Category::factory()->create([
-                    'name' => 'Breakfast',
-                ])->id,
-                Category::factory()->create([
-                    'name' => 'Lunch',
-                ])->id,
-                Category::factory()->create([
-                    'name' => 'Dinner',
-                ])->id,
-            ],
-        ]);
+        $meals_category = Category::factory()->create(['name' => 'Meals']);
+        $meals_category->category_ids = [
+            Category::factory()->create(['name' => 'Breakfast'])->id,
+            Category::factory()->create(['name' => 'Lunch'])->id,
+            Category::factory()->create(['name' => 'Dinner'])->id,
+        ];
 
-        Category::factory()->create([
-            'name' => 'Transport',
-            'category_ids' => [
-                Category::factory()->create([
-                    'name' => 'Concession',
-                ])->id,
-                Category::factory()->create([
-                    'name' => 'Grab',
-                ])->id,
-            ],
-        ]);
+        $transport_category = Category::factory()->create(['name' => 'Transport']);
+        $transport_category->category_ids = [
+            Category::factory()->create(['name' => 'Concession'])->id,
+            Category::factory()->create(['name' => 'Grab'])->id,
+        ];
     }
 }

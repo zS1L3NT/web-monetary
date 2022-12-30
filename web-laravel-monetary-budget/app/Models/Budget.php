@@ -28,38 +28,33 @@ class Budget extends Model
 
     public function getAccountIdsAttribute()
     {
-        return BudgetAccounts::query()->where("budget_id", $this->id)->pluck('account_id');
+        return BudgetAccounts::query()->where("budget_id", $this->id)->pluck('account_id')->toArray();
     }
 
     public function setAccountIdsAttribute(array $accountIds)
     {
-        if (isset($this->id)) {
-            BudgetAccounts::query()->whereIn("account_id", $accountIds)->delete();
-            foreach ($accountIds as $accountId) {
-                BudgetAccounts::query()->create([
-                    'budget_id' => $this->id,
-                    'account_id' => $accountId
-                ]);
-            }
+        BudgetAccounts::query()->whereIn("account_id", $accountIds)->delete();
+        foreach ($accountIds as $accountId) {
+            BudgetAccounts::query()->create([
+                'budget_id' => $this->id,
+                'account_id' => $accountId
+            ]);
         }
-
     }
 
     public function getCategoryIdsAttribute()
     {
-        return BudgetCategories::query()->where("budget_id", $this->id)->pluck('category_id');
+        return BudgetCategories::query()->where("budget_id", $this->id)->pluck('category_id')->toArray();
     }
 
     public function setCategoryIdsAttribute(array $categoryIds)
     {
-        if (isset($this->id)) {
-            BudgetCategories::query()->whereIn("category_id", $categoryIds)->delete();
-            foreach ($categoryIds as $categoryId) {
-                BudgetCategories::query()->create([
-                    'budget_id' => $this->id,
-                    'category_id' => $categoryId
-                ]);
-            }
+        BudgetCategories::query()->whereIn("category_id", $categoryIds)->delete();
+        foreach ($categoryIds as $categoryId) {
+            BudgetCategories::query()->create([
+                'budget_id' => $this->id,
+                'category_id' => $categoryId
+            ]);
         }
     }
 }

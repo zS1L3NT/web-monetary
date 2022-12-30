@@ -22,19 +22,17 @@ class Category extends Model
 
     public function getCategoryIdsAttribute()
     {
-        return NestedCategory::query()->where('parent_category_id', $this->id)->pluck('child_category_id');
+        return NestedCategory::query()->where('parent_category_id', $this->id)->pluck('child_category_id')->toArray();
     }
 
     public function setCategoryIdsAttribute(array $categoryIds)
     {
-        if (isset($this->id)) {
-            NestedCategory::query()->where('parent_category_id', $this->id)->delete();
-            foreach ($categoryIds as $categoryId) {
-                NestedCategory::query()->create([
-                    'parent_category_id' => $this->id,
-                    'child_category_id' => $categoryId,
-                ]);
-            }
+        NestedCategory::query()->where('parent_category_id', $this->id)->delete();
+        foreach ($categoryIds as $categoryId) { 
+            NestedCategory::query()->create([
+                'parent_category_id' => $this->id,
+                'child_category_id' => $categoryId,
+            ]);
         }
     }
 }
