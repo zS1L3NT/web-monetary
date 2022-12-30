@@ -18,13 +18,17 @@ const App = () => {
 
 	return (
 		<Flex
-			w="full"
-			h="full"
-			direction="column">
+			sx={{
+				w: "full",
+				h: "full",
+				flexDirection: "column"
+			}}>
 			<Navigator />
 			<Flex
-				flex={1}
-				overflowY="scroll">
+				sx={{
+					flex: 1,
+					overflowY: "scroll"
+				}}>
 				<Routes>
 					<Route
 						path="/"

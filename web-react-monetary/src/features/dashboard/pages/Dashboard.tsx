@@ -12,19 +12,23 @@ const Dashboard = ({}: {}) => {
 		<AccountsProvider>
 			<TransactionsProvider>
 				<Container
-					maxW={{
-						base: "full",
-						md: "41rem",
-						lg: "62rem",
-						"2xl": "83rem"
+					sx={{
+						maxW: {
+							base: "full",
+							md: "41rem",
+							lg: "62rem",
+							"2xl": "83rem"
+						}
 					}}>
 					<AccountSections />
 					<Divider />
 					<Flex
-						justifyContent="space-evenly"
-						direction={{
-							base: "column",
-							lg: "row"
+						sx={{
+							justifyContent: "space-evenly",
+							direction: {
+								base: "column",
+								lg: "row"
+							}
 						}}>
 						<LineGraphCard />
 						<PieChartCard />

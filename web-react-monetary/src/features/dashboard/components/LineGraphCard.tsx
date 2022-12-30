@@ -38,11 +38,22 @@ const LineGraphCard = ({}: {}) => {
 
 	return (
 		<Card
-			w={{ base: "95%", lg: "47.5%" }}
-			height="min"
-			m={4}
-			mr={{ base: 4, lg: 2 }}
-			mb={{ base: 2, lg: 4 }}>
+			sx={{
+				w: {
+					base: "95%",
+					lg: "47.5%"
+				},
+				height: "min",
+				m: 4,
+				mr: {
+					base: 4,
+					lg: 2
+				},
+				mb: {
+					base: 2,
+					lg: 4
+				}
+			}}>
 			<CardHeader>
 				<Heading size="md">Spending Trends</Heading>
 			</CardHeader>

@@ -37,11 +37,22 @@ const PieChartCard = ({}: {}) => {
 
 	return (
 		<Card
-			w={{ base: "95%", lg: "47.5%" }}
-			height="min"
-			m={4}
-			ml={{ base: 4, lg: 2 }}
-			mt={{ base: 2, lg: 4 }}>
+			sx={{
+				w: {
+					base: "95%",
+					lg: "47.5%"
+				},
+				height: "min",
+				m: 4,
+				mr: {
+					base: 4,
+					lg: 2
+				},
+				mb: {
+					base: 2,
+					lg: 4
+				}
+			}}>
 			<CardHeader>
 				<Heading size="md">Monthly Spendings by Categories</Heading>
 			</CardHeader>

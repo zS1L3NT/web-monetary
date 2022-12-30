@@ -11,21 +11,25 @@ const AccountSections = ({}: {}) => {
 
 	return (
 		<Box
-			px={4}
-			py={8}>
+			sx={{
+				px: 4,
+				py: 8
+			}}>
 			{accounts ? (
 				<Grid
-					templateColumns={{
-						base: "repeat(2, 1fr)",
-						md: "repeat(3, 1fr)",
-						lg: "repeat(4, 1fr)",
-						xl: "repeat(5, 1fr)"
-					}}
-					gap={{
-						base: 3,
-						sm: 4,
-						lg: 5,
-						xl: 6
+					sx={{
+						gridTemplateColumns: {
+							base: "repeat(2, 1fr)",
+							md: "repeat(3, 1fr)",
+							lg: "repeat(4, 1fr)",
+							xl: "repeat(5, 1fr)"
+						},
+						gridGap: {
+							base: 3,
+							sm: 4,
+							lg: 5,
+							xl: 6
+						}
 					}}>
 					{[...accounts, null].map(account =>
 						account ? (
