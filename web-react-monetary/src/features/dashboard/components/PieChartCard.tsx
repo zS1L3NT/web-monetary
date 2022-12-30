@@ -2,7 +2,7 @@ import { DateTime } from "luxon"
 import { useContext } from "react"
 import { Pie } from "react-chartjs-2"
 
-import { Card, CardBody } from "@chakra-ui/react"
+import { Card, CardBody, CardHeader, Heading } from "@chakra-ui/react"
 
 import { iCategory, useGetCategoriesQuery } from "../../../api/categories"
 import { iTransaction } from "../../../api/transaction"
@@ -27,8 +27,6 @@ const PieChartCard = ({}: {}) => {
 		)
 	}
 
-	const getCategoryData = (category: iCategory) => {}
-
 	const transactionsForMonth = transactions
 		?.filter(
 			t =>
@@ -39,14 +37,18 @@ const PieChartCard = ({}: {}) => {
 
 	return (
 		<Card
-			w="47.5%"
+			w={{ base: "95%", lg: "47.5%" }}
 			height="min"
-			m={2}
-			ml={{ base: 2, lg: 1 }}
-			mt={{ base: 1, lg: 2 }}>
+			m={4}
+			ml={{ base: 4, lg: 2 }}
+			mt={{ base: 2, lg: 4 }}>
+			<CardHeader>
+				<Heading size="md">Monthly Spendings by Categories</Heading>
+			</CardHeader>
 			<CardBody>
 				{categories && transactionsForMonth ? (
 					<Pie
+						options={{ aspectRatio: 1.5 }}
 						data={{
 							labels: categories
 								.filter(c => c.category_ids.length !== 0)

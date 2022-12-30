@@ -2,7 +2,7 @@ import { DateTime } from "luxon"
 import { useContext } from "react"
 import { Line } from "react-chartjs-2"
 
-import { Card, CardBody } from "@chakra-ui/react"
+import { Card, CardBody, CardHeader, Heading } from "@chakra-ui/react"
 
 import { iAccount } from "../../../api/accounts"
 import AccountsContext from "../contexts/AccountsContext"
@@ -38,14 +38,18 @@ const LineGraphCard = ({}: {}) => {
 
 	return (
 		<Card
-			w="47.5%"
+			w={{ base: "95%", lg: "47.5%" }}
 			height="min"
-			m={2}
-			mr={{ base: 2, lg: 1 }}
-			mb={{ base: 1, lg: 2 }}>
+			m={4}
+			mr={{ base: 4, lg: 2 }}
+			mb={{ base: 2, lg: 4 }}>
+			<CardHeader>
+				<Heading size="md">Spending Trends</Heading>
+			</CardHeader>
 			<CardBody>
 				{selectedAccounts && transactions ? (
 					<Line
+						height={300}
 						options={{
 							aspectRatio: 1.5,
 							responsive: true,
