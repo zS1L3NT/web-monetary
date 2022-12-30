@@ -3,62 +3,69 @@ services:
     build: 
       context: web-laravel-monetary-account
       dockerfile: ../Dockerfile
-      target: base
     container_name: web-laravel-monetary-account
     image: web-laravel-monetary-account
+    ports:
+      - 8001:80
     env_file:
       - .env
   web-laravel-monetary-authentication:
     build: 
       context: web-laravel-monetary-authentication
       dockerfile: ../Dockerfile
-      target: base
     container_name: web-laravel-monetary-authentication
     image: web-laravel-monetary-authentication
+    ports:
+      - 8002:80
     env_file:
       - .env
   web-laravel-monetary-budget:
     build: 
       context: web-laravel-monetary-budget
       dockerfile: ../Dockerfile
-      target: base
     container_name: web-laravel-monetary-budget
     image: web-laravel-monetary-budget
+    ports:
+      - 8003:80
     env_file:
       - .env
   web-laravel-monetary-category:
     build: 
       context: web-laravel-monetary-category
       dockerfile: ../Dockerfile
-      target: base
     container_name: web-laravel-monetary-category
     image: web-laravel-monetary-category
+    ports:
+      - 8004:80
     env_file:
       - .env
   web-laravel-monetary-debt:
     build: 
       context: web-laravel-monetary-debt
       dockerfile: ../Dockerfile
-      target: base
     container_name: web-laravel-monetary-debt
     image: web-laravel-monetary-debt
+    ports:
+      - 8005:80
     env_file:
       - .env
   web-laravel-monetary-recurrence:
     build: 
       context: web-laravel-monetary-recurrence
       dockerfile: ../Dockerfile
-      target: base
     container_name: web-laravel-monetary-recurrence
     image: web-laravel-monetary-recurrence
+    ports:
+      - 8006:80
     env_file:
       - .env
   web-laravel-monetary-transaction:
     build: 
       context: web-laravel-monetary-transaction
       dockerfile: ../Dockerfile
-      target: base
     container_name: web-laravel-monetary-transaction
     image: web-laravel-monetary-transaction
+    ports:
+      - 8007:80
     env_file:
       - .env

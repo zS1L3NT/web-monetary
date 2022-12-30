@@ -1,4 +1,4 @@
-FROM php:8.1-apache as base
+FROM php:8.1-apache
 
 WORKDIR /var/www/html
 
@@ -7,10 +7,11 @@ RUN apt-get install -y g++ libicu-dev libpq-dev libzip-dev zip zlib1g-dev
 RUN docker-php-ext-install intl opcache pdo pdo_pgsql pgsql
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-FROM base as prod
 COPY . .
 COPY apache.conf /etc/apache2/sites-enabled/000-default.conf
+
 RUN composer install --no-dev
+
 RUN chown -R $USER:www-data storage
 RUN chown -R $USER:www-data bootstrap/cache
 RUN chmod -R 775 storage
