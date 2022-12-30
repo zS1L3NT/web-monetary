@@ -7,11 +7,13 @@ import useToastError from "../../../hooks/useToastError"
 const AccountsContext = createContext<{
 	accounts: iAccount[] | undefined
 	selectedAccounts: iAccount[] | undefined
+	selectOnlyAccount: (account: iAccount) => void
 	selectAccount: (account: iAccount) => void
 	deselectAccount: (account: iAccount) => void
 }>({
 	accounts: undefined,
 	selectedAccounts: undefined,
+	selectOnlyAccount: () => {},
 	selectAccount: () => {},
 	deselectAccount: () => {}
 })
@@ -36,6 +38,9 @@ export const AccountsProvider = ({ children }: PropsWithChildren<{}>) => {
 			value={{
 				accounts,
 				selectedAccounts: accounts?.filter(a => selectedAccountIds?.includes(a.id)),
+				selectOnlyAccount: account => {
+					setSelectedAccountIds([account.id])
+				},
 				selectAccount: account => {
 					setSelectedAccountIds([...(selectedAccountIds ?? []), account.id])
 				},
