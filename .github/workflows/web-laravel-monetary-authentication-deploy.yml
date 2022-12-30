@@ -7,6 +7,7 @@ on:
     paths:
       - web-laravel-monetary-authentication/**
       - .github/workflows/web-laravel-monetary-authentication-deploy.yml
+      - docker-compose.prod.yml
       - docker-compose.yml
       - Dockerfile
 
@@ -32,4 +33,4 @@ jobs:
             echo DB_PASSWORD="${{ secrets.DB_PASSWORD }}" >> .env
             echo JWT_SECRET="${{ secrets.JWT_SECRET }}" >> .env
             git pull origin main
-            docker-compose up -d --build web-laravel-monetary-authentication
+            docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d --build web-laravel-monetary-authentication

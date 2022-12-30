@@ -1,0 +1,36 @@
+services:
+  web-laravel-monetary-account:
+    build:
+      target: prod
+    ports:
+      - 80:80
+  web-laravel-monetary-authentication:
+    build:
+      target: prod
+    ports:
+      - 80:80
+  web-laravel-monetary-budget:
+    build:
+      target: prod
+    ports:
+      - 80:80
+  web-laravel-monetary-category:
+    build:
+      target: prod
+    ports:
+      - 80:80
+  web-laravel-monetary-debt:
+    build:
+      target: prod
+    ports:
+      - 80:80
+  web-laravel-monetary-recurrence:
+    build:
+      target: prod
+    ports:
+      - 80:80
+  web-laravel-monetary-transaction:
+    build:
+      target: prod
+    ports:
+      - 80:80
