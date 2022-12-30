@@ -1,9 +1,8 @@
-import { Container, Divider, Flex } from "@chakra-ui/react"
+import { Container, Divider, Grid, GridItem } from "@chakra-ui/react"
 
 import AccountSections from "../components/AccountsSection"
 import LineGraphCard from "../components/LineGraphCard"
 import PieChartCard from "../components/PieChartCard"
-import Transactions from "../components/Transactions"
 import { AccountsProvider } from "../contexts/AccountsContext"
 import { TransactionsProvider } from "../contexts/TransactionsContext"
 
@@ -22,18 +21,18 @@ const Dashboard = ({}: {}) => {
 					}}>
 					<AccountSections />
 					<Divider />
-					<Flex
-						sx={{
-							justifyContent: "space-evenly",
-							direction: {
-								base: "column",
-								lg: "row"
-							}
-						}}>
-						<LineGraphCard />
-						<PieChartCard />
-					</Flex>
-					<Transactions />
+					<Grid
+						sx={{ p: 4 }}
+						templateRows={{ base: "repeat(2, 1fr)", lg: "1fr" }}
+						templateColumns={{ base: "1fr", lg: "repeat(2, 1fr)" }}
+						gap={4}>
+						<GridItem>
+							<LineGraphCard />
+						</GridItem>
+						<GridItem>
+							<PieChartCard />
+						</GridItem>
+					</Grid>
 				</Container>
 			</TransactionsProvider>
 		</AccountsProvider>

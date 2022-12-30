@@ -7,11 +7,9 @@ export type iTransaction<WT extends boolean = false, RT extends TransactionType 
 	user_id: string
 	category_id: string
 	type: RT
-	name: string
 	amount: number
 	description: string
 	date: string
-	transaction_ids: string[]
 } & (RT extends "Transfer"
 	? {
 			from_account_id: string | null

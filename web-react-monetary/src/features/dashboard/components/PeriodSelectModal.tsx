@@ -43,65 +43,35 @@ const PeriodSelectModal = ({
 					</Button>
 					<ButtonGroup
 						sx={{ mt: 3 }}
-						isAttached>
-						<Button
-							sx={{
-								bg: period === Period.Past7Days ? "primary" : "",
-								"&:hover": { bg: period === Period.Past7Days ? "primary" : "" }
-							}}
-							variant="outline"
-							onClick={() => setPeriod(Period.Past7Days)}>
-							Past 7 Days
-						</Button>
-						<Button
-							sx={{
-								bg: period === Period.Past30Days ? "primary" : "",
-								"&:hover": { bg: period === Period.Past30Days ? "primary" : "" }
-							}}
-							variant="outline"
-							onClick={() => setPeriod(Period.Past30Days)}>
-							Past 30 Days
-						</Button>
-						<Button
-							sx={{
-								bg: period === Period.Past365Days ? "primary" : "",
-								"&:hover": { bg: period === Period.Past365Days ? "primary" : "" }
-							}}
-							variant="outline"
-							onClick={() => setPeriod(Period.Past365Days)}>
-							Past 365 Days
-						</Button>
+						isAttached
+						variant="outline">
+						{[Period.Past7Days, Period.Past30Days, Period.Past365Days].map(p => (
+							<Button
+								key={p}
+								sx={{
+									bg: p === period ? "primary" : "",
+									"&:hover": { bg: p === period ? "primary" : "" }
+								}}
+								onClick={() => setPeriod(p)}>
+								{p}
+							</Button>
+						))}
 					</ButtonGroup>
 					<ButtonGroup
 						sx={{ mt: 3 }}
-						isAttached>
-						<Button
-							sx={{
-								bg: period === Period.ThisWeek ? "primary" : "",
-								"&:hover": { bg: period === Period.ThisWeek ? "primary" : "" }
-							}}
-							variant="outline"
-							onClick={() => setPeriod(Period.ThisWeek)}>
-							This Week
-						</Button>
-						<Button
-							sx={{
-								bg: period === Period.ThisMonth ? "primary" : "",
-								"&:hover": { bg: period === Period.ThisMonth ? "primary" : "" }
-							}}
-							variant="outline"
-							onClick={() => setPeriod(Period.ThisMonth)}>
-							This Month
-						</Button>
-						<Button
-							sx={{
-								bg: period === Period.ThisYear ? "primary" : "",
-								"&:hover": { bg: period === Period.ThisYear ? "primary" : "" }
-							}}
-							variant="outline"
-							onClick={() => setPeriod(Period.ThisYear)}>
-							This Year
-						</Button>
+						isAttached
+						variant="outline">
+						{[Period.ThisWeek, Period.ThisMonth, Period.ThisYear].map(p => (
+							<Button
+								key={p}
+								sx={{
+									bg: p === period ? "primary" : "",
+									"&:hover": { bg: p === period ? "primary" : "" }
+								}}
+								onClick={() => setPeriod(p)}>
+								{p}
+							</Button>
+						))}
 					</ButtonGroup>
 				</ModalBody>
 				<ModalFooter>

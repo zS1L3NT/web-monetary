@@ -49,23 +49,7 @@ const PieChartCard = ({}: {}) => {
 
 	return (
 		<>
-			<Card
-				sx={{
-					w: {
-						base: "95%",
-						lg: "47.5%"
-					},
-					height: "min",
-					m: 4,
-					ml: {
-						base: 4,
-						lg: 2
-					},
-					mb: {
-						base: 2,
-						lg: 4
-					}
-				}}>
+			<Card>
 				<CardHeader>
 					<Flex>
 						<Box sx={{ flex: 1 }}>
