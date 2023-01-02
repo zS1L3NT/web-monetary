@@ -36,7 +36,7 @@ const LineGraphCard = ({}: {}) => {
 
 		const data: number[] = [balance]
 
-		for (let i = getPeriodDays(period); i > 0; i--) {
+		for (let i = getPeriodDays(period) - 1; i >= 0; i--) {
 			const date = DateTime.now().minus({ days: i })
 			balance += transactions!
 				.filter(t => t.from_account_id === account.id || t.to_account_id === account.id)
