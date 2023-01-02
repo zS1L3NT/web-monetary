@@ -1,13 +1,14 @@
 import { useContext } from "react"
 import { useNavigate } from "react-router-dom"
 
-import { HamburgerIcon, MoonIcon, SunIcon } from "@chakra-ui/icons"
+import { AddIcon, HamburgerIcon, MoonIcon, SunIcon } from "@chakra-ui/icons"
 import {
 	Button, Divider, Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerHeader,
 	DrawerOverlay, Flex, IconButton, Text, Tooltip, useColorMode, useColorModeValue, useDisclosure
 } from "@chakra-ui/react"
 
 import AuthContext from "../contexts/AuthContext"
+import AddTransactionModal from "./AddTransactionModal"
 
 interface iNavItem {
 	title: string
@@ -20,7 +21,12 @@ const Navigator = () => {
 	const { toggleColorMode } = useColorMode()
 	const navigate = useNavigate()
 
-	const { isOpen, onToggle, onClose } = useDisclosure()
+	const {
+		isOpen: isDrawerOpen,
+		onToggle: onDrawerToggle,
+		onClose: onDrawerClose
+	} = useDisclosure()
+	const { isOpen: isTransactionModalOpen, onOpen: onTransactionModalOpen, onClose: onTransactionModalClose } = useDisclosure()
 
 	const items: iNavItem[] = [
 		{
@@ -71,86 +77,102 @@ const Navigator = () => {
 	]
 
 	return (
-		<Flex
-			h="60px"
-			w="full"
-			bg="card"
-			p={2}
-			shadow="lg"
-			zIndex={10}
-			align="center">
-			<IconButton
-				aria-label="Open Drawer"
-				variant="ghost"
-				onClick={onToggle}
-				icon={
-					<HamburgerIcon
-						w={5}
-						h={5}
-					/>
-				}
-			/>
-			<Text
-				fontFamily="heading"
-				fontWeight="medium"
-				fontSize="xl"
-				ml={2}
-				_hover={{ cursor: "pointer" }}
-				onClick={() => navigate("/")}>
-				Monetary
-			</Text>
-
-			<Tooltip label="Toggle Color Scheme">
+		<>
+			<Flex
+				h="60px"
+				w="full"
+				bg="card"
+				p={2}
+				shadow="lg"
+				zIndex={10}
+				align="center">
 				<IconButton
-					aria-label="Toggle Color Scheme"
+					aria-label="Open Drawer"
 					variant="ghost"
-					ml="auto"
-					icon={useColorModeValue(<SunIcon />, <MoonIcon />)}
-					onClick={toggleColorMode}
+					onClick={onDrawerToggle}
+					icon={
+						<HamburgerIcon
+							w={5}
+							h={5}
+						/>
+					}
 				/>
-			</Tooltip>
+				<Text
+					fontFamily="heading"
+					fontWeight="medium"
+					fontSize="xl"
+					ml={2}
+					_hover={{ cursor: "pointer" }}
+					onClick={() => navigate("/")}>
+					Monetary
+				</Text>
 
-			<Drawer
-				size={{ base: "full", md: "sm" }}
-				placement="left"
-				onClose={onClose}
-				isOpen={isOpen}>
-				<DrawerOverlay />
-				<DrawerContent>
-					<DrawerHeader
-						_hover={{ cursor: "pointer" }}
-						onClick={() => {
-							navigate("/")
-							onClose()
-						}}>
-						Monetary
-					</DrawerHeader>
-					<DrawerBody>
-						<Divider mt={-2} />
-						{items.map(item =>
-							item.render ? (
-								<Button
-									key={item.navigate}
-									w="full"
-									display="flex"
-									justifyContent="start"
-									mt={3}
-									onClick={() => {
-										navigate(item.navigate)
-										onClose()
-									}}>
-									{item.title}
-								</Button>
-							) : null
-						)}
-					</DrawerBody>
-					<DrawerCloseButton
-						mt={2}
-						mr={3}
+				<Tooltip label="Add Transaction">
+					<IconButton
+						aria-label="Add Transaction"
+						variant="ghost"
+						ml="auto"
+						icon={<AddIcon />}
+						onClick={onTransactionModalOpen}
 					/>
-				</DrawerContent>
-			</Drawer>
-		</Flex>
+				</Tooltip>
+
+				<Tooltip label="Toggle Color Scheme">
+					<IconButton
+						aria-label="Toggle Color Scheme"
+						variant="ghost"
+						ml={3}
+						icon={useColorModeValue(<SunIcon />, <MoonIcon />)}
+						onClick={toggleColorMode}
+					/>
+				</Tooltip>
+
+				<Drawer
+					size={{ base: "full", md: "sm" }}
+					placement="left"
+					onClose={onDrawerClose}
+					isOpen={isDrawerOpen}>
+					<DrawerOverlay />
+					<DrawerContent>
+						<DrawerHeader
+							_hover={{ cursor: "pointer" }}
+							onClick={() => {
+								navigate("/")
+								onDrawerClose()
+							}}>
+							Monetary
+						</DrawerHeader>
+						<DrawerBody>
+							<Divider mt={-2} />
+							{items.map(item =>
+								item.render ? (
+									<Button
+										key={item.navigate}
+										w="full"
+										display="flex"
+										justifyContent="start"
+										mt={3}
+										onClick={() => {
+											navigate(item.navigate)
+											onDrawerClose()
+										}}>
+										{item.title}
+									</Button>
+								) : null
+							)}
+						</DrawerBody>
+						<DrawerCloseButton
+							mt={2}
+							mr={3}
+						/>
+					</DrawerContent>
+				</Drawer>
+				<AddTransactionModal
+					isOpen={isTransactionModalOpen}
+					onClose={onTransactionModalClose}
+				/>
+			</Flex>
+		</>
 	)
 }
 

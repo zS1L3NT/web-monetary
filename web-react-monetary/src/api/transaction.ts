@@ -12,12 +12,12 @@ export type iTransaction<WT extends boolean = false, RT extends TransactionType 
 	date: string
 } & (RT extends "Transfer"
 	? {
-			from_account_id: string | null
-			to_account_id: string | null
+			from_account_id: string
+			to_account_id: string
 	  }
 	: {
 			from_account_id: string
-			to_account_id: null
+			to_account_id: undefined
 	  }) &
 	WithTimestamps<WT>
 

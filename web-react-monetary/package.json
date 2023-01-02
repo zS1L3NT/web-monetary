@@ -14,6 +14,7 @@
 		"@reduxjs/toolkit": "^1.9.1",
 		"axios": "^1.2.1",
 		"chart.js": "^4.1.1",
+		"formik": "^2.2.9",
 		"framer-motion": "^8.0.2",
 		"immer": "^9.0.16",
 		"luxon": "^3.1.1",
@@ -23,6 +24,7 @@
 		"react-icons": "^4.7.1",
 		"react-redux": "^8.0.5",
 		"react-router-dom": "^6.6.1",
+		"react-select": "^5.7.0",
 		"use-immer": "^0.8.1",
 		"zod": "^3.20.2"
 	},
