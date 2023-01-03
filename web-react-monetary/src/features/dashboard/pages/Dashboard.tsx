@@ -10,15 +10,7 @@ const Dashboard = ({}: {}) => {
 	return (
 		<AccountsProvider>
 			<TransactionsProvider>
-				<Container
-					sx={{
-						maxW: {
-							base: "full",
-							md: "41rem",
-							lg: "62rem",
-							"2xl": "83rem"
-						}
-					}}>
+				<Container variant="page">
 					<AccountSections />
 					<Divider />
 					<Grid
