@@ -15,7 +15,7 @@ export const TransactionsProvider = ({ children }: PropsWithChildren<{}>) => {
 
 	const { data: transactions, error: transactionError } = useGetTransactionsQuery({ token })
 
-	useToastError(transactionError)
+	useToastError(transactionError, true)
 
 	return <TransactionsContext.Provider value={{ transactions }}>{children}</TransactionsContext.Provider>
 }

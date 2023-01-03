@@ -1,9 +1,7 @@
-import { useEffect } from "react"
-
 import { ArrowForwardIcon } from "@chakra-ui/icons"
 import { Box, Card, CardBody, Flex, Skeleton, Tag, Text } from "@chakra-ui/react"
 
-import { useLazyGetAccountQuery } from "../../../api/accounts"
+import { useGetAccountQuery } from "../../../api/accounts"
 import { useGetCategoryQuery } from "../../../api/categories"
 import { iTransaction } from "../../../api/transaction"
 import useOnlyAuthenticated from "../../../hooks/useOnlyAuthenticated"
@@ -21,25 +19,23 @@ const TransactionItem = ({ transaction }: { transaction: iTransaction }) => {
 		token,
 		category_id: transaction.category_id
 	})
-	const [
-		getFromAccount,
-		{ data: fromAccount, error: fromAccountError, isLoading: fromAccountLoading }
-	] = useLazyGetAccountQuery()
-	const [getToAccount, { data: toAccount, error: toAccountError, isLoading: toAccountLoading }] =
-		useLazyGetAccountQuery()
+	const {
+		data: fromAccount,
+		error: fromAccountError,
+		isLoading: fromAccountLoading
+	} = useGetAccountQuery({ token, account_id: transaction.from_account_id })
+	const {
+		data: toAccount,
+		error: toAccountError,
+		isLoading: toAccountLoading
+	} = useGetAccountQuery(
+		{ token, account_id: transaction.to_account_id ?? "" },
+		{ skip: !transaction.to_account_id }
+	)
 
 	useToastError(categoryError, true)
 	useToastError(fromAccountError, true)
 	useToastError(toAccountError, true)
-
-	useEffect(() => {
-		if (transaction.from_account_id) {
-			getFromAccount({ token, account_id: transaction.from_account_id })
-		}
-		if (transaction.to_account_id) {
-			getToAccount({ token, account_id: transaction.to_account_id })
-		}
-	}, [token, transaction])
 
 	const isDeduction =
 		transaction.type === "Outgoing" ||

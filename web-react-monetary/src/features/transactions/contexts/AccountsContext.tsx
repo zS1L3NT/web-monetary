@@ -15,7 +15,7 @@ export const AccountsProvider = ({ children }: PropsWithChildren<{}>) => {
 
 	const { data: accounts, error: accountsError } = useGetAccountsQuery({ token })
 
-	useToastError(accountsError)
+	useToastError(accountsError, true)
 
 	return <AccountsContext.Provider value={{ accounts }}>{children}</AccountsContext.Provider>
 }
