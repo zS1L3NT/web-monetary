@@ -19,7 +19,7 @@ class Debt extends Model
     ];
 
     protected $casts = [
-        'amount' => 'integer',
+        'amount' => 'double',
         'active' => 'boolean',
     ];
 

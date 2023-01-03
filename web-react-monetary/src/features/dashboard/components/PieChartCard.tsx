@@ -15,6 +15,7 @@ import { getPeriodDays, Period } from "../../../utils/periodUtils"
 import AccountsContext from "../contexts/AccountsContext"
 import TransactionsContext from "../contexts/TransactionsContext"
 import PeriodSelectModal from "./PeriodSelectModal"
+import { mapTransactionsAmount } from "../../../utils/dataUtils"
 
 const PieChartCard = ({}: {}) => {
 	const { token } = useOnlyAuthenticated()
@@ -42,10 +43,10 @@ const PieChartCard = ({}: {}) => {
 	const transactionsForPeriod = transactions
 		?.filter(
 			t =>
-				(selectedAccounts ?? []).find(sa => sa.id === t.from_account_id) ||
-				(selectedAccounts ?? []).find(sa => sa.id === t.to_account_id)
+				(selectedAccounts ?? []).find(a => a.id === t.from_account_id || a.id === t.to_account_id)
 		)
 		.filter(t => DateTime.fromISO(t.date).diffNow("days").days > -getPeriodDays(period))
+		.filter(t => t.type === "Outgoing" || (t.type === "Transfer" && selectedAccounts!.find(a => a.id === t.from_account_id)))
 
 	return (
 		<>

@@ -18,7 +18,7 @@ class Budget extends Model
     ];
 
     protected $casts = [
-        'amount' => 'integer',
+        'amount' => 'double',
     ];
 
     protected $appends = [

@@ -9,6 +9,8 @@ import {
 } from "@chakra-ui/react"
 
 import { iAccount } from "../../../api/accounts"
+import { iTransaction } from "../../../api/transaction"
+import { mapTransactionsAmount } from "../../../utils/dataUtils"
 import { getPeriodDays, getPeriodIntervals, Period } from "../../../utils/periodUtils"
 import AccountsContext from "../contexts/AccountsContext"
 import TransactionsContext from "../contexts/TransactionsContext"
@@ -26,22 +28,28 @@ const LineGraphCard = ({}: {}) => {
 	const [period, setPeriod] = useState<Period>(Period.ThisMonth)
 
 	const getAccountData = (account: iAccount): number[] => {
+		const periodDays = getPeriodDays(period)
+		const dayDifference = (t: iTransaction) =>
+			Math.round(
+				DateTime.fromISO(t.date).startOf("day").diff(DateTime.now().startOf("day"), "days")
+					.days
+			)
+
 		let balance =
 			account.initial_balance +
-			transactions!
+			(transactions ?? [])
 				.filter(t => t.from_account_id === account.id || t.to_account_id === account.id)
-				.filter(t => DateTime.fromISO(t.date).diffNow("days").days < -getPeriodDays(period))
-				.map(t => (t.from_account_id === account.id ? -t.amount : t.amount))
+				.filter(t => dayDifference(t) <= -periodDays)
+				.map(mapTransactionsAmount(account))
 				.reduce((a, b) => a + b, 0)
 
 		const data: number[] = [balance]
 
-		for (let i = getPeriodDays(period) - 1; i >= 0; i--) {
-			const date = DateTime.now().minus({ days: i })
-			balance += transactions!
+		for (let i = periodDays - 1; i >= 0; i--) {
+			balance += (transactions ?? [])
 				.filter(t => t.from_account_id === account.id || t.to_account_id === account.id)
-				.filter(t => Math.round(DateTime.fromISO(t.date).diff(date, "days").days) === 0)
-				.map(t => (t.from_account_id === account.id ? -t.amount : t.amount))
+				.filter(t => dayDifference(t) === -i)
+				.map(mapTransactionsAmount(account))
 				.reduce((a, b) => a + b, 0)
 			data.push(balance)
 		}
@@ -71,7 +79,7 @@ const LineGraphCard = ({}: {}) => {
 				<CardHeader>
 					<Flex>
 						<Box sx={{ flex: 1 }}>
-							<Heading size="md">Spending Trend</Heading>
+							<Heading size="md">Balance Trend</Heading>
 							<Text>{period}</Text>
 						</Box>
 						<IconButton

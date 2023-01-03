@@ -31,7 +31,7 @@ class Recurrence extends Model
     ];
 
     protected $casts = [
-        'amount' => 'integer',
+        'amount' => 'double',
         'automatic' => 'boolean',
         'period_start_date' => 'date',
         'period_week_days' => 'array',

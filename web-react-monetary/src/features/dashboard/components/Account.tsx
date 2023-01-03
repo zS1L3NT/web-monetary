@@ -81,7 +81,7 @@ const Account = ({ account }: { account: iAccount }) => {
 							color: textColor,
 							fontWeight: "bold"
 						}}>
-						${account.initial_balance}
+						${account.balance}
 					</Text>
 				</Box>
 			</Flex>

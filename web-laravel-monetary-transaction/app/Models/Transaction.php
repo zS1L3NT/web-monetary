@@ -22,7 +22,7 @@ class Transaction extends Model
     ];
 
     protected $casts = [
-        'amount' => 'integer',
+        'amount' => 'double',
         'date' => 'date',
     ];
 

@@ -19,7 +19,7 @@ class Account extends Model
     ];
 
     protected $casts = [
-        'initial_balance' => 'integer',
+        'initial_balance' => 'double',
     ];
 
     protected $appends = [
@@ -28,16 +28,30 @@ class Account extends Model
 
     public function getBalanceAttribute()
     {
-        return $this->initial_balance + array_sum(array_map(fn($transaction) => $transaction->amount, [
-            ...DB::table('transactions')
-                ->where('user_id', request('user_id'))
-                ->where('from_account_id', $this->id)
-                ->get(),
-            ...DB::table('transactions')
-                ->where('user_id', request('user_id'))
-                ->where('type', 'Transfer')
-                ->where('to_account_id', $this->id)
-                ->get()
-        ]));
+        return round($this->initial_balance
+            + array_sum([
+                ...DB::table('transactions')
+                    ->where('user_id', request('user_id'))
+                    ->where('type', 'Incoming')
+                    ->where('from_account_id', $this->id)
+                    ->pluck('amount'),
+                ...DB::table('transactions')
+                    ->where('user_id', request('user_id'))
+                    ->where('type', 'Transfer')
+                    ->where('to_account_id', $this->id)
+                    ->pluck('amount')
+            ])
+            - array_sum([
+                ...DB::table('transactions')
+                    ->where('user_id', request('user_id'))
+                    ->where('type', 'Outgoing')
+                    ->where('from_account_id', $this->id)
+                    ->pluck('amount'),
+                ...DB::table('transactions')
+                    ->where('user_id', request('user_id'))
+                    ->where('type', 'Transfer')
+                    ->where('from_account_id', $this->id)
+                    ->pluck('amount')
+            ]), 2);
     }
 }

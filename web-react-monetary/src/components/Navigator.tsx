@@ -50,6 +50,11 @@ const Navigator = () => {
 			render: !!token
 		},
 		{
+			title: "Transactions",
+			navigate: "/transactions",
+			render: !!token
+		},
+		{
 			title: "Recurrences",
 			navigate: "/recurrences",
 			render: !!token
