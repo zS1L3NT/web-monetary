@@ -1,4 +1,5 @@
-export default (hexcolor: string) => {
+export default (hexcolor: string | undefined) => {
+	if (!hexcolor) return undefined
 	const r = parseInt(hexcolor.substring(1, 3), 16)
 	const g = parseInt(hexcolor.substring(3, 5), 16)
 	const b = parseInt(hexcolor.substring(5, 7), 16)

@@ -19,73 +19,73 @@ const categories = api.injectEndpoints({
 			providesTags: ["Category"]
 		}),
 		createCategory: builder.mutation<
-			ApiResponse & { account: iCategory<true> },
+			ApiResponse & { category: iCategory<true> },
 			Omit<iCategory, "id" | "user_id"> & RequireToken
 		>({
-			query: ({ token, ...account }) => ({
+			query: ({ token, ...category }) => ({
 				url: `/categories`,
 				method: "POST",
-				body: account,
+				body: category,
 				token
 			}),
 			invalidatesTags: ["Category"]
 		}),
-		getCategory: builder.query<iCategory<true>, { account_id: string } & RequireToken>({
-			query: ({ token, account_id }) => ({
-				url: `/categories/${account_id}`,
+		getCategory: builder.query<iCategory<true>, { category_id: string } & RequireToken>({
+			query: ({ token, category_id }) => ({
+				url: `/categories/${category_id}`,
 				method: "GET",
 				token
 			}),
 			providesTags: ["Category"]
 		}),
 		updateCategory: builder.mutation<
-			ApiResponse & { account: iCategory<true> },
-			Partial<Omit<iCategory, "id" | "user_id">> & { account_id: string } & RequireToken
+			ApiResponse & { category: iCategory<true> },
+			Partial<Omit<iCategory, "id" | "user_id">> & { category_id: string } & RequireToken
 		>({
-			query: ({ token, account_id, ...account }) => ({
-				url: `/categories/${account_id}`,
+			query: ({ token, category_id, ...category }) => ({
+				url: `/categories/${category_id}`,
 				method: "PUT",
-				body: account,
+				body: category,
 				token
 			}),
-			onQueryStarted: async ({ token, account_id, ...account }, mutators) => {
+			onQueryStarted: async ({ token, category_id, ...category }, mutators) => {
 				await optimistic(
 					mutators,
 					categories.util.updateQueryData("getCategories", { token }, _categories => {
-						const index = _categories.findIndex(a => a.id === account_id)
+						const index = _categories.findIndex(a => a.id === category_id)
 						if (index === -1) return
 
 						_categories[index] = {
 							..._categories[index]!,
-							...account
+							...category
 						}
 					}),
 					categories.util.updateQueryData(
 						"getCategory",
-						{ token, account_id },
-						_account => ({
-							..._account,
-							...account
+						{ token, category_id },
+						_category => ({
+							..._category,
+							...category
 						})
 					)
 				)
 			},
 			invalidatesTags: ["Category"]
 		}),
-		deleteCategory: builder.mutation<ApiResponse, { account_id: string } & RequireToken>({
-			query: ({ token, account_id }) => ({
-				url: `/categories/${account_id}`,
+		deleteCategory: builder.mutation<ApiResponse, { category_id: string } & RequireToken>({
+			query: ({ token, category_id }) => ({
+				url: `/categories/${category_id}`,
 				method: "DELETE",
 				token
 			}),
-			onQueryStarted: async ({ token, account_id }, mutators) => {
+			onQueryStarted: async ({ token, category_id }, mutators) => {
 				await optimistic(
 					mutators,
 					categories.util.updateQueryData("getCategories", { token }, _categories => {
-						const account = _categories.find(a => a.id === account_id)
-						if (!account) return
+						const category = _categories.find(a => a.id === category_id)
+						if (!category) return
 
-						_categories.splice(_categories.indexOf(account), 1)
+						_categories.splice(_categories.indexOf(category), 1)
 					})
 				)
 			},
