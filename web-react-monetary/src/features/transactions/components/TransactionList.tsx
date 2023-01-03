@@ -1,5 +1,6 @@
+import { AnimatePresence, motion } from "framer-motion"
 import { DateTime } from "luxon"
-import { useContext } from "react"
+import { Fragment, useContext } from "react"
 
 import { Box, Center, Spinner, Text } from "@chakra-ui/react"
 
@@ -13,49 +14,57 @@ const TransactionList = ({}: {}) => {
 	const { selectedAccounts, selectedCategories } = useContext(FiltersContext)
 
 	return (
-		<Box sx={{ flex: 1 }}>
-			{transactions ? (
-				Object.entries(
-					transactions
-						.filter(t =>
-							selectedAccounts?.find(
-								a => a.id === t.from_account_id || a.id === t.to_account_id
+		<AnimatePresence>
+			<Box sx={{ flex: 1 }}>
+				{transactions ? (
+					Object.entries(
+						transactions
+							.filter(t =>
+								selectedAccounts?.find(
+									a => a.id === t.from_account_id || a.id === t.to_account_id
+								)
 							)
-						)
-						.filter(t => selectedCategories?.find(c => c.id === t.category_id))
-						.reduce<Record<string, iTransaction[]>>((ts, t) => {
-							const header = DateTime.fromISO(t.date).toFormat("d LLLL")
-							if (ts[header]) {
-								ts[header]!.push(t)
-							} else {
-								ts[header] = [t]
-							}
-							return ts
-						}, {})
-				).map(([date, ts]) => (
-					<Box key={date}>
-						<Text
-							sx={{
-								mt: 6,
-								fontSize: 20,
-								fontWeight: 700
-							}}>
-							{date}
-						</Text>
-						{ts.map(t => (
-							<TransactionItem
-								key={t.id}
-								transaction={t}
-							/>
-						))}
-					</Box>
-				))
-			) : (
-				<Center sx={{ mt: 8 }}>
-					<Spinner />
-				</Center>
-			)}
-		</Box>
+							.filter(t => selectedCategories?.find(c => c.id === t.category_id))
+							.reduce<Record<string, iTransaction[]>>((ts, t) => {
+								const header = DateTime.fromISO(t.date).toFormat("d LLLL")
+								if (ts[header]) {
+									ts[header]!.push(t)
+								} else {
+									ts[header] = [t]
+								}
+								return ts
+							}, {})
+					).map(([date, ts]) => (
+						<Fragment key={date}>
+							<motion.div
+								layout
+								layoutId={date}>
+								<Text
+									sx={{
+										mt: 6,
+										fontSize: 20,
+										fontWeight: 700
+									}}>
+									{date}
+								</Text>
+							</motion.div>
+							{ts.map(t => (
+								<motion.div
+									key={t.id}
+									layout
+									layoutId={t.id}>
+									<TransactionItem transaction={t} />
+								</motion.div>
+							))}
+						</Fragment>
+					))
+				) : (
+					<Center sx={{ mt: 8 }}>
+						<Spinner />
+					</Center>
+				)}
+			</Box>
+		</AnimatePresence>
 	)
 }
 
