@@ -1,7 +1,7 @@
 import { useContext, useEffect } from "react"
 import { useLocation, useNavigate } from "react-router-dom"
 
-import { useToast } from "@chakra-ui/react"
+import { usePrevious, useToast } from "@chakra-ui/react"
 
 import AuthContext from "../contexts/AuthContext"
 import useAppSelector from "../hooks/useAppSelector"
@@ -9,6 +9,7 @@ import useAppSelector from "../hooks/useAppSelector"
 const ErrorHandler = () => {
 	const { setToken } = useContext(AuthContext)
 	const error = useAppSelector(state => state.error)
+	const prevError = usePrevious(error)
 	const location = useLocation()
 	const navigate = useNavigate()
 	const toast = useToast()
@@ -29,7 +30,7 @@ const ErrorHandler = () => {
 			}
 		}
 
-		if (!toast.isActive(error.type + error.message)) {
+		if (!toast.isActive(error.type + error.message) && prevError?.type !== "Unauthorized") {
 			toast({
 				id: error.type + error.message,
 				title: error.type,
@@ -38,7 +39,7 @@ const ErrorHandler = () => {
 				isClosable: true
 			})
 		}
-	}, [error])
+	}, [error, prevError])
 
 	return <></>
 }
