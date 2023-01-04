@@ -13,7 +13,11 @@ const useOnlyAuthenticated = () => {
 
 	useEffect(() => {
 		if (token === null) {
-			navigate("/login?continue=" + encodeURIComponent(location.pathname))
+			if (location.pathname !== "/login") {
+				navigate("/login?continue=" + encodeURIComponent(location.pathname))
+			} else {
+				navigate("/login")
+			}
 			dispatch(
 				setError({
 					type: "Unauthorized",

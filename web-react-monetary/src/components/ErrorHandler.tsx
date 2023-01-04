@@ -22,7 +22,11 @@ const ErrorHandler = () => {
 				error.message === "Invalid authorization token")
 		) {
 			setToken(null)
-			navigate("/login?continue=" + encodeURIComponent(location.pathname))
+			if (location.pathname !== "/login") {
+				navigate("/login?continue=" + encodeURIComponent(location.pathname))
+			} else {
+				navigate("/login")
+			}
 		}
 
 		if (!toast.isActive(error.type + error.message)) {
