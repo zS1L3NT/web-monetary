@@ -7,7 +7,7 @@ export const ApiError = z.object({
 	type: z.string(),
 	message: z.string(),
 	stack: z.union([z.array(z.any()), z.undefined()]),
-	fields: z.union([z.record(z.string()), z.undefined()])
+	fields: z.union([z.record(z.array(z.string())), z.undefined()])
 })
 
 export default <
