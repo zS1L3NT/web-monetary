@@ -2,23 +2,22 @@ import api, { ApiResponse, optimistic, RequireToken, WithTimestamps } from "./ap
 
 export type TransactionType = "Incoming" | "Outgoing" | "Transfer"
 
-export type iTransaction<WT extends boolean = false, RT extends TransactionType = any> = {
+export type iTransaction<WT extends boolean = false, RT extends TransactionType = TransactionType> = {
 	id: string
 	user_id: string
 	category_id: string
 	type: RT
-	name: string
 	amount: number
 	description: string
 	date: string
-	transaction_ids: string[]
 } & (RT extends "Transfer"
 	? {
-			from_account_id: string | null
-			to_account_id: string | null
+			from_account_id: string
+			to_account_id: string
 	  }
 	: {
 			from_account_id: string
+			to_account_id: undefined
 	  }) &
 	WithTimestamps<WT>
 
@@ -27,20 +26,20 @@ const transactions = api.injectEndpoints({
 		getTransactions: builder.query<
 			iTransaction<true>[],
 			{
-				from_account_id?: string | null
-				to_account_id?: string | null
+				from_account_ids?: (string | null)[]
+				to_account_ids?: (string | null)[]
 				category_ids?: string[]
 				limit?: number
 				offset?: number
 			} & RequireToken
 		>({
-			query: ({ token, from_account_id, to_account_id, category_ids, limit, offset }) => {
+			query: ({ token, from_account_ids, to_account_ids, category_ids, limit, offset }) => {
 				const searchParams = new URLSearchParams()
 
-				if (from_account_id !== undefined)
-					searchParams.append("from_account_id", from_account_id ?? "null")
-				if (to_account_id !== undefined)
-					searchParams.append("to_account_id", to_account_id ?? "null")
+				if (from_account_ids !== undefined)
+					searchParams.append("from_account_ids", from_account_ids.join(","))
+				if (to_account_ids !== undefined)
+					searchParams.append("to_account_ids", to_account_ids.join(","))
 				if (category_ids !== undefined)
 					searchParams.append("category_ids", category_ids.join(","))
 				if (limit !== undefined) searchParams.append("limit", limit + "")

@@ -8,9 +8,9 @@ export type RecurrencePeriodEndType = "Never" | "Date" | "Count"
 
 export type iRecurrence<
 	WT extends boolean = false,
-	RT extends RecurrenceType = any,
-	RPT extends RecurrencePeriodType = any,
-	RPET extends RecurrencePeriodEndType = any
+	RT extends RecurrenceType = RecurrenceType,
+	RPT extends RecurrencePeriodType = RecurrencePeriodType,
+	RPET extends RecurrencePeriodEndType = RecurrencePeriodEndType
 > = {
 	id: string
 	user_id: string

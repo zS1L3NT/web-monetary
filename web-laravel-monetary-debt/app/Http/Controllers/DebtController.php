@@ -11,7 +11,7 @@ class DebtController extends Controller
 
         $this->validate('store', [
             'type' => 'required|in:Loan,Debt',
-            'amount' => 'required|integer',
+            'amount' => 'required|decimal:0,2',
             'description' => 'string',
             'active' => 'boolean',
             'transaction_ids' => 'required|array',
@@ -20,7 +20,7 @@ class DebtController extends Controller
 
         $this->validate('update', [
             'type' => 'in:Loan,Debt',
-            'amount' => 'integer',
+            'amount' => 'decimal:0,2',
             'description' => 'string',
             'active' => 'boolean',
             'transaction_ids' => 'array',

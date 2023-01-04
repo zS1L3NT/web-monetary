@@ -21,6 +21,18 @@ export default extendTheme({
 		}
 	},
 	components: {
+		Container: {
+			variants: {
+				page: {
+					maxW: {
+						base: "full",
+						md: "40rem",
+						lg: "65rem",
+						"2xl": "90rem"
+					}
+				}
+			}
+		},
 		Text: {
 			variants: {
 				inputError: {

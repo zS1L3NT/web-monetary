@@ -27,7 +27,7 @@ class TransactionFactory extends Factory
             'to_account_id' => $type === 'Transfer' ? DB::table('accounts')->whereNot('id', $fromAccountId)->inRandomOrder()->first()->id : null,
             'type' => $type,
             'amount' => $this->faker->randomFloat(2, 0, 1000),
-            'date' => $this->faker->dateTimeBetween('-1 year', 'now'),
+            'date' => $this->faker->dateTimeBetween('-1 month', 'now'),
             'description' => $this->faker->sentence,
         ];
     }

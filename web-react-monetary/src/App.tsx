@@ -1,3 +1,5 @@
+import { Chart, registerables } from "chart.js"
+import { useEffect } from "react"
 import { Route, Routes } from "react-router-dom"
 
 import { Flex } from "@chakra-ui/react"
@@ -10,15 +12,23 @@ import Dashboard from "./features/dashboard/pages/Dashboard"
 import Landing from "./features/landing/pages/Landing"
 
 const App = () => {
+	useEffect(() => {
+		Chart.register(...registerables)
+	}, [])
+
 	return (
 		<Flex
-			w="full"
-			h="full"
-			direction="column">
+			sx={{
+				w: "full",
+				h: "full",
+				flexDirection: "column"
+			}}>
 			<Navigator />
 			<Flex
-				flex={1}
-				overflowY="scroll">
+				sx={{
+					flex: 1,
+					overflowY: "scroll"
+				}}>
 				<Routes>
 					<Route
 						path="/"

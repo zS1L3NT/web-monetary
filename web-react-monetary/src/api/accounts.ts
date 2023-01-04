@@ -5,6 +5,7 @@ export type iAccount<WT extends boolean = false> = {
 	user_id: string
 	name: string
 	initial_balance: number
+	balance: number
 	color: string
 } & WithTimestamps<WT>
 
@@ -20,7 +21,7 @@ const accounts = api.injectEndpoints({
 		}),
 		createAccount: builder.mutation<
 			ApiResponse & { account: iAccount<true> },
-			Omit<iAccount, "id" | "user_id"> & RequireToken
+			Omit<iAccount, "id" | "user_id" | "balance"> & RequireToken
 		>({
 			query: ({ token, ...account }) => ({
 				url: `/accounts`,
@@ -40,7 +41,7 @@ const accounts = api.injectEndpoints({
 		}),
 		updateAccount: builder.mutation<
 			ApiResponse & { account: iAccount<true> },
-			Partial<Omit<iAccount, "id" | "user_id">> & { account_id: string } & RequireToken
+			Partial<Omit<iAccount, "id" | "user_id" | "balance">> & { account_id: string } & RequireToken
 		>({
 			query: ({ token, account_id, ...account }) => ({
 				url: `/accounts/${account_id}`,

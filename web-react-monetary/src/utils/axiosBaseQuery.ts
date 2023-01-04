@@ -1,21 +1,13 @@
 import axios, { AxiosError, AxiosRequestConfig } from "axios"
-import { LIST, OBJECT, OR, STRING, UNDEFINED, validate } from "validate-any"
-import ObjectValidator from "validate-any/dist/validators/ObjectValidator"
-
 import { BaseQueryFn } from "@reduxjs/toolkit/dist/query"
+import { z } from "zod"
 
-export type ApiError = {
-	type: string
-	message: string
-	stack?: any[]
-	fields?: Record<string, string[]>
-}
-
-const API_ERROR: ObjectValidator<ApiError> = OBJECT({
-	type: STRING(),
-	message: STRING(),
-	stack: OR(LIST(), UNDEFINED()),
-	fields: OR(OBJECT(), UNDEFINED())
+export type ApiError = z.infer<typeof ApiError>
+export const ApiError = z.object({
+	type: z.string(),
+	message: z.string(),
+	stack: z.union([z.array(z.any()), z.undefined()]),
+	fields: z.union([z.record(z.string()), z.undefined()])
 })
 
 export default <
@@ -33,7 +25,7 @@ export default <
 >(async ({ url, method, body, params, token }) => {
 	try {
 		const result = await axios({
-			url: "http://localhost:8000/api" + url,
+			url: "/api" + url,
 			headers: token ? { Authorization: `Bearer ${token}` } : undefined,
 			method,
 			params,
@@ -44,12 +36,12 @@ export default <
 		const error = <AxiosError>e
 		console.error(error)
 
-		const result = validate(error.response?.data, API_ERROR)
+		const result = ApiError.safeParse(error.response?.data)
 		const apiError = {
-			type: result.data?.type ?? error.name,
-			message: result.data?.message ?? error.message,
-			stack: result.data?.stack,
-			fields: result.data?.fields
+			type: result.success ? result.data.type : error.name,
+			message: result.success ? result.data.message : error.message,
+			stack: result.success ? result.data.stack : undefined,
+			fields: result.success ? result.data.fields : undefined
 		}
 
 		return {
