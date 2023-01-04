@@ -2,6 +2,7 @@ import { createContext, PropsWithChildren, useContext, useEffect, useState } fro
 
 import { iAccount } from "../../../api/accounts"
 import { iCategory } from "../../../api/categories"
+import { getSubcategories } from "../../../utils/dataUtils"
 import AccountsContext from "./AccountsContext"
 import CategoriesContext from "./CategoriesContext"
 
@@ -54,11 +55,23 @@ export const FiltersProvider = ({ children }: PropsWithChildren<{}>) => {
 				},
 				selectedCategories: categories?.filter(c => selectedCategoryIds?.includes(c.id)),
 				selectCategory: category => {
-					setSelectedCategoryIds([...(selectedCategoryIds ?? []), category.id])
+					setSelectedCategoryIds([
+						...new Set<string>([
+							...(selectedCategoryIds ?? []),
+							category.id,
+							...getSubcategories(category, categories ?? []).map(c => c.id)
+						])
+					])
 				},
 				deselectCategory: category => {
 					setSelectedCategoryIds(
-						(selectedCategoryIds ?? []).filter(id => id !== category.id)
+						(selectedCategoryIds ?? []).filter(
+							c =>
+								![
+									category.id,
+									...getSubcategories(category, categories ?? []).map(c => c.id)
+								].includes(c)
+						)
 					)
 				}
 			}}>
