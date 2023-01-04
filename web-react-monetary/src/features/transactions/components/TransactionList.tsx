@@ -11,7 +11,8 @@ import TransactionItem from "./TransactionItem"
 
 const TransactionList = ({}: {}) => {
 	const { transactions } = useContext(TransactionsContext)
-	const { selectedAccounts, selectedCategories } = useContext(FiltersContext)
+	const { selectedAccounts, selectedCategories, minAmount, maxAmount } =
+		useContext(FiltersContext)
 
 	return (
 		<AnimatePresence>
@@ -25,6 +26,9 @@ const TransactionList = ({}: {}) => {
 								)
 							)
 							.filter(t => selectedCategories?.find(c => c.id === t.category_id))
+							.filter(
+								t => t.amount > minAmount && (!maxAmount || t.amount < maxAmount)
+							)
 							.reduce<Record<string, iTransaction[]>>((ts, t) => {
 								const header = DateTime.fromISO(t.date).toFormat("d LLLL")
 								if (ts[header]) {

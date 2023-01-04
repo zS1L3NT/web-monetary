@@ -1,16 +1,18 @@
 import { Fragment, useContext } from "react"
 
 import {
-	Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Card, CardBody,
-	CardHeader, Center, Checkbox, CheckboxGroup, Heading, Spinner, Stack
+	Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, Card, CardBody,
+	CardHeader, Center, Checkbox, CheckboxGroup, Flex, Heading, Input, Spinner, Stack, Text
 } from "@chakra-ui/react"
 
 import AccountsContext from "../contexts/AccountsContext"
 import CategoriesContext from "../contexts/CategoriesContext"
 import FiltersContext from "../contexts/FiltersContext"
+import TransactionsContext from "../contexts/TransactionsContext"
 
 const FiltersSidebar = ({}: {}) => {
 	const { accounts } = useContext(AccountsContext)
+	const { transactions } = useContext(TransactionsContext)
 	const { categories } = useContext(CategoriesContext)
 	const {
 		selectedAccounts,
@@ -18,7 +20,11 @@ const FiltersSidebar = ({}: {}) => {
 		deselectAccount,
 		selectedCategories,
 		selectCategory,
-		deselectCategory
+		deselectCategory,
+		minAmount,
+		setMinAmount,
+		maxAmount,
+		setMaxAmount
 	} = useContext(FiltersContext)
 
 	const renderCategories = (categoryIds: string[], depth: number) => {
@@ -64,7 +70,7 @@ const FiltersSidebar = ({}: {}) => {
 			</CardHeader>
 			<CardBody>
 				<Accordion
-					defaultIndex={[0, 1]}
+					defaultIndex={[0, 1, 2]}
 					allowMultiple>
 					<AccordionItem>
 						<AccordionButton>
@@ -114,6 +120,52 @@ const FiltersSidebar = ({}: {}) => {
 										0
 									)}
 								</CheckboxGroup>
+							) : (
+								<Center mt={2}>
+									<Spinner size="sm" />
+								</Center>
+							)}
+						</AccordionPanel>
+					</AccordionItem>
+					<AccordionItem>
+						<AccordionButton>
+							Amount Range
+							<AccordionIcon sx={{ ml: "auto" }} />
+						</AccordionButton>
+						<AccordionPanel sx={{ px: 2 }}>
+							{transactions && maxAmount !== undefined ? (
+								<Box>
+									<Flex
+										sx={{
+											justifyContent: "space-between",
+											mx: 2
+										}}>
+										<Text sx={{ fontSize: "sm" }}>Min</Text>
+										<Text sx={{ fontSize: "sm" }}>Max</Text>
+									</Flex>
+									<Flex sx={{ gap: 2 }}>
+										<Input
+											defaultValue={minAmount}
+											onBlur={e => {
+												if (e.target.value === "") {
+													e.target.value = minAmount + ""
+												} else {
+													setMinAmount(+e.target.value)
+												}
+											}}
+										/>
+										<Input
+											defaultValue={maxAmount}
+											onBlur={e => {
+												if (e.target.value === "") {
+													e.target.value = maxAmount + ""
+												} else {
+													setMaxAmount(+e.target.value)
+												}
+											}}
+										/>
+									</Flex>
+								</Box>
 							) : (
 								<Center mt={2}>
 									<Spinner size="sm" />

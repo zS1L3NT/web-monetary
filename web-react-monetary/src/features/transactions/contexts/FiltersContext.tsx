@@ -1,10 +1,13 @@
-import { createContext, PropsWithChildren, useContext, useEffect, useState } from "react"
+import {
+	createContext, Dispatch, PropsWithChildren, SetStateAction, useContext, useEffect, useState
+} from "react"
 
 import { iAccount } from "../../../api/accounts"
 import { iCategory } from "../../../api/categories"
 import { getSubcategories } from "../../../utils/dataUtils"
 import AccountsContext from "./AccountsContext"
 import CategoriesContext from "./CategoriesContext"
+import TransactionsContext from "./TransactionsContext"
 
 const FiltersContext = createContext<{
 	selectedAccounts: iAccount[] | undefined
@@ -13,21 +16,32 @@ const FiltersContext = createContext<{
 	selectedCategories: iCategory[] | undefined
 	selectCategory: (category: iCategory) => void
 	deselectCategory: (category: iCategory) => void
+	minAmount: number
+	setMinAmount: Dispatch<SetStateAction<number>>
+	maxAmount: number | undefined
+	setMaxAmount: Dispatch<SetStateAction<number | undefined>>
 }>({
 	selectedAccounts: [],
 	selectAccount: () => {},
 	deselectAccount: () => {},
 	selectedCategories: [],
 	selectCategory: () => {},
-	deselectCategory: () => {}
+	deselectCategory: () => {},
+	minAmount: 0,
+	setMinAmount: () => {},
+	maxAmount: undefined,
+	setMaxAmount: () => {}
 })
 
 export const FiltersProvider = ({ children }: PropsWithChildren<{}>) => {
 	const { accounts } = useContext(AccountsContext)
+	const { transactions } = useContext(TransactionsContext)
 	const { categories } = useContext(CategoriesContext)
 
 	const [selectedAccountIds, setSelectedAccountIds] = useState<string[]>()
 	const [selectedCategoryIds, setSelectedCategoryIds] = useState<string[]>()
+	const [minAmount, setMinAmount] = useState(0)
+	const [maxAmount, setMaxAmount] = useState<number>()
 
 	useEffect(() => {
 		if (accounts && selectedAccountIds === undefined) {
@@ -40,6 +54,12 @@ export const FiltersProvider = ({ children }: PropsWithChildren<{}>) => {
 			setSelectedCategoryIds(categories.map(c => c.id))
 		}
 	}, [categories, selectedCategoryIds])
+
+	useEffect(() => {
+		if (transactions && maxAmount === undefined) {
+			setMaxAmount([...transactions].sort((a, b) => b.amount - a.amount)[0]?.amount ?? 100)
+		}
+	}, [transactions, maxAmount])
 
 	return (
 		<FiltersContext.Provider
@@ -73,7 +93,11 @@ export const FiltersProvider = ({ children }: PropsWithChildren<{}>) => {
 								].includes(c)
 						)
 					)
-				}
+				},
+				minAmount,
+				setMinAmount,
+				maxAmount,
+				setMaxAmount
 			}}>
 			{children}
 		</FiltersContext.Provider>
