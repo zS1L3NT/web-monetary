@@ -11,7 +11,7 @@ import TransactionItem from "./TransactionItem"
 
 const TransactionList = ({}: {}) => {
 	const { transactions } = useContext(TransactionsContext)
-	const { selectedAccounts, selectedCategories, transactionTypes, minAmount, maxAmount } =
+	const { sortBy, selectedAccounts, selectedCategories, transactionTypes, minAmount, maxAmount } =
 		useContext(FiltersContext)
 
 	return (
@@ -19,7 +19,12 @@ const TransactionList = ({}: {}) => {
 			<Box sx={{ flex: 1 }}>
 				{transactions ? (
 					Object.entries(
-						transactions
+						[...transactions]
+							.sort(
+								(a, b) =>
+									(sortBy === "date-asc" ? 1 : -1) *
+									(new Date(a.date).getTime() - new Date(b.date).getTime())
+							)
 							.filter(t =>
 								selectedAccounts?.find(
 									a => a.id === t.from_account_id || a.id === t.to_account_id

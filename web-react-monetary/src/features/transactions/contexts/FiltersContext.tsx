@@ -11,6 +11,8 @@ import CategoriesContext from "./CategoriesContext"
 import TransactionsContext from "./TransactionsContext"
 
 const FiltersContext = createContext<{
+	sortBy: "date-desc" | "date-asc"
+	setSortBy: Dispatch<SetStateAction<"date-desc" | "date-asc">>
 	selectedAccounts: iAccount[] | undefined
 	selectAccount: (account: iAccount) => void
 	deselectAccount: (account: iAccount) => void
@@ -25,6 +27,8 @@ const FiltersContext = createContext<{
 	maxAmount: number | undefined
 	setMaxAmount: Dispatch<SetStateAction<number | undefined>>
 }>({
+	sortBy: "date-desc",
+	setSortBy: () => {},
 	selectedAccounts: [],
 	selectAccount: () => {},
 	deselectAccount: () => {},
@@ -45,6 +49,7 @@ export const FiltersProvider = ({ children }: PropsWithChildren<{}>) => {
 	const { transactions } = useContext(TransactionsContext)
 	const { categories } = useContext(CategoriesContext)
 
+	const [sortBy, setSortBy] = useState<"date-desc" | "date-asc">("date-desc")
 	const [selectedAccountIds, setSelectedAccountIds] = useState<string[]>()
 	const [selectedCategoryIds, setSelectedCategoryIds] = useState<string[]>()
 	const [transactionTypes, setTransactionTypes] = useState<TransactionType[]>([
@@ -76,6 +81,8 @@ export const FiltersProvider = ({ children }: PropsWithChildren<{}>) => {
 	return (
 		<FiltersContext.Provider
 			value={{
+				sortBy,
+				setSortBy,
 				selectedAccounts: accounts?.filter(a => selectedAccountIds?.includes(a.id)),
 				selectAccount: account => {
 					setSelectedAccountIds([...(selectedAccountIds ?? []), account.id])
