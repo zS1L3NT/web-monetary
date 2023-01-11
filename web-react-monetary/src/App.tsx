@@ -10,6 +10,7 @@ import Logout from "./features/authentication/pages/Logout"
 import Register from "./features/authentication/pages/Register"
 import Dashboard from "./features/dashboard/pages/Dashboard"
 import Landing from "./features/landing/pages/Landing"
+import Transactions from "./features/transactions/pages/Transactions"
 
 const App = () => {
 	useEffect(() => {
@@ -49,6 +50,10 @@ const App = () => {
 					<Route
 						path="dashboard"
 						element={<Dashboard />}
+					/>
+					<Route
+						path="transactions"
+						element={<Transactions />}
 					/>
 				</Routes>
 			</Flex>

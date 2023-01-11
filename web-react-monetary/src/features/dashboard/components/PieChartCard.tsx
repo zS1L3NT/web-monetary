@@ -7,15 +7,14 @@ import {
 	Box, Card, CardBody, CardHeader, Flex, Heading, Icon, IconButton, Text, useDisclosure
 } from "@chakra-ui/react"
 
-import { iCategory, useGetCategoriesQuery } from "../../../api/categories"
-import { iTransaction } from "../../../api/transaction"
+import { useGetCategoriesQuery } from "../../../api/categories"
 import useOnlyAuthenticated from "../../../hooks/useOnlyAuthenticated"
 import useToastError from "../../../hooks/useToastError"
+import { getSubcategories } from "../../../utils/dataUtils"
 import { getPeriodDays, Period } from "../../../utils/periodUtils"
 import AccountsContext from "../contexts/AccountsContext"
 import TransactionsContext from "../contexts/TransactionsContext"
 import PeriodSelectModal from "./PeriodSelectModal"
-import { mapTransactionsAmount } from "../../../utils/dataUtils"
 
 const PieChartCard = ({}: {}) => {
 	const { token } = useOnlyAuthenticated()
@@ -33,20 +32,18 @@ const PieChartCard = ({}: {}) => {
 
 	useToastError(categoriesError, true)
 
-	const inCategory = (transaction: iTransaction, category: iCategory): boolean => {
-		if (transaction.category_id === category.id) return true
-		return category.category_ids.some(c =>
-			inCategory(transaction, categories!.find(c_ => c === c_.id)!)
-		)
-	}
-
 	const transactionsForPeriod = transactions
-		?.filter(
-			t =>
-				(selectedAccounts ?? []).find(a => a.id === t.from_account_id || a.id === t.to_account_id)
+		?.filter(t =>
+			(selectedAccounts ?? []).find(
+				a => a.id === t.from_account_id || a.id === t.to_account_id
+			)
 		)
 		.filter(t => DateTime.fromISO(t.date).diffNow("days").days > -getPeriodDays(period))
-		.filter(t => t.type === "Outgoing" || (t.type === "Transfer" && selectedAccounts!.find(a => a.id === t.from_account_id)))
+		.filter(
+			t =>
+				t.type === "Outgoing" ||
+				(t.type === "Transfer" && selectedAccounts!.find(a => a.id === t.from_account_id))
+		)
 
 	return (
 		<>
@@ -78,7 +75,14 @@ const PieChartCard = ({}: {}) => {
 										data: categories
 											.filter(c => c.category_ids.length !== 0)
 											.map(c =>
-												transactionsForPeriod.filter(t => inCategory(t, c))
+												transactionsForPeriod.filter(t =>
+													[
+														c.id,
+														...getSubcategories(c, categories).map(
+															c => c.id
+														)
+													].includes(t.category_id)
+												)
 											)
 											.map(t => t.reduce((a, b) => a + b.amount, 0)),
 										backgroundColor: categories
