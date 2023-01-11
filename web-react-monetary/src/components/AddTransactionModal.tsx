@@ -7,7 +7,7 @@ import {
 	NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper, Text, Textarea
 } from "@chakra-ui/react"
 
-import { useGetAccountsQuery } from "../api/accounts"
+import { useGetAccountsQuery } from "../api/account"
 import { useGetCategoriesQuery } from "../api/categories"
 import { TransactionType, useCreateTransactionMutation } from "../api/transaction"
 import useOnlyAuthenticated from "../hooks/useOnlyAuthenticated"

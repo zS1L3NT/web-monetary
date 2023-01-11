@@ -8,7 +8,7 @@ import {
 	Box, Card, CardBody, CardHeader, Flex, Heading, Icon, IconButton, Text, useDisclosure
 } from "@chakra-ui/react"
 
-import { iAccount } from "../../../api/accounts"
+import { iAccount } from "../../../api/account"
 import { iTransaction } from "../../../api/transaction"
 import { mapTransactionsAmount } from "../../../utils/dataUtils"
 import { getPeriodDays, getPeriodIntervals, Period } from "../../../utils/periodUtils"

@@ -1,6 +1,6 @@
 import { createContext, PropsWithChildren } from "react"
 
-import { iAccount, useGetAccountsQuery } from "../../../api/accounts"
+import { iAccount, useGetAccountsQuery } from "../../../api/account"
 import useOnlyAuthenticated from "../../../hooks/useOnlyAuthenticated"
 import useToastError from "../../../hooks/useToastError"
 

@@ -1,4 +1,4 @@
-import { iAccount } from "../api/accounts"
+import { iAccount } from "../api/account"
 import { iCategory } from "../api/categories"
 import { iTransaction } from "../api/transaction"
 

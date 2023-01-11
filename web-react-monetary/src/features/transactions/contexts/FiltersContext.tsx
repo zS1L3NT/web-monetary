@@ -2,7 +2,7 @@ import {
 	createContext, Dispatch, PropsWithChildren, SetStateAction, useContext, useEffect, useState
 } from "react"
 
-import { iAccount } from "../../../api/accounts"
+import { iAccount } from "../../../api/account"
 import { iCategory } from "../../../api/categories"
 import { TransactionType } from "../../../api/transaction"
 import { getSubcategories } from "../../../utils/dataUtils"

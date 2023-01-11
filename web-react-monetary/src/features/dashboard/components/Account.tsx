@@ -3,7 +3,7 @@ import { HiDotsVertical } from "react-icons/hi"
 
 import { Box, Checkbox, Flex, GridItem, Icon, IconButton, Text } from "@chakra-ui/react"
 
-import { iAccount } from "../../../api/accounts"
+import { iAccount } from "../../../api/account"
 import textColorOnBackground from "../../../utils/textColorOnBackground"
 import AccountsContext from "../contexts/AccountsContext"
 
