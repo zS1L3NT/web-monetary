@@ -37,10 +37,6 @@ const TransactionItem = ({ transaction }: { transaction: iTransaction }) => {
 	useToastError(fromAccountError, true)
 	useToastError(toAccountError, true)
 
-	const isDeduction =
-		transaction.type === "Outgoing" ||
-		(transaction.type === "Transfer" && transaction.from_account_id)
-
 	const renderAccount = (name: string | undefined, color: string | undefined) => {
 		return (
 			<>
@@ -134,9 +130,19 @@ const TransactionItem = ({ transaction }: { transaction: iTransaction }) => {
 									lg: 4
 								},
 								textAlign: "right",
-								color: isDeduction ? "red.500" : "green.500"
+								color:
+									transaction.type === "Outgoing"
+										? "red.500"
+										: transaction.type === "Incoming"
+										? "green.500"
+										: "yellow.500"
 							}}>
-							{isDeduction ? "-" : "+"}${transaction.amount}
+							{transaction.type === "Outgoing"
+								? "-"
+								: transaction.type === "Incoming"
+								? "+"
+								: ""}
+							${transaction.amount}
 						</Text>
 					</Flex>
 				)}
