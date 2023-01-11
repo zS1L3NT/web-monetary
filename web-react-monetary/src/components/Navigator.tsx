@@ -26,7 +26,11 @@ const Navigator = () => {
 		onToggle: onDrawerToggle,
 		onClose: onDrawerClose
 	} = useDisclosure()
-	const { isOpen: isTransactionModalOpen, onOpen: onTransactionModalOpen, onClose: onTransactionModalClose } = useDisclosure()
+	const {
+		isOpen: isAddTransactionModalOpen,
+		onOpen: onAddTransactionModalOpen,
+		onClose: onAddTransactionModalClose
+	} = useDisclosure()
 
 	const items: iNavItem[] = [
 		{
@@ -118,7 +122,7 @@ const Navigator = () => {
 						variant="ghost"
 						ml="auto"
 						icon={<AddIcon />}
-						onClick={onTransactionModalOpen}
+						onClick={onAddTransactionModalOpen}
 					/>
 				</Tooltip>
 
@@ -173,8 +177,8 @@ const Navigator = () => {
 					</DrawerContent>
 				</Drawer>
 				<AddTransactionModal
-					isOpen={isTransactionModalOpen}
-					onClose={onTransactionModalClose}
+					isOpen={isAddTransactionModalOpen}
+					onClose={onAddTransactionModalClose}
 				/>
 			</Flex>
 		</>
