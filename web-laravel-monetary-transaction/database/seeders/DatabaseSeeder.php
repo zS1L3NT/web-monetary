@@ -4,6 +4,8 @@ namespace Database\Seeders;
 
 use App\Models\Transaction;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+use Symfony\Component\Console\Output\ConsoleOutput;
 
 class DatabaseSeeder extends Seeder
 {
@@ -14,31 +16,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        for ($i = 0; $i < 50; $i++) {
-            try {
-                Transaction::factory(1)->create(
-                    [
-                        'type' => 'Incoming',
-                    ]
-                );
-            } catch (\Exception $e) {
-            }
-            try {
-                Transaction::factory(1)->create(
-                    [
-                        'type' => 'Outgoing',
-                    ]
-                );
-            } catch (\Exception $e) {
-            }
-            try {
-                Transaction::factory(1)->create(
-                    [
-                        'type' => 'Transfer',
-                    ]
-                );
-            } catch (\Exception $e) {
-            }
-        }
+        Transaction::factory(150)->create();
     }
 }

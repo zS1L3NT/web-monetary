@@ -38,20 +38,13 @@ const AddTransactionModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
 	useToastError(createTransactionError)
 
 	const handleCreate = async () => {
-		if (
-			(type === "Transfer" && toAccountId === null) ||
-			!amount ||
-			!fromAccountId ||
-			!categoryId
-		) {
-			return
-		}
+		if (invalid) return
 
 		await createTransaction({
 			token,
 			category_id: categoryId,
 			from_account_id: fromAccountId,
-			to_account_id: toAccountId ?? undefined,
+			to_account_id: toAccountId,
 			type,
 			amount,
 			description,
@@ -59,6 +52,9 @@ const AddTransactionModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
 		})
 		onClose()
 	}
+
+	const invalid =
+		!fromAccountId || (type === "Transfer" && !toAccountId) || !categoryId || !amount
 
 	return (
 		<Modal
@@ -171,12 +167,7 @@ const AddTransactionModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
 					<Button
 						variant="primary"
 						isLoading={isLoading}
-						disabled={
-							(type === "Transfer" && toAccountId === null) ||
-							!amount ||
-							!fromAccountId ||
-							!categoryId
-						}
+						disabled={invalid}
 						onClick={handleCreate}>
 						Create
 					</Button>

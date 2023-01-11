@@ -2,7 +2,10 @@ import api, { ApiResponse, optimistic, RequireToken, WithTimestamps } from "./ap
 
 export type TransactionType = "Incoming" | "Outgoing" | "Transfer"
 
-export type iTransaction<WT extends boolean = false, RT extends TransactionType = TransactionType> = {
+export type iTransaction<
+	WT extends boolean = false,
+	RT extends TransactionType = TransactionType
+> = {
 	id: string
 	user_id: string
 	category_id: string
@@ -10,16 +13,9 @@ export type iTransaction<WT extends boolean = false, RT extends TransactionType 
 	amount: number
 	description: string
 	date: string
-} & (RT extends "Transfer"
-	? {
-			from_account_id: string
-			to_account_id: string
-	  }
-	: {
-			from_account_id: string
-			to_account_id: undefined
-	  }) &
-	WithTimestamps<WT>
+	from_account_id: string
+	to_account_id: RT extends "Transfer" ? string : null
+} & WithTimestamps<WT>
 
 const transactions = api.injectEndpoints({
 	endpoints: builder => ({

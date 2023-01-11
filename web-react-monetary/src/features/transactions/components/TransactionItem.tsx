@@ -85,41 +85,15 @@ const TransactionItem = ({ transaction }: { transaction: iTransaction }) => {
 						<Skeleton sx={{ height: 27 }} />
 					) : (
 						<Flex sx={{ alignItems: "center" }}>
-							{renderAccount(
-								fromAccount?.name ?? "Elsewhere",
-								fromAccount?.color ?? "gray.200"
-							)}
+							{renderAccount(fromAccount!.name, fromAccount!.color)}
 							{toAccount || transaction.type === "Transfer" ? (
 								<>
 									<ArrowForwardIcon sx={{ mx: 2 }} />
-									{renderAccount(
-										toAccount?.name ?? "Elsewhere",
-										toAccount?.color ?? "gray.200"
-									)}
+									{renderAccount(toAccount!.name, toAccount!.color)}
 								</>
 							) : null}
 
 							<Flex sx={{ flex: 1 }} />
-
-							<Text
-								sx={{
-									width: "200px",
-									display: {
-										base: "none",
-										lg: "block"
-									},
-									mx: {
-										base: 2,
-										lg: 4
-									},
-									fontSize: 14,
-									opacity: 0.5,
-									whiteSpace: "nowrap",
-									overflow: "hidden",
-									textOverflow: "ellipsis"
-								}}>
-								{transaction.description}
-							</Text>
 
 							<Box
 								sx={{

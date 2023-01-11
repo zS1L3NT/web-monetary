@@ -35,7 +35,7 @@ const EditTransactionModal = ({
 
 	const [categoryId, setCategoryId] = useState(transaction.category_id)
 	const [fromAccountId, setFromAcccountId] = useState(transaction.from_account_id)
-	const [toAccountId, setToAcccountId] = useState(transaction.to_account_id ?? "-")
+	const [toAccountId, setToAcccountId] = useState(transaction.to_account_id)
 	const [type, setType] = useState(transaction.type)
 	const [amount, setAmount] = useState(transaction.amount)
 	const [description, setDescription] = useState(transaction.description)
@@ -46,16 +46,14 @@ const EditTransactionModal = ({
 	useToastError(updateTransactionError)
 
 	const handleEdit = async () => {
-		if (!amount || !fromAccountId || !categoryId) {
-			return
-		}
-
+		if (invalid) return
+		
 		await updateTransaction({
 			token,
 			transaction_id: transaction.id,
 			category_id: categoryId,
 			from_account_id: fromAccountId,
-			to_account_id: !toAccountId || toAccountId === "-" ? undefined : toAccountId,
+			to_account_id: toAccountId,
 			type,
 			amount,
 			description,
@@ -63,10 +61,12 @@ const EditTransactionModal = ({
 		})
 		onClose()
 	}
-
+	
+	const invalid = type === "Transfer" && !toAccountId
+	
 	return (
 		<Modal
-			finalFocusRef={finalFocusRef}
+		finalFocusRef={finalFocusRef}
 			isOpen={isOpen}
 			onClose={onClose}>
 			<ModalOverlay />
@@ -91,7 +91,9 @@ const EditTransactionModal = ({
 											variant={type === t ? "primary" : "outline"}
 											onClick={() => {
 												if (type === "Transfer" && t !== "Transfer") {
-													setToAcccountId("-")
+													setToAcccountId(null)
+												} else if (fromAccountId !== transaction.to_account_id) {	
+													setToAcccountId(transaction.to_account_id)
 												}
 												setType(t)
 											}}>
@@ -120,13 +122,12 @@ const EditTransactionModal = ({
 									<Box sx={{ w: "full" }}>
 										<Text>To Account</Text>
 										<Dropdown
-											choices={[
-												{ id: "-", text: "-" },
-												...accounts.map(a => ({ id: a.id, text: a.name }))
-											].filter(a => a.id !== fromAccountId)}
+											choices={accounts
+												.map(a => ({ id: a.id, text: a.name }))
+												.filter(a => a.id !== fromAccountId)}
 											selectedChoiceId={toAccountId}
 											setSelectedChoiceId={selectedChoiceId =>
-												setToAcccountId(selectedChoiceId ?? "-")
+												setToAcccountId(selectedChoiceId)
 											}
 										/>
 									</Box>
@@ -183,7 +184,7 @@ const EditTransactionModal = ({
 					<Button
 						variant="primary"
 						isLoading={isLoading}
-						disabled={!amount || !fromAccountId || !categoryId}
+						disabled={invalid}
 						onClick={handleEdit}>
 						Edit
 					</Button>
