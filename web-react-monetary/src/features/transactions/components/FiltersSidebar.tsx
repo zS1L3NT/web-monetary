@@ -69,7 +69,7 @@ const FiltersSidebar = ({}: {}) => {
 				mt: 6
 			}}>
 			<CardHeader>
-				<Heading size="md">Filters</Heading>
+				<Heading size="md">Transactions</Heading>
 			</CardHeader>
 			<CardBody>
 				<Accordion
