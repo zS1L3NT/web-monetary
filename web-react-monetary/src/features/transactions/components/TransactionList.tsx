@@ -11,7 +11,7 @@ import TransactionItem from "./TransactionItem"
 
 const TransactionList = ({}: {}) => {
 	const { transactions } = useContext(TransactionsContext)
-	const { selectedAccounts, selectedCategories, minAmount, maxAmount } =
+	const { selectedAccounts, selectedCategories, transactionTypes, minAmount, maxAmount } =
 		useContext(FiltersContext)
 
 	return (
@@ -26,6 +26,7 @@ const TransactionList = ({}: {}) => {
 								)
 							)
 							.filter(t => selectedCategories?.find(c => c.id === t.category_id))
+							.filter(t => transactionTypes?.find(tt => tt === t.type))
 							.filter(
 								t => t.amount > minAmount && (!maxAmount || t.amount < maxAmount)
 							)

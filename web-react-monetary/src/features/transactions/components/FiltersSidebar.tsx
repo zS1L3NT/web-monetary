@@ -21,6 +21,9 @@ const FiltersSidebar = ({}: {}) => {
 		selectedCategories,
 		selectCategory,
 		deselectCategory,
+		transactionTypes,
+		selectTransactionType,
+		deselectTransactionType,
 		minAmount,
 		setMinAmount,
 		maxAmount,
@@ -70,7 +73,7 @@ const FiltersSidebar = ({}: {}) => {
 			</CardHeader>
 			<CardBody>
 				<Accordion
-					defaultIndex={[0, 1, 2]}
+					defaultIndex={[0, 1, 2, 3]}
 					allowMultiple>
 					<AccordionItem>
 						<AccordionButton>
@@ -125,6 +128,30 @@ const FiltersSidebar = ({}: {}) => {
 									<Spinner size="sm" />
 								</Center>
 							)}
+						</AccordionPanel>
+					</AccordionItem>
+					<AccordionItem>
+						<AccordionButton>
+							Transaction Type
+							<AccordionIcon sx={{ ml: "auto" }} />
+						</AccordionButton>
+						<AccordionPanel>
+							<CheckboxGroup>
+								<Stack>
+									{(["Incoming", "Outgoing", "Transfer"] as const).map(tt => (
+										<Checkbox
+											key={tt}
+											isChecked={!!transactionTypes.find(t => t === tt)}
+											onChange={e =>
+												e.target.checked
+													? selectTransactionType(tt)
+													: deselectTransactionType(tt)
+											}>
+											{tt}
+										</Checkbox>
+									))}
+								</Stack>
+							</CheckboxGroup>
 						</AccordionPanel>
 					</AccordionItem>
 					<AccordionItem>

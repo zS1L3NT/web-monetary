@@ -4,6 +4,7 @@ import {
 
 import { iAccount } from "../../../api/accounts"
 import { iCategory } from "../../../api/categories"
+import { TransactionType } from "../../../api/transaction"
 import { getSubcategories } from "../../../utils/dataUtils"
 import AccountsContext from "./AccountsContext"
 import CategoriesContext from "./CategoriesContext"
@@ -16,6 +17,9 @@ const FiltersContext = createContext<{
 	selectedCategories: iCategory[] | undefined
 	selectCategory: (category: iCategory) => void
 	deselectCategory: (category: iCategory) => void
+	transactionTypes: TransactionType[]
+	selectTransactionType: (type: TransactionType) => void
+	deselectTransactionType: (type: TransactionType) => void
 	minAmount: number
 	setMinAmount: Dispatch<SetStateAction<number>>
 	maxAmount: number | undefined
@@ -27,6 +31,9 @@ const FiltersContext = createContext<{
 	selectedCategories: [],
 	selectCategory: () => {},
 	deselectCategory: () => {},
+	transactionTypes: [],
+	selectTransactionType: () => {},
+	deselectTransactionType: () => {},
 	minAmount: 0,
 	setMinAmount: () => {},
 	maxAmount: undefined,
@@ -40,6 +47,11 @@ export const FiltersProvider = ({ children }: PropsWithChildren<{}>) => {
 
 	const [selectedAccountIds, setSelectedAccountIds] = useState<string[]>()
 	const [selectedCategoryIds, setSelectedCategoryIds] = useState<string[]>()
+	const [transactionTypes, setTransactionTypes] = useState<TransactionType[]>([
+		"Outgoing",
+		"Incoming",
+		"Transfer"
+	])
 	const [minAmount, setMinAmount] = useState(0)
 	const [maxAmount, setMaxAmount] = useState<number>()
 
@@ -93,6 +105,13 @@ export const FiltersProvider = ({ children }: PropsWithChildren<{}>) => {
 								].includes(c)
 						)
 					)
+				},
+				transactionTypes,
+				selectTransactionType: type => {
+					setTransactionTypes([...transactionTypes, type])
+				},
+				deselectTransactionType: type => {
+					setTransactionTypes(transactionTypes.filter(t => t !== type))
 				},
 				minAmount,
 				setMinAmount,
