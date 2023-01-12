@@ -1,5 +1,6 @@
 import { ArrowForwardIcon } from "@chakra-ui/icons"
 import { Box, Card, CardBody, Flex, Skeleton, Tag, Text, useDisclosure } from "@chakra-ui/react"
+import { DateTime } from "luxon"
 
 import { useGetAccountQuery } from "../../../api/account"
 import { useGetCategoryQuery } from "../../../api/categories"
@@ -82,60 +83,66 @@ const TransactionItem = ({ transaction }: { transaction: iTransaction }) => {
 				onClick={onEditTransactionModalOpen}>
 				<CardBody>
 					{categoryLoading || fromAccountLoading || toAccountLoading ? (
-						<Skeleton sx={{ height: 27 }} />
+						<Skeleton sx={{ height: 59 }} />
 					) : (
-						<Flex sx={{ alignItems: "center" }}>
-							{renderAccount(fromAccount!.name, fromAccount!.color)}
-							{toAccount || transaction.type === "Transfer" ? (
-								<>
-									<ArrowForwardIcon sx={{ mx: 2 }} />
-									{renderAccount(toAccount!.name, toAccount!.color)}
-								</>
-							) : null}
+						<Flex>
+							<Box>
+								<Flex sx={{ alignItems: "center" }}>
+									{renderAccount(fromAccount!.name, fromAccount!.color)}
+									{toAccount || transaction.type === "Transfer" ? (
+										<>
+											<ArrowForwardIcon sx={{ mx: 2 }} />
+											{renderAccount(toAccount!.name, toAccount!.color)}
+										</>
+									) : null}
+								</Flex>
+
+								<Tag
+									sx={{
+										mt: 2,
+										color: textColorOnBackground(category?.color),
+										bg: category?.color
+									}}
+									variant="subtle">
+									{category?.name}
+								</Tag>
+							</Box>
 
 							<Flex sx={{ flex: 1 }} />
 
 							<Box
 								sx={{
-									width: "100px",
-									mx: {
+									mr: {
 										base: 2,
 										lg: 4
-									},
-									display: "flex",
-									justifyContent: "center"
+									}
 								}}>
-								<Tag
+								<Text
 									sx={{
-										color: textColorOnBackground(category?.color),
-										bg: category?.color
+										textAlign: "right",
+										color:
+											transaction.type === "Outgoing"
+												? "red.500"
+												: transaction.type === "Incoming"
+												? "green.500"
+												: "yellow.500"
 									}}>
-									{category?.name}
-								</Tag>
+									{transaction.type === "Outgoing"
+										? "-"
+										: transaction.type === "Incoming"
+										? "+"
+										: ""}
+									${transaction.amount}
+								</Text>
+								<Text
+									sx={{
+										textAlign: "right",
+										fontSize: 14,
+										opacity: 0.5
+									}}>
+									{DateTime.fromISO(transaction.date).toFormat("hh:mm a")}
+								</Text>
 							</Box>
-
-							<Text
-								sx={{
-									width: "100px",
-									mx: {
-										base: 2,
-										lg: 4
-									},
-									textAlign: "right",
-									color:
-										transaction.type === "Outgoing"
-											? "red.500"
-											: transaction.type === "Incoming"
-											? "green.500"
-											: "yellow.500"
-								}}>
-								{transaction.type === "Outgoing"
-									? "-"
-									: transaction.type === "Incoming"
-									? "+"
-									: ""}
-								${transaction.amount}
-							</Text>
 						</Flex>
 					)}
 				</CardBody>
