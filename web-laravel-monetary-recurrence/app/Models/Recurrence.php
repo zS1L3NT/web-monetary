@@ -62,56 +62,26 @@ class Recurrence extends Model
 
     public function setTypeAttribute(string $type)
     {
-        switch ($type) {
-            case "Transfer":
-                if ($this->from_account_id === null && $this->to_account_id === null) {
-                    throw new \Exception("Transfer recurrences must have a from_account_id or a to_account_id");
-                }
-                break;
-            case "Incoming":
-            case "Outgoing":
-                if ($this->from_account_id === null) {
-                    throw new \Exception("Non-transfer recurrences must not have a null from_account_id");
-                }
-                $this->attributes['to_account_id'] = null;
-                break;
+        if (array_key_exists('to_account_id', $this->attributes)) {
+            if ($type === "Transfer" && $this->to_account_id === null) {
+                throw new \Exception("Recurrence must have a to_account_id");
+            }
+            if ($type !== "Transfer" && $this->to_account_id !== null) {
+                throw new \Exception("Non-transfer recurrences must not have a to_account_id");
+            }
         }
         $this->attributes['type'] = $type;
     }
 
-    public function setFromAccountIdAttribute(string|null $fromAccountId)
-    {
-        switch ($this->type) {
-            case "Transfer":
-                if ($fromAccountId === null && $this->to_account_id === null) {
-                    throw new \Exception("Transfer recurrences must have a from_account_id or a to_account_id");
-                }
-                break;
-            case "Incoming":
-            case "Outgoing":
-                if ($fromAccountId === null) {
-                    throw new \Exception("Non-transfer recurrences must not have a null from_account_id");
-                }
-                $this->attributes['to_account_id'] = null;
-                break;
-        }
-        $this->attributes['from_account_id'] = $fromAccountId;
-    }
-
     public function setToAccountIdAttribute(string|null $toAccountId)
     {
-        switch ($this->type) {
-            case "Transfer":
-                if ($this->from_account_id === null && $toAccountId === null) {
-                    throw new \Exception("Transfer recurrences must have a from_account_id or a to_account_id");
-                }
-                break;
-            case "Incoming":
-            case "Outgoing":
-                if ($toAccountId !== null) {
-                    throw new \Exception("Non-transfer recurrences must not have a to_account_id");
-                }
-                break;
+        if (array_key_exists('type', $this->attributes)) {
+            if ($this->type === "Transfer" && $toAccountId === null) {
+                throw new \Exception("Recurrence must have a to_account_id");
+            }
+            if ($this->type !== "Transfer" && $toAccountId !== null) {
+                throw new \Exception("Non-transfer recurrences must not have a to_account_id");
+            }
         }
         $this->attributes['to_account_id'] = $toAccountId;
     }

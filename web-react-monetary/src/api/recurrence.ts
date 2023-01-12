@@ -25,27 +25,21 @@ export type iRecurrence<
 	period_type: RPT
 	period_end_type: RPET
 	transaction_ids: string[]
-} & (RT extends "Transfer"
+	from_account_id: string
+	to_account_id: RT extends "Transfer" ? string : null
+} & (RPT extends "Week"
 	? {
-			from_account_id: string | null
-			to_account_id: string | null
+			period_week_days: (
+				| "Monday"
+				| "Tuesday"
+				| "Wednesday"
+				| "Thursday"
+				| "Friday"
+				| "Saturday"
+				| "Sunday"
+			)[]
 	  }
-	: {
-			from_account_id: string
-	  }) &
-	(RPT extends "Week"
-		? {
-				period_week_days: (
-					| "Monday"
-					| "Tuesday"
-					| "Wednesday"
-					| "Thursday"
-					| "Friday"
-					| "Saturday"
-					| "Sunday"
-				)[]
-		  }
-		: {}) &
+	: {}) &
 	(RPT extends "Month"
 		? {
 				period_month_day_of: "Month" | "Week Day"

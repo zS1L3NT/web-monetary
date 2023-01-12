@@ -2,7 +2,8 @@ import { Fragment, useContext } from "react"
 
 import {
 	Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, Card, CardBody,
-	CardHeader, Center, Checkbox, CheckboxGroup, Flex, Heading, Input, Spinner, Stack, Text
+	CardHeader, Center, Checkbox, CheckboxGroup, Flex, Heading, Input, Radio, RadioGroup, Spinner,
+	Stack, Text
 } from "@chakra-ui/react"
 
 import AccountsContext from "../contexts/AccountsContext"
@@ -15,6 +16,8 @@ const FiltersSidebar = ({}: {}) => {
 	const { transactions } = useContext(TransactionsContext)
 	const { categories } = useContext(CategoriesContext)
 	const {
+		sortBy,
+		setSortBy,
 		selectedAccounts,
 		selectAccount,
 		deselectAccount,
@@ -72,7 +75,20 @@ const FiltersSidebar = ({}: {}) => {
 				<Heading size="md">Transactions</Heading>
 			</CardHeader>
 			<CardBody>
+				<Box sx={{ px: 4 }}>
+					<Text>Sort By</Text>
+					<RadioGroup
+						sx={{ mt: 2 }}
+						value={sortBy}
+						onChange={e => setSortBy(e as "date-desc" | "date-asc")}>
+						<Stack>
+							<Radio value="date-asc">Date Ascending</Radio>
+							<Radio value="date-desc">Date Descending</Radio>
+						</Stack>
+					</RadioGroup>
+				</Box>
 				<Accordion
+					sx={{ mt: 4 }}
 					defaultIndex={[0, 1, 2, 3]}
 					allowMultiple>
 					<AccordionItem>
