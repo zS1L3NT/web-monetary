@@ -22,6 +22,7 @@ const transactions = api.injectEndpoints({
 		getTransactions: builder.query<
 			iTransaction<true>[],
 			{
+				transaction_ids?: string[]
 				from_account_ids?: (string | null)[]
 				to_account_ids?: (string | null)[]
 				category_ids?: string[]
@@ -29,9 +30,11 @@ const transactions = api.injectEndpoints({
 				offset?: number
 			} & RequireToken
 		>({
-			query: ({ token, from_account_ids, to_account_ids, category_ids, limit, offset }) => {
+			query: ({ token, transaction_ids, from_account_ids, to_account_ids, category_ids, limit, offset }) => {
 				const searchParams = new URLSearchParams()
 
+				if (transaction_ids !== undefined)
+					searchParams.append("transaction_ids", transaction_ids.join(","))
 				if (from_account_ids !== undefined)
 					searchParams.append("from_account_ids", from_account_ids.join(","))
 				if (to_account_ids !== undefined)

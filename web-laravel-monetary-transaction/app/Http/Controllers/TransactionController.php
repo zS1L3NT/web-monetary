@@ -37,6 +37,11 @@ class TransactionController extends Controller
             ->where('user_id', request('user_id'))
             ->orderByDesc('date');
 
+        if ($transaction_ids = request('transaction_ids')) {
+            $transaction_ids = explode(',', $transaction_ids);
+            $query->whereIn('id', $transaction_ids);
+        }
+
         if ($from_account_ids = request('from_account_ids')) {
             $from_account_ids = explode(',', $from_account_ids);
             if (in_array('null', $from_account_ids)) {

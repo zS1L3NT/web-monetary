@@ -10,6 +10,7 @@ import Logout from "./features/authentication/pages/Logout"
 import Register from "./features/authentication/pages/Register"
 import Dashboard from "./features/dashboard/pages/Dashboard"
 import Landing from "./features/landing/pages/Landing"
+import Recurrences from "./features/recurrences/pages/Recurrences"
 import Transactions from "./features/transactions/pages/Transactions"
 
 const App = () => {
@@ -54,6 +55,10 @@ const App = () => {
 					<Route
 						path="transactions"
 						element={<Transactions />}
+					/>
+					<Route
+						path="recurrences"
+						element={<Recurrences />}
 					/>
 				</Routes>
 			</Flex>
