@@ -8,8 +8,8 @@ import {
 	Box, Card, CardBody, CardHeader, Flex, Heading, Icon, IconButton, Text, useDisclosure
 } from "@chakra-ui/react"
 
-import { iAccount } from "../../../api/account"
 import { iTransaction } from "../../../api/transaction"
+import Account from "../../../models/account"
 import { mapTransactionsAmount } from "../../../utils/dataUtils"
 import { getPeriodDays, getPeriodIntervals, Period } from "../../../utils/periodUtils"
 import AccountsContext from "../contexts/AccountsContext"
@@ -27,7 +27,7 @@ const LineGraphCard = ({}: {}) => {
 	} = useDisclosure()
 	const [period, setPeriod] = useState<Period>(Period.ThisMonth)
 
-	const getAccountData = (account: iAccount): number[] => {
+	const getAccountData = (account: Account): number[] => {
 		const periodDays = getPeriodDays(period)
 		const dayDifference = (t: iTransaction) =>
 			Math.round(

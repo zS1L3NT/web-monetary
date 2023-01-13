@@ -2,9 +2,9 @@ import {
 	createContext, Dispatch, PropsWithChildren, SetStateAction, useContext, useEffect, useState
 } from "react"
 
-import { iAccount } from "../../../api/account"
 import { iCategory } from "../../../api/categories"
 import { TransactionType } from "../../../api/transaction"
+import Account from "../../../models/account"
 import { getSubcategories } from "../../../utils/dataUtils"
 import AccountsContext from "./AccountsContext"
 import CategoriesContext from "./CategoriesContext"
@@ -13,9 +13,9 @@ import TransactionsContext from "./TransactionsContext"
 const FiltersContext = createContext<{
 	sortBy: "date-desc" | "date-asc"
 	setSortBy: Dispatch<SetStateAction<"date-desc" | "date-asc">>
-	selectedAccounts: iAccount[] | undefined
-	selectAccount: (account: iAccount) => void
-	deselectAccount: (account: iAccount) => void
+	selectedAccounts: Account[] | undefined
+	selectAccount: (account: Account) => void
+	deselectAccount: (account: Account) => void
 	selectedCategories: iCategory[] | undefined
 	selectCategory: (category: iCategory) => void
 	deselectCategory: (category: iCategory) => void

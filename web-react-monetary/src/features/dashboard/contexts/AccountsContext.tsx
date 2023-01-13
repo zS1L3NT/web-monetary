@@ -1,15 +1,16 @@
 import { createContext, PropsWithChildren, useEffect, useState } from "react"
 
-import { iAccount, useGetAccountsQuery } from "../../../api/account"
+import { useGetAccountsQuery } from "../../../api/account"
 import useOnlyAuthenticated from "../../../hooks/useOnlyAuthenticated"
 import useToastError from "../../../hooks/useToastError"
+import Account from "../../../models/account"
 
 const AccountsContext = createContext<{
-	accounts: iAccount[] | undefined
-	selectedAccounts: iAccount[] | undefined
-	selectOnlyAccount: (account: iAccount) => void
-	selectAccount: (account: iAccount) => void
-	deselectAccount: (account: iAccount) => void
+	accounts: Account[] | undefined
+	selectedAccounts: Account[] | undefined
+	selectOnlyAccount: (account: Account) => void
+	selectAccount: (account: Account) => void
+	deselectAccount: (account: Account) => void
 }>({
 	accounts: undefined,
 	selectedAccounts: undefined,

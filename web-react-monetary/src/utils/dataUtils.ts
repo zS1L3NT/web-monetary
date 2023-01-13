@@ -1,9 +1,9 @@
-import { iAccount } from "../api/account"
 import { iCategory } from "../api/categories"
 import { iTransaction } from "../api/transaction"
+import Account from "../models/account"
 
 export const mapTransactionsAmount =
-	(account: iAccount) =>
+	(account: Account) =>
 	(transaction: iTransaction): number => {
 		if (transaction.type === "Outgoing" && transaction.from_account_id === account.id) {
 			return -transaction.amount
