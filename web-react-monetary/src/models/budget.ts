@@ -4,6 +4,7 @@ import Model from "./model"
 
 export default class Budget extends Model {
 	static type: z.infer<typeof Budget.schema>
+	static fillable: Omit<typeof Budget.type, "id" | "user_id" | "created_at" | "updated_at">
 	static schema = z.object({
 		id: z.string(),
 		user_id: z.string(),

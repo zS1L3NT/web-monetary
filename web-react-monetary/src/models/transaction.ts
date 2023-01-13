@@ -5,6 +5,7 @@ import Model from "./model"
 
 export default class Transaction extends Model {
 	static type: z.infer<typeof Transaction.schema>
+	static fillable: Omit<typeof Transaction.type, "id" | "user_id" | "created_at" | "updated_at">
 	static schema = z.object({
 		id: z.string(),
 		user_id: z.string(),

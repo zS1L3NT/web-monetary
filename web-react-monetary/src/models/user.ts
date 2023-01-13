@@ -4,6 +4,7 @@ import Model from "./model"
 
 export default class User extends Model {
 	static type: z.infer<typeof User.schema>
+	static fillable: Omit<typeof User.type, "id" | "created_at" | "updated_at">
 	static schema = z.object({
 		id: z.string(),
 		username: z.string(),
