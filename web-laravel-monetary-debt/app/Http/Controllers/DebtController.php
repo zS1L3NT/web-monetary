@@ -58,7 +58,6 @@ class DebtController extends Controller
 
         return [
             'message' => 'Debt created successfully!',
-            'debt' => $debt,
         ];
     }
 
@@ -73,7 +72,6 @@ class DebtController extends Controller
 
         return [
             'message' => 'Debt updated successfully!',
-            'debt' => $debt,
         ];
     }
 
