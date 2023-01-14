@@ -1,26 +1,10 @@
-import api, { ApiResponse, optimistic, RequireToken, WithTimestamps } from "./api"
-
-export type TransactionType = "Incoming" | "Outgoing" | "Transfer"
-
-export type iTransaction<
-	WT extends boolean = false,
-	RT extends TransactionType = TransactionType
-> = {
-	id: string
-	user_id: string
-	category_id: string
-	type: RT
-	amount: number
-	description: string
-	date: string
-	from_account_id: string
-	to_account_id: RT extends "Transfer" ? string : null
-} & WithTimestamps<WT>
+import Transaction from "../models/transaction"
+import api, { ApiResponse, optimistic, RequireToken } from "./api"
 
 const transactions = api.injectEndpoints({
 	endpoints: builder => ({
 		getTransactions: builder.query<
-			iTransaction<true>[],
+			Transaction[],
 			{
 				from_account_ids?: (string | null)[]
 				to_account_ids?: (string | null)[]
@@ -47,11 +31,12 @@ const transactions = api.injectEndpoints({
 					token
 				}
 			},
+			transformResponse: value => (<any>value).map(Transaction.fromJSON.bind(Transaction)),
 			providesTags: ["Transaction"]
 		}),
 		createTransaction: builder.mutation<
-			ApiResponse & { transaction: iTransaction<true> },
-			Omit<iTransaction, "id" | "user_id"> & RequireToken
+			ApiResponse,
+			typeof Transaction.fillable & RequireToken
 		>({
 			query: ({ token, ...transaction }) => ({
 				url: `/transactions`,
@@ -61,20 +46,18 @@ const transactions = api.injectEndpoints({
 			}),
 			invalidatesTags: ["Transaction"]
 		}),
-		getTransaction: builder.query<
-			iTransaction<true>,
-			{ transaction_id: string } & RequireToken
-		>({
+		getTransaction: builder.query<Transaction, { transaction_id: string } & RequireToken>({
 			query: ({ token, transaction_id }) => ({
 				url: `/transactions/${transaction_id}`,
 				method: "GET",
 				token
 			}),
+			transformResponse: Transaction.fromJSON.bind(Transaction),
 			providesTags: ["Transaction"]
 		}),
 		updateTransaction: builder.mutation<
-			ApiResponse & { transaction: iTransaction<true> },
-			Partial<Omit<iTransaction, "id" | "user_id">> & {
+			ApiResponse,
+			Partial<typeof Transaction.fillable> & {
 				transaction_id: string
 			} & RequireToken
 		>({
@@ -94,21 +77,20 @@ const transactions = api.injectEndpoints({
 							const index = _transactions.findIndex(a => a.id === transaction_id)
 							if (index === -1) return
 
-							// @ts-ignore
-							_transactions[index] = {
-								..._transactions[index]!,
+							_transactions[index] = Transaction.fromJSON({
+								..._transactions[index]!.toJSON(),
 								...transaction
-							}
+							})
 						}
 					),
 					transactions.util.updateQueryData(
 						"getTransaction",
 						{ token, transaction_id },
-						// @ts-ignore
-						_transaction => ({
-							..._transaction,
-							...transaction
-						})
+						_transaction =>
+							Transaction.fromJSON({
+								..._transaction.toJSON(),
+								...transaction
+							})
 					)
 				)
 			},
@@ -128,10 +110,10 @@ const transactions = api.injectEndpoints({
 							"getTransactions",
 							{ token },
 							_transactions => {
-								const transaction = _transactions.find(a => a.id === transaction_id)
-								if (!transaction) return
+								const index = _transactions.findIndex(a => a.id === transaction_id)
+								if (index === -1) return
 
-								_transactions.splice(_transactions.indexOf(transaction), 1)
+								_transactions.splice(index, 1)
 							}
 						)
 					)

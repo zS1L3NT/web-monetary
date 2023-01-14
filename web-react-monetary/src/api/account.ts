@@ -9,12 +9,12 @@ const accounts = api.injectEndpoints({
 				method: "GET",
 				token
 			}),
-			transformResponse: (response: any[]) => response.map(Account.fromJSON.bind(Account)),
+			transformResponse: value => (<any[]>value).map(Account.fromJSON.bind(Account)),
 			providesTags: ["Account"]
 		}),
 		createAccount: builder.mutation<
 			ApiResponse,
-			Omit<typeof Account.type, "id" | "user_id" | "balance"> & RequireToken
+			Omit<typeof Account.fillable, "balance"> & RequireToken
 		>({
 			query: ({ token, ...account }) => ({
 				url: `/accounts`,
@@ -35,7 +35,7 @@ const accounts = api.injectEndpoints({
 		}),
 		updateAccount: builder.mutation<
 			ApiResponse,
-			Partial<Omit<typeof Account.type, "id" | "user_id" | "balance">> & {
+			Partial<Omit<typeof Account.fillable, "balance">> & {
 				account_id: string
 			} & RequireToken
 		>({

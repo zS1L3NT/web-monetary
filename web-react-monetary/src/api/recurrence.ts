@@ -1,76 +1,18 @@
-import api, { ApiResponse, optimistic, RequireToken, WithTimestamps } from "./api"
-
-export type RecurrenceType = "Incoming" | "Outgoing" | "Transfer"
-
-export type RecurrencePeriodType = "Day" | "Week" | "Month" | "Year"
-
-export type RecurrencePeriodEndType = "Never" | "Date" | "Count"
-
-export type iRecurrence<
-	WT extends boolean = false,
-	RT extends RecurrenceType = RecurrenceType,
-	RPT extends RecurrencePeriodType = RecurrencePeriodType,
-	RPET extends RecurrencePeriodEndType = RecurrencePeriodEndType
-> = {
-	id: string
-	user_id: string
-	category_id: string
-	type: RT
-	name: string
-	amount: number
-	description: string
-	automatic: boolean
-	period_start_date: string
-	period_interval: number
-	period_type: RPT
-	period_end_type: RPET
-	transaction_ids: string[]
-	from_account_id: string
-	to_account_id: RT extends "Transfer" ? string : null
-} & (RPT extends "Week"
-	? {
-			period_week_days: (
-				| "Monday"
-				| "Tuesday"
-				| "Wednesday"
-				| "Thursday"
-				| "Friday"
-				| "Saturday"
-				| "Sunday"
-			)[]
-	  }
-	: {}) &
-	(RPT extends "Month"
-		? {
-				period_month_day_of: "Month" | "Week Day"
-		  }
-		: {}) &
-	(RPET extends "Date"
-		? {
-				period_end_date: string
-		  }
-		: {}) &
-	(RPET extends "Count"
-		? {
-				period_end_count: number
-		  }
-		: {}) &
-	WithTimestamps<WT>
+import Recurrence from "../models/recurrence"
+import api, { ApiResponse, optimistic, RequireToken } from "./api"
 
 const recurrences = api.injectEndpoints({
 	endpoints: builder => ({
-		getRecurrences: builder.query<iRecurrence<true>[], RequireToken>({
+		getRecurrences: builder.query<Recurrence[], RequireToken>({
 			query: ({ token }) => ({
 				url: `/recurrences`,
 				method: "GET",
 				token
 			}),
+			transformResponse: value => (<any>value).map(Recurrence.fromJSON.bind(Recurrence)),
 			providesTags: ["Recurrence"]
 		}),
-		createRecurrence: builder.mutation<
-			ApiResponse & { recurrence: iRecurrence<true> },
-			Omit<iRecurrence, "id" | "user_id"> & RequireToken
-		>({
+		createRecurrence: builder.mutation<ApiResponse, typeof Recurrence.fillable & RequireToken>({
 			query: ({ token, ...recurrence }) => ({
 				url: `/recurrences`,
 				method: "POST",
@@ -79,17 +21,18 @@ const recurrences = api.injectEndpoints({
 			}),
 			invalidatesTags: ["Recurrence"]
 		}),
-		getRecurrence: builder.query<iRecurrence<true>, { recurrence_id: string } & RequireToken>({
+		getRecurrence: builder.query<Recurrence, { recurrence_id: string } & RequireToken>({
 			query: ({ token, recurrence_id }) => ({
 				url: `/recurrences/${recurrence_id}`,
 				method: "GET",
 				token
 			}),
+			transformResponse: Recurrence.fromJSON.bind(Recurrence),
 			providesTags: ["Recurrence"]
 		}),
 		updateRecurrence: builder.mutation<
-			ApiResponse & { recurrence: iRecurrence<true> },
-			Partial<Omit<iRecurrence, "id" | "user_id">> & { recurrence_id: string } & RequireToken
+			ApiResponse,
+			Partial<typeof Recurrence.fillable> & { recurrence_id: string } & RequireToken
 		>({
 			query: ({ token, recurrence_id, ...recurrence }) => ({
 				url: `/recurrences/${recurrence_id}`,
@@ -104,20 +47,19 @@ const recurrences = api.injectEndpoints({
 						const index = _recurrences.findIndex(a => a.id === recurrence_id)
 						if (index === -1) return
 
-						// @ts-ignore
-						_recurrences[index] = {
-							..._recurrences[index]!,
+						_recurrences[index] = Recurrence.fromJSON({
+							..._recurrences[index]!.toJSON(),
 							...recurrence
-						}
+						})
 					}),
 					recurrences.util.updateQueryData(
 						"getRecurrence",
 						{ token, recurrence_id },
-						// @ts-ignore
-						_recurrence => ({
-							..._recurrence,
-							...recurrence
-						})
+						_recurrence =>
+							Recurrence.fromJSON({
+								..._recurrence.toJSON(),
+								...recurrence
+							})
 					)
 				)
 			},
@@ -133,10 +75,10 @@ const recurrences = api.injectEndpoints({
 				await optimistic(
 					mutators,
 					recurrences.util.updateQueryData("getRecurrences", { token }, _recurrences => {
-						const recurrence = _recurrences.find(a => a.id === recurrence_id)
-						if (!recurrence) return
+						const index = _recurrences.findIndex(a => a.id === recurrence_id)
+						if (index === -1) return
 
-						_recurrences.splice(_recurrences.indexOf(recurrence), 1)
+						_recurrences.splice(index, 1)
 					})
 				)
 			},
