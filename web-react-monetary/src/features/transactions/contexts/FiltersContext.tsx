@@ -3,7 +3,7 @@ import {
 } from "react"
 
 import { iCategory } from "../../../api/categories"
-import { TransactionType } from "../../../api/transaction"
+import { TransactionType } from "../../../api/transactions"
 import Account from "../../../models/account"
 import { getSubcategories } from "../../../utils/dataUtils"
 import AccountsContext from "./AccountsContext"

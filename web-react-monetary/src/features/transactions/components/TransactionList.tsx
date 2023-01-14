@@ -4,7 +4,7 @@ import { Fragment, useContext } from "react"
 
 import { Box, Center, Spinner, Text } from "@chakra-ui/react"
 
-import { iTransaction } from "../../../api/transaction"
+import { iTransaction } from "../../../api/transactions"
 import FiltersContext from "../contexts/FiltersContext"
 import TransactionsContext from "../contexts/TransactionsContext"
 import TransactionItem from "./TransactionItem"

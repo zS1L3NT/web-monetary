@@ -1,5 +1,5 @@
 import { iCategory } from "../api/categories"
-import { iTransaction } from "../api/transaction"
+import { iTransaction } from "../api/transactions"
 import Account from "../models/account"
 
 export const mapTransactionsAmount =

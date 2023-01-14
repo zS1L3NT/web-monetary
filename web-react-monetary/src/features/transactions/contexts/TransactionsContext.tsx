@@ -1,6 +1,6 @@
 import { createContext, PropsWithChildren } from "react"
 
-import { iTransaction, useGetTransactionsQuery } from "../../../api/transaction"
+import { iTransaction, useGetTransactionsQuery } from "../../../api/transactions"
 import useOnlyAuthenticated from "../../../hooks/useOnlyAuthenticated"
 import useToastError from "../../../hooks/useToastError"
 
