@@ -1,11 +1,12 @@
 import { createContext, PropsWithChildren } from "react"
 
-import { iCategory, useGetCategoriesQuery } from "../../../api/categories"
+import { useGetCategoriesQuery } from "../../../api/categories"
 import useOnlyAuthenticated from "../../../hooks/useOnlyAuthenticated"
 import useToastError from "../../../hooks/useToastError"
+import Category from "../../../models/category"
 
 const CategoriesContext = createContext<{
-	categories: iCategory[] | undefined
+	categories: Category[] | undefined
 }>({
 	categories: undefined
 })
@@ -17,7 +18,9 @@ export const CategoriesProvider = ({ children }: PropsWithChildren<{}>) => {
 
 	useToastError(categoriesError, true)
 
-	return <CategoriesContext.Provider value={{ categories }}>{children}</CategoriesContext.Provider>
+	return (
+		<CategoriesContext.Provider value={{ categories }}>{children}</CategoriesContext.Provider>
+	)
 }
 
 export default CategoriesContext

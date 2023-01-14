@@ -8,8 +8,8 @@ import {
 	Box, Card, CardBody, CardHeader, Flex, Heading, Icon, IconButton, Text, useDisclosure
 } from "@chakra-ui/react"
 
-import { iTransaction } from "../../../api/transactions"
 import Account from "../../../models/account"
+import Transaction from "../../../models/transaction"
 import { mapTransactionsAmount } from "../../../utils/dataUtils"
 import { getPeriodDays, getPeriodIntervals, Period } from "../../../utils/periodUtils"
 import AccountsContext from "../contexts/AccountsContext"
@@ -29,11 +29,8 @@ const LineGraphCard = ({}: {}) => {
 
 	const getAccountData = (account: Account): number[] => {
 		const periodDays = getPeriodDays(period)
-		const dayDifference = (t: iTransaction) =>
-			Math.round(
-				DateTime.fromISO(t.date).startOf("day").diff(DateTime.now().startOf("day"), "days")
-					.days
-			)
+		const dayDifference = (t: Transaction) =>
+			Math.round(t.date.startOf("day").diff(DateTime.now().startOf("day"), "days").days)
 
 		let balance =
 			account.initial_balance +

@@ -1,16 +1,15 @@
 import { ArrowForwardIcon } from "@chakra-ui/icons"
 import { Box, Card, CardBody, Flex, Skeleton, Tag, Text, useDisclosure } from "@chakra-ui/react"
-import { DateTime } from "luxon"
 
 import { useGetAccountQuery } from "../../../api/accounts"
 import { useGetCategoryQuery } from "../../../api/categories"
-import { iTransaction } from "../../../api/transactions"
 import EditTransactionModal from "../../../components/EditTransactionModal"
 import useOnlyAuthenticated from "../../../hooks/useOnlyAuthenticated"
 import useToastError from "../../../hooks/useToastError"
+import Transaction from "../../../models/transaction"
 import textColorOnBackground from "../../../utils/textColorOnBackground"
 
-const TransactionItem = ({ transaction }: { transaction: iTransaction }) => {
+const TransactionItem = ({ transaction }: { transaction: Transaction }) => {
 	const { token } = useOnlyAuthenticated()
 
 	const {
@@ -140,7 +139,7 @@ const TransactionItem = ({ transaction }: { transaction: iTransaction }) => {
 										fontSize: 14,
 										opacity: 0.5
 									}}>
-									{DateTime.fromISO(transaction.date).toFormat("hh:mm a")}
+									{transaction.date.toFormat("hh:mm a")}
 								</Text>
 							</Box>
 						</Flex>

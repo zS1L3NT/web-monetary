@@ -4,7 +4,7 @@ import { Fragment, useContext } from "react"
 
 import { Box, Center, Spinner, Text } from "@chakra-ui/react"
 
-import { iTransaction } from "../../../api/transactions"
+import Transaction from "../../../models/transaction"
 import FiltersContext from "../contexts/FiltersContext"
 import TransactionsContext from "../contexts/TransactionsContext"
 import TransactionItem from "./TransactionItem"
@@ -35,7 +35,7 @@ const TransactionList = ({}: {}) => {
 							.filter(
 								t => t.amount > minAmount && (!maxAmount || t.amount < maxAmount)
 							)
-							.reduce<Record<string, iTransaction[]>>((ts, t) => {
+							.reduce<Record<string, Transaction[]>>((ts, t) => {
 								const header = DateTime.fromISO(t.date).toFormat("d LLLL")
 								if (ts[header]) {
 									ts[header]!.push(t)

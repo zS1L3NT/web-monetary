@@ -2,9 +2,8 @@ import {
 	createContext, Dispatch, PropsWithChildren, SetStateAction, useContext, useEffect, useState
 } from "react"
 
-import { iCategory } from "../../../api/categories"
-import { TransactionType } from "../../../api/transactions"
 import Account from "../../../models/account"
+import Category from "../../../models/category"
 import { getSubcategories } from "../../../utils/dataUtils"
 import AccountsContext from "./AccountsContext"
 import CategoriesContext from "./CategoriesContext"
@@ -16,12 +15,12 @@ const FiltersContext = createContext<{
 	selectedAccounts: Account[] | undefined
 	selectAccount: (account: Account) => void
 	deselectAccount: (account: Account) => void
-	selectedCategories: iCategory[] | undefined
-	selectCategory: (category: iCategory) => void
-	deselectCategory: (category: iCategory) => void
-	transactionTypes: TransactionType[]
-	selectTransactionType: (type: TransactionType) => void
-	deselectTransactionType: (type: TransactionType) => void
+	selectedCategories: Category[] | undefined
+	selectCategory: (category: Category) => void
+	deselectCategory: (category: Category) => void
+	transactionTypes: ("Outgoing" | "Incoming" | "Transfer")[]
+	selectTransactionType: (type: "Outgoing" | "Incoming" | "Transfer") => void
+	deselectTransactionType: (type: "Outgoing" | "Incoming" | "Transfer") => void
 	minAmount: number
 	setMinAmount: Dispatch<SetStateAction<number>>
 	maxAmount: number | undefined
@@ -52,11 +51,9 @@ export const FiltersProvider = ({ children }: PropsWithChildren<{}>) => {
 	const [sortBy, setSortBy] = useState<"date-desc" | "date-asc">("date-desc")
 	const [selectedAccountIds, setSelectedAccountIds] = useState<string[]>()
 	const [selectedCategoryIds, setSelectedCategoryIds] = useState<string[]>()
-	const [transactionTypes, setTransactionTypes] = useState<TransactionType[]>([
-		"Outgoing",
-		"Incoming",
-		"Transfer"
-	])
+	const [transactionTypes, setTransactionTypes] = useState<
+		("Outgoing" | "Incoming" | "Transfer")[]
+	>(["Outgoing", "Incoming", "Transfer"])
 	const [minAmount, setMinAmount] = useState(0)
 	const [maxAmount, setMaxAmount] = useState<number>()
 
