@@ -28,7 +28,6 @@ return new class extends Migration
             $table->enum('period_type', ['Day', 'Week', 'Month', 'Year']);
             $table->integer('period_interval');
             $table->string('period_week_days')->nullable(); // Day[] | null
-            $table->enum('period_month_day_of', ['Month', 'Week Day'])->nullable();
             $table->enum('period_end_type', ['Never', 'Date', 'Count']);
             $table->timestamp('period_end_date')->nullable();
             $table->integer('period_end_count')->nullable();

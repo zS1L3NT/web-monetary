@@ -31,7 +31,6 @@ export default class Recurrence extends Model {
 				])
 			)
 			.nullable(),
-		period_month_day_of: z.enum(["Month", "Week Day"]).nullable(),
 		period_end_type: z.enum(["Never", "Date", "Count"]),
 		period_end_date: z.string().nullable(),
 		period_end_count: z.number().nullable(),
@@ -57,7 +56,6 @@ export default class Recurrence extends Model {
 		public period_week_days:
 			| ("Monday" | "Tuesday" | "Wednesday" | "Thursday" | "Friday" | "Saturday" | "Sunday")[]
 			| null,
-		public period_month_day_of: "Month" | "Week Day" | null,
 		public period_end_type: "Never" | "Date" | "Count",
 		private $period_end_date: string | null,
 		public period_end_count: number | null,
@@ -94,7 +92,6 @@ export default class Recurrence extends Model {
 			parsed.period_interval,
 			parsed.period_type,
 			parsed.period_week_days,
-			parsed.period_month_day_of,
 			parsed.period_end_type,
 			parsed.period_end_date,
 			parsed.period_end_count,
@@ -120,7 +117,6 @@ export default class Recurrence extends Model {
 			period_interval: this.period_interval,
 			period_type: this.period_type,
 			period_week_days: this.period_week_days,
-			period_month_day_of: this.period_month_day_of,
 			period_end_type: this.period_end_type,
 			period_end_date: this.$period_end_date,
 			period_end_count: this.period_end_count,
