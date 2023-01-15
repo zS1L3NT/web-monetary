@@ -8,9 +8,8 @@ import {
 	Box, Card, CardBody, CardHeader, Flex, Heading, Icon, IconButton, Text, useDisclosure
 } from "@chakra-ui/react"
 
-import { iAccount } from "../../../api/account"
-import { iTransaction } from "../../../api/transaction"
-import { mapTransactionsAmount } from "../../../utils/dataUtils"
+import Account from "../../../models/account"
+import Transaction from "../../../models/transaction"
 import { getPeriodDays, getPeriodIntervals, Period } from "../../../utils/periodUtils"
 import AccountsContext from "../contexts/AccountsContext"
 import TransactionsContext from "../contexts/TransactionsContext"
@@ -27,20 +26,17 @@ const LineGraphCard = ({}: {}) => {
 	} = useDisclosure()
 	const [period, setPeriod] = useState<Period>(Period.ThisMonth)
 
-	const getAccountData = (account: iAccount): number[] => {
+	const getAccountData = (account: Account): number[] => {
 		const periodDays = getPeriodDays(period)
-		const dayDifference = (t: iTransaction) =>
-			Math.round(
-				DateTime.fromISO(t.date).startOf("day").diff(DateTime.now().startOf("day"), "days")
-					.days
-			)
+		const dayDifference = (t: Transaction) =>
+			Math.round(t.date.startOf("day").diff(DateTime.now().startOf("day"), "days").days)
 
 		let balance =
 			account.initial_balance +
 			(transactions ?? [])
 				.filter(t => t.from_account_id === account.id || t.to_account_id === account.id)
 				.filter(t => dayDifference(t) <= -periodDays)
-				.map(mapTransactionsAmount(account))
+				.map(t => t.getAmount(account))
 				.reduce((a, b) => a + b, 0)
 
 		const data: number[] = [balance]
@@ -49,7 +45,7 @@ const LineGraphCard = ({}: {}) => {
 			balance += (transactions ?? [])
 				.filter(t => t.from_account_id === account.id || t.to_account_id === account.id)
 				.filter(t => dayDifference(t) === -i)
-				.map(mapTransactionsAmount(account))
+				.map(t => t.getAmount(account))
 				.reduce((a, b) => a + b, 0)
 			data.push(balance)
 		}

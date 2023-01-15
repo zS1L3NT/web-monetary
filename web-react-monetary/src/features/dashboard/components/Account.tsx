@@ -3,11 +3,11 @@ import { HiDotsVertical } from "react-icons/hi"
 
 import { Box, Checkbox, Flex, GridItem, Icon, IconButton, Text } from "@chakra-ui/react"
 
-import { iAccount } from "../../../api/account"
+import Account from "../../../models/account"
 import textColorOnBackground from "../../../utils/textColorOnBackground"
 import AccountsContext from "../contexts/AccountsContext"
 
-const Account = ({ account }: { account: iAccount }) => {
+const AccountComponent = ({ account }: { account: Account }) => {
 	const { selectedAccounts, selectOnlyAccount, selectAccount, deselectAccount } =
 		useContext(AccountsContext)
 
@@ -100,4 +100,4 @@ const Account = ({ account }: { account: iAccount }) => {
 	)
 }
 
-export default Account
+export default AccountComponent

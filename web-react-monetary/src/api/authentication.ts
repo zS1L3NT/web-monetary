@@ -1,15 +1,10 @@
-import api, { ApiResponse, RequireToken, WithTimestamps } from "./api"
-
-export type iUser<WT extends boolean = false> = {
-	id: string
-	username: string
-	email: string
-} & WithTimestamps<WT>
+import User from "../models/user"
+import api, { ApiResponse, optimistic, RequireToken } from "./api"
 
 const authentication = api.injectEndpoints({
 	endpoints: builder => ({
 		login: builder.mutation<
-			ApiResponse & { token: string; user: iUser<true> },
+			ApiResponse & { token: string },
 			{ email: string; password: string }
 		>({
 			query: user => ({
@@ -20,8 +15,8 @@ const authentication = api.injectEndpoints({
 			invalidatesTags: ["User"]
 		}),
 		register: builder.mutation<
-			ApiResponse & { token: string; user: iUser<true> },
-			Partial<Omit<iUser, "id"> & { password: string }>
+			ApiResponse & { token: string },
+			Partial<typeof User.fillable & { password: string }>
 		>({
 			query: user => ({
 				url: "/register",
@@ -38,24 +33,33 @@ const authentication = api.injectEndpoints({
 			}),
 			invalidatesTags: ["User"]
 		}),
-		getUser: builder.query<ApiResponse & { user: iUser<true> }, RequireToken>({
+		getUser: builder.query<User, RequireToken>({
 			query: ({ token }) => ({
 				url: "/user",
 				method: "GET",
 				token
 			}),
+			transformResponse: User.fromJSON.bind(User),
 			providesTags: ["User"]
 		}),
-		updateUser: builder.mutation<
-			ApiResponse & { user: iUser<true> },
-			Partial<Omit<iUser, "id">> & RequireToken
-		>({
+		updateUser: builder.mutation<ApiResponse, Partial<typeof User.fillable> & RequireToken>({
 			query: ({ token, ...user }) => ({
 				url: "/user",
 				method: "PUT",
 				body: user,
 				token
 			}),
+			onQueryStarted: async ({ token, ...user }, mutators) => {
+				await optimistic(
+					mutators,
+					authentication.util.updateQueryData("getUser", { token }, _user =>
+						User.fromJSON({
+							..._user.toJSON(),
+							...user
+						})
+					)
+				)
+			},
 			invalidatesTags: ["User"]
 		}),
 		updateUserPassword: builder.mutation<

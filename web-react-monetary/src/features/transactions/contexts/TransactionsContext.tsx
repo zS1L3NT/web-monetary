@@ -1,11 +1,12 @@
 import { createContext, PropsWithChildren } from "react"
 
-import { iTransaction, useGetTransactionsQuery } from "../../../api/transaction"
+import { useGetTransactionsQuery } from "../../../api/transactions"
 import useOnlyAuthenticated from "../../../hooks/useOnlyAuthenticated"
 import useToastError from "../../../hooks/useToastError"
+import Transaction from "../../../models/transaction"
 
 const TransactionsContext = createContext<{
-	transactions: iTransaction[] | undefined
+	transactions: Transaction[] | undefined
 }>({
 	transactions: undefined
 })
@@ -17,7 +18,11 @@ export const TransactionsProvider = ({ children }: PropsWithChildren<{}>) => {
 
 	useToastError(transactionError, true)
 
-	return <TransactionsContext.Provider value={{ transactions }}>{children}</TransactionsContext.Provider>
+	return (
+		<TransactionsContext.Provider value={{ transactions }}>
+			{children}
+		</TransactionsContext.Provider>
+	)
 }
 
 export default TransactionsContext

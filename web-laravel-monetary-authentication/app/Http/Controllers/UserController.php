@@ -85,7 +85,6 @@ class UserController extends Controller
             return [
                 "message" => "Logged in successfully!",
                 "token" => $token,
-                "user" => auth()->user()
             ];
         } else {
             return response(
@@ -105,7 +104,6 @@ class UserController extends Controller
         return [
             "message" => "Registered successfully!",
             "token" => auth()->login($user),
-            "user" => $user
         ];
     }
 
@@ -126,6 +124,10 @@ class UserController extends Controller
     public function update()
     {
         auth()->user()->update(request()->all());
+
+        return [
+            "message" => "User updated successfully!"
+        ];
     }
 
     public function updatePassword()

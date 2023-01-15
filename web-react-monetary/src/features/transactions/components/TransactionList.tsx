@@ -1,10 +1,9 @@
 import { AnimatePresence, motion } from "framer-motion"
-import { DateTime } from "luxon"
 import { Fragment, useContext } from "react"
 
 import { Box, Center, Spinner, Text } from "@chakra-ui/react"
 
-import { iTransaction } from "../../../api/transaction"
+import Transaction from "../../../models/transaction"
 import FiltersContext from "../contexts/FiltersContext"
 import TransactionsContext from "../contexts/TransactionsContext"
 import TransactionItem from "./TransactionItem"
@@ -23,7 +22,7 @@ const TransactionList = ({}: {}) => {
 							.sort(
 								(a, b) =>
 									(sortBy === "date-asc" ? 1 : -1) *
-									(new Date(a.date).getTime() - new Date(b.date).getTime())
+									(a.date.toMillis() - b.date.toMillis())
 							)
 							.filter(t =>
 								selectedAccounts?.find(
@@ -35,8 +34,8 @@ const TransactionList = ({}: {}) => {
 							.filter(
 								t => t.amount > minAmount && (!maxAmount || t.amount < maxAmount)
 							)
-							.reduce<Record<string, iTransaction[]>>((ts, t) => {
-								const header = DateTime.fromISO(t.date).toFormat("d LLLL")
+							.reduce<Record<string, Transaction[]>>((ts, t) => {
+								const header = t.date.toFormat("d LLLL")
 								if (ts[header]) {
 									ts[header]!.push(t)
 								} else {

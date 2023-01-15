@@ -1,29 +1,18 @@
-import api, { ApiResponse, optimistic, RequireToken, WithTimestamps } from "./api"
-
-export type iDebt<WT extends boolean = false> = {
-	id: string
-	user_id: string
-	type: "Loan" | "Debt"
-	amount: number
-	description: string
-	active: boolean
-	transaction_ids: string[]
-} & WithTimestamps<WT>
+import Debt from "../models/debt"
+import api, { ApiResponse, optimistic, RequireToken } from "./api"
 
 const debts = api.injectEndpoints({
 	endpoints: builder => ({
-		getDebts: builder.query<iDebt<true>[], { active?: boolean } & RequireToken>({
+		getDebts: builder.query<Debt[], { active?: boolean } & RequireToken>({
 			query: ({ token, active }) => ({
 				url: `/debts` + (active !== undefined ? `?active=${active}` : ``),
 				method: "GET",
 				token
 			}),
+			transformResponse: value => (<any>value).map(Debt.fromJSON.bind(Debt)),
 			providesTags: ["Debt"]
 		}),
-		createDebt: builder.mutation<
-			ApiResponse & { debt: iDebt<true> },
-			Omit<iDebt, "id" | "user_id"> & RequireToken
-		>({
+		createDebt: builder.mutation<ApiResponse, typeof Debt.fillable & RequireToken>({
 			query: ({ token, ...debt }) => ({
 				url: `/debts`,
 				method: "POST",
@@ -32,17 +21,18 @@ const debts = api.injectEndpoints({
 			}),
 			invalidatesTags: ["Debt"]
 		}),
-		getDebt: builder.query<iDebt<true>, { debt_id: string } & RequireToken>({
+		getDebt: builder.query<Debt, { debt_id: string } & RequireToken>({
 			query: ({ token, debt_id }) => ({
 				url: `/debts/${debt_id}`,
 				method: "GET",
 				token
 			}),
+			transformResponse: Debt.fromJSON.bind(Debt),
 			providesTags: ["Debt"]
 		}),
 		updateDebt: builder.mutation<
-			ApiResponse & { debt: iDebt<true> },
-			Partial<Omit<iDebt, "id" | "user_id">> & { debt_id: string } & RequireToken
+			ApiResponse,
+			Partial<typeof Debt.fillable> & { debt_id: string } & RequireToken
 		>({
 			query: ({ token, debt_id, ...debt }) => ({
 				url: `/debts/${debt_id}`,
@@ -57,15 +47,17 @@ const debts = api.injectEndpoints({
 						const index = _debts.findIndex(a => a.id === debt_id)
 						if (index === -1) return
 
-						_debts[index] = {
-							..._debts[index]!,
+						_debts[index] = Debt.fromJSON({
+							..._debts[index]!.toJSON(),
 							...debt
-						}
+						})
 					}),
-					debts.util.updateQueryData("getDebt", { token, debt_id }, _debt => ({
-						..._debt,
-						...debt
-					}))
+					debts.util.updateQueryData("getDebt", { token, debt_id }, _debt =>
+						Debt.fromJSON({
+							..._debt.toJSON(),
+							...debt
+						})
+					)
 				)
 			},
 			invalidatesTags: ["Debt"]
@@ -80,10 +72,10 @@ const debts = api.injectEndpoints({
 				await optimistic(
 					mutators,
 					debts.util.updateQueryData("getDebts", { token }, _debts => {
-						const debt = _debts.find(a => a.id === debt_id)
-						if (!debt) return
+						const index = _debts.findIndex(a => a.id === debt_id)
+						if (index === -1) return
 
-						_debts.splice(_debts.indexOf(debt), 1)
+						_debts.splice(index, 1)
 					})
 				)
 			},

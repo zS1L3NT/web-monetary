@@ -1,12 +1,13 @@
 import { createContext, PropsWithChildren, useContext } from "react"
 
-import { iTransaction, useGetTransactionsQuery } from "../../../api/transaction"
+import { useGetTransactionsQuery } from "../../../api/transactions"
 import useOnlyAuthenticated from "../../../hooks/useOnlyAuthenticated"
 import useToastError from "../../../hooks/useToastError"
+import Transaction from "../../../models/transaction"
 import AccountsContext from "./AccountsContext"
 
 const TransactionsContext = createContext({
-	transactions: undefined as iTransaction[] | undefined
+	transactions: undefined as Transaction[] | undefined
 })
 
 export const TransactionsProvider = ({ children }: PropsWithChildren<{}>) => {

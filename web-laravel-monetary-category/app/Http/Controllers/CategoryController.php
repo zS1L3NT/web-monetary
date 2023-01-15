@@ -35,11 +35,10 @@ class CategoryController extends Controller
 
     public function store()
     {
-        $category = Category::query()->create(request()->all());
+        Category::query()->create(request()->all());
 
         return [
             "message" => "Category created successfully!",
-            "category" => $category,
         ];
     }
 
@@ -54,7 +53,6 @@ class CategoryController extends Controller
 
         return [
             "message" => "Category updated successfully!",
-            "category" => $category,
         ];
     }
 

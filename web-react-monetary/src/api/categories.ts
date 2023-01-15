@@ -1,27 +1,18 @@
-import api, { ApiResponse, optimistic, RequireToken, WithTimestamps } from "./api"
-
-export type iCategory<WT extends boolean = false> = {
-	id: string
-	user_id: string
-	name: string
-	color: string
-	category_ids: string[]
-} & WithTimestamps<WT>
+import Category from "../models/category"
+import api, { ApiResponse, optimistic, RequireToken } from "./api"
 
 const categories = api.injectEndpoints({
 	endpoints: builder => ({
-		getCategories: builder.query<iCategory<true>[], RequireToken>({
+		getCategories: builder.query<Category[], RequireToken>({
 			query: ({ token }) => ({
 				url: `/categories`,
 				method: "GET",
 				token
 			}),
+			transformResponse: value => (<any>value).map(Category.fromJSON.bind(Category)),
 			providesTags: ["Category"]
 		}),
-		createCategory: builder.mutation<
-			ApiResponse & { category: iCategory<true> },
-			Omit<iCategory, "id" | "user_id"> & RequireToken
-		>({
+		createCategory: builder.mutation<ApiResponse, typeof Category.fillable & RequireToken>({
 			query: ({ token, ...category }) => ({
 				url: `/categories`,
 				method: "POST",
@@ -30,17 +21,18 @@ const categories = api.injectEndpoints({
 			}),
 			invalidatesTags: ["Category"]
 		}),
-		getCategory: builder.query<iCategory<true>, { category_id: string } & RequireToken>({
+		getCategory: builder.query<Category, { category_id: string } & RequireToken>({
 			query: ({ token, category_id }) => ({
 				url: `/categories/${category_id}`,
 				method: "GET",
 				token
 			}),
+			transformResponse: Category.fromJSON.bind(Category),
 			providesTags: ["Category"]
 		}),
 		updateCategory: builder.mutation<
-			ApiResponse & { category: iCategory<true> },
-			Partial<Omit<iCategory, "id" | "user_id">> & { category_id: string } & RequireToken
+			ApiResponse,
+			Partial<typeof Category.fillable> & { category_id: string } & RequireToken
 		>({
 			query: ({ token, category_id, ...category }) => ({
 				url: `/categories/${category_id}`,
@@ -55,18 +47,19 @@ const categories = api.injectEndpoints({
 						const index = _categories.findIndex(a => a.id === category_id)
 						if (index === -1) return
 
-						_categories[index] = {
-							..._categories[index]!,
+						_categories[index] = Category.fromJSON({
+							..._categories[index]!.toJSON(),
 							...category
-						}
+						})
 					}),
 					categories.util.updateQueryData(
 						"getCategory",
 						{ token, category_id },
-						_category => ({
-							..._category,
-							...category
-						})
+						_category =>
+							Category.fromJSON({
+								..._category.toJSON(),
+								...category
+							})
 					)
 				)
 			},
@@ -82,10 +75,10 @@ const categories = api.injectEndpoints({
 				await optimistic(
 					mutators,
 					categories.util.updateQueryData("getCategories", { token }, _categories => {
-						const category = _categories.find(a => a.id === category_id)
-						if (!category) return
+						const index = _categories.findIndex(a => a.id === category_id)
+						if (index === -1) return
 
-						_categories.splice(_categories.indexOf(category), 1)
+						_categories.splice(index, 1)
 					})
 				)
 			},
