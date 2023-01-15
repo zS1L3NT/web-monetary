@@ -1,11 +1,12 @@
 import { createContext, PropsWithChildren } from "react"
 
-import { iRecurrence, useGetRecurrencesQuery } from "../../../api/recurrence"
+import { useGetRecurrencesQuery } from "../../../api/recurrences"
 import useOnlyAuthenticated from "../../../hooks/useOnlyAuthenticated"
 import useToastError from "../../../hooks/useToastError"
+import Recurrence from "../../../models/recurrence"
 
 const RecurrencesContext = createContext<{
-	recurrences: iRecurrence[] | undefined
+	recurrences: Recurrence[] | undefined
 }>({
 	recurrences: undefined
 })
@@ -17,7 +18,11 @@ export const RecurrencesProvider = ({ children }: PropsWithChildren<{}>) => {
 
 	useToastError(recurrencesError, true)
 
-	return <RecurrencesContext.Provider value={{ recurrences }}>{children}</RecurrencesContext.Provider>
+	return (
+		<RecurrencesContext.Provider value={{ recurrences }}>
+			{children}
+		</RecurrencesContext.Provider>
+	)
 }
 
 export default RecurrencesContext

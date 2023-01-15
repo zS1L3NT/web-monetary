@@ -1,4 +1,3 @@
-import { DateTime } from "luxon"
 import { useContext, useState } from "react"
 import { Pie } from "react-chartjs-2"
 import { HiDotsVertical } from "react-icons/hi"
@@ -10,7 +9,6 @@ import {
 import { useGetCategoriesQuery } from "../../../api/categories"
 import useOnlyAuthenticated from "../../../hooks/useOnlyAuthenticated"
 import useToastError from "../../../hooks/useToastError"
-import { getSubcategories } from "../../../utils/dataUtils"
 import { getPeriodDays, Period } from "../../../utils/periodUtils"
 import AccountsContext from "../contexts/AccountsContext"
 import TransactionsContext from "../contexts/TransactionsContext"
@@ -38,7 +36,7 @@ const PieChartCard = ({}: {}) => {
 				a => a.id === t.from_account_id || a.id === t.to_account_id
 			)
 		)
-		.filter(t => DateTime.fromISO(t.date).diffNow("days").days > -getPeriodDays(period))
+		.filter(t => t.date.diffNow("days").days > -getPeriodDays(period))
 		.filter(
 			t =>
 				t.type === "Outgoing" ||
@@ -78,9 +76,9 @@ const PieChartCard = ({}: {}) => {
 												transactionsForPeriod.filter(t =>
 													[
 														c.id,
-														...getSubcategories(c, categories).map(
-															c => c.id
-														)
+														...c
+															.getSubcategories(categories)
+															.map(c => c.id)
 													].includes(t.category_id)
 												)
 											)

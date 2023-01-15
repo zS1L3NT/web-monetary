@@ -1,29 +1,18 @@
-import api, { ApiResponse, optimistic, RequireToken, WithTimestamps } from "./api"
-
-export type iBudget<WT extends boolean = false> = {
-	id: string
-	user_id: string
-	name: string
-	amount: number
-	period_type: "Day" | "Week" | "Month" | "Year"
-	account_ids: string[]
-	category_ids: string[]
-} & WithTimestamps<WT>
+import Budget from "../models/budget"
+import api, { ApiResponse, optimistic, RequireToken } from "./api"
 
 const budgets = api.injectEndpoints({
 	endpoints: builder => ({
-		getBudgets: builder.query<iBudget<true>[], RequireToken>({
+		getBudgets: builder.query<Budget[], RequireToken>({
 			query: ({ token }) => ({
 				url: `/budgets`,
 				method: "GET",
 				token
 			}),
+			transformResponse: value => (<any[]>value).map(Budget.fromJSON.bind(Budget)),
 			providesTags: ["Budget"]
 		}),
-		createBudget: builder.mutation<
-			ApiResponse & { budget: iBudget<true> },
-			Omit<iBudget, "id" | "user_id"> & RequireToken
-		>({
+		createBudget: builder.mutation<ApiResponse, typeof Budget.fillable & RequireToken>({
 			query: ({ token, ...budget }) => ({
 				url: `/budgets`,
 				method: "POST",
@@ -32,17 +21,18 @@ const budgets = api.injectEndpoints({
 			}),
 			invalidatesTags: ["Budget"]
 		}),
-		getBudget: builder.query<iBudget<true>, { budget_id: string } & RequireToken>({
+		getBudget: builder.query<Budget, { budget_id: string } & RequireToken>({
 			query: ({ token, budget_id }) => ({
 				url: `/budgets/${budget_id}`,
 				method: "GET",
 				token
 			}),
+			transformResponse: Budget.fromJSON.bind(Budget),
 			providesTags: ["Budget"]
 		}),
 		updateBudget: builder.mutation<
-			ApiResponse & { budget: iBudget<true> },
-			Partial<Omit<iBudget, "id" | "user_id">> & { budget_id: string } & RequireToken
+			ApiResponse,
+			Partial<typeof Budget.fillable> & { budget_id: string } & RequireToken
 		>({
 			query: ({ token, budget_id, ...budget }) => ({
 				url: `/budgets/${budget_id}`,
@@ -57,15 +47,17 @@ const budgets = api.injectEndpoints({
 						const index = _budgets.findIndex(a => a.id === budget_id)
 						if (index === -1) return
 
-						_budgets[index] = {
-							..._budgets[index]!,
+						_budgets[index] = Budget.fromJSON({
+							..._budgets[index]!.toJSON(),
 							...budget
-						}
+						})
 					}),
-					budgets.util.updateQueryData("getBudget", { token, budget_id }, _budget => ({
-						..._budget,
-						...budget
-					}))
+					budgets.util.updateQueryData("getBudget", { token, budget_id }, _budget =>
+						Budget.fromJSON({
+							..._budget.toJSON(),
+							...budget
+						})
+					)
 				)
 			},
 			invalidatesTags: ["Budget"]
@@ -80,10 +72,10 @@ const budgets = api.injectEndpoints({
 				await optimistic(
 					mutators,
 					budgets.util.updateQueryData("getBudgets", { token }, _budgets => {
-						const budget = _budgets.find(a => a.id === budget_id)
-						if (!budget) return
+						const index = _budgets.findIndex(a => a.id === budget_id)
+						if (index === -1) return
 
-						_budgets.splice(_budgets.indexOf(budget), 1)
+						_budgets.splice(index, 1)
 					})
 				)
 			},

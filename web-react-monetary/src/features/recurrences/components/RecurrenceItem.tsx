@@ -1,13 +1,13 @@
 import { Badge, Box, Card, CardBody, Flex, Skeleton, Tag, Text, Tooltip } from "@chakra-ui/react"
 
 import { useGetCategoryQuery } from "../../../api/categories"
-import { iRecurrence } from "../../../api/recurrence"
-import { useGetTransactionsQuery } from "../../../api/transaction"
+import { useGetTransactionsQuery } from "../../../api/transactions"
 import useOnlyAuthenticated from "../../../hooks/useOnlyAuthenticated"
 import useToastError from "../../../hooks/useToastError"
+import Recurrence from "../../../models/recurrence"
 import textColorOnBackground from "../../../utils/textColorOnBackground"
 
-const RecurrenceItem = ({ recurrence }: { recurrence: iRecurrence }) => {
+const RecurrenceItem = ({ recurrence }: { recurrence: Recurrence }) => {
 	const { token } = useOnlyAuthenticated()
 
 	const {
@@ -44,8 +44,15 @@ const RecurrenceItem = ({ recurrence }: { recurrence: iRecurrence }) => {
 									fontWeight: 500
 								}}>
 								{recurrence.name}
-								<Tooltip label={recurrence.automatic ? "Automatic approval" : "Requires your approval"}>
-									<Badge sx={{ml:2}}colorScheme={recurrence.automatic ? "green" : "red"}>
+								<Tooltip
+									label={
+										recurrence.automatic
+											? "Automatic approval"
+											: "Requires your approval"
+									}>
+									<Badge
+										sx={{ ml: 2 }}
+										colorScheme={recurrence.automatic ? "green" : "red"}>
 										{recurrence.automatic ? "AUTO" : "MANUAL"}
 									</Badge>
 								</Tooltip>

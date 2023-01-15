@@ -1,27 +1,20 @@
-import api, { ApiResponse, optimistic, RequireToken, WithTimestamps } from "./api"
-
-export type iAccount<WT extends boolean = false> = {
-	id: string
-	user_id: string
-	name: string
-	initial_balance: number
-	balance: number
-	color: string
-} & WithTimestamps<WT>
+import Account from "../models/account"
+import api, { ApiResponse, optimistic, RequireToken } from "./api"
 
 const accounts = api.injectEndpoints({
 	endpoints: builder => ({
-		getAccounts: builder.query<iAccount<true>[], RequireToken>({
+		getAccounts: builder.query<Account[], RequireToken>({
 			query: ({ token }) => ({
 				url: `/accounts`,
 				method: "GET",
 				token
 			}),
+			transformResponse: value => (<any[]>value).map(Account.fromJSON.bind(Account)),
 			providesTags: ["Account"]
 		}),
 		createAccount: builder.mutation<
-			ApiResponse & { account: iAccount<true> },
-			Omit<iAccount, "id" | "user_id" | "balance"> & RequireToken
+			ApiResponse,
+			Omit<typeof Account.fillable, "balance"> & RequireToken
 		>({
 			query: ({ token, ...account }) => ({
 				url: `/accounts`,
@@ -31,17 +24,20 @@ const accounts = api.injectEndpoints({
 			}),
 			invalidatesTags: ["Account"]
 		}),
-		getAccount: builder.query<iAccount<true>, { account_id: string } & RequireToken>({
+		getAccount: builder.query<Account, { account_id: string } & RequireToken>({
 			query: ({ token, account_id }) => ({
 				url: `/accounts/${account_id}`,
 				method: "GET",
 				token
 			}),
+			transformResponse: Account.fromJSON.bind(Account),
 			providesTags: ["Account"]
 		}),
 		updateAccount: builder.mutation<
-			ApiResponse & { account: iAccount<true> },
-			Partial<Omit<iAccount, "id" | "user_id" | "balance">> & { account_id: string } & RequireToken
+			ApiResponse,
+			Partial<Omit<typeof Account.fillable, "balance">> & {
+				account_id: string
+			} & RequireToken
 		>({
 			query: ({ token, account_id, ...account }) => ({
 				url: `/accounts/${account_id}`,
@@ -56,16 +52,14 @@ const accounts = api.injectEndpoints({
 						const index = _accounts.findIndex(a => a.id === account_id)
 						if (index === -1) return
 
-						_accounts[index] = {
-							..._accounts[index]!,
+						_accounts[index] = Account.fromJSON({
+							..._accounts[index]!.toJSON(),
 							...account
-						}
+						})
 					}),
-					accounts.util.updateQueryData(
-						"getAccount",
-						{ token, account_id },
-						_account => ({
-							..._account,
+					accounts.util.updateQueryData("getAccount", { token, account_id }, _account =>
+						Account.fromJSON({
+							..._account.toJSON(),
 							...account
 						})
 					)
@@ -83,10 +77,10 @@ const accounts = api.injectEndpoints({
 				await optimistic(
 					mutators,
 					accounts.util.updateQueryData("getAccounts", { token }, _accounts => {
-						const account = _accounts.find(a => a.id === account_id)
-						if (!account) return
+						const index = _accounts.findIndex(a => a.id === account_id)
+						if (index === -1) return
 
-						_accounts.splice(_accounts.indexOf(account), 1)
+						_accounts.splice(index, 1)
 					})
 				)
 			},

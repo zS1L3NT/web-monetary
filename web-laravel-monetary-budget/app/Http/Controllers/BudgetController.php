@@ -3,8 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Budget;
-use App\Models\BudgetAccounts;
-use App\Models\BudgetCategories;
 
 class BudgetController extends Controller
 {
@@ -43,11 +41,10 @@ class BudgetController extends Controller
 
     public function store()
     {
-        $budget = Budget::query()->create(request()->all());
+        Budget::query()->create(request()->all());
 
         return [
             "message" => "Budget created successfully!",
-            "budget" => $budget,
         ];
     }
 
@@ -62,7 +59,6 @@ class BudgetController extends Controller
 
         return [
             "message" => "Budget updated successfully!",
-            "budget" => $budget,
         ];
     }
 

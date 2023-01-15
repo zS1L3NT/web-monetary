@@ -65,11 +65,10 @@ class RecurrenceController extends Controller
 
     public function store()
     {
-        $recurrence = Recurrence::query()->create(request()->all());
+        Recurrence::query()->create(request()->all());
 
         return [
             "message" => "Recurrence created successfully!",
-            "recurrence" => $recurrence,
         ];
     }
 
@@ -84,7 +83,6 @@ class RecurrenceController extends Controller
 
         return [
             "message" => "Recurrence updated successfully!",
-            "recurrence" => $recurrence,
         ];
     }
 
