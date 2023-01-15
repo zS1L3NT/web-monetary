@@ -36,7 +36,7 @@ class RecurrenceFactory extends Factory
             'period_type' => $periodType,
             'period_interval' => $this->faker->numberBetween(1, 4),
             'period_week_days' => $periodType === 'Week' ? implode(',', $this->faker->randomElements(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'], $this->faker->numberBetween(1, 7))) : null,
-            'period_end_type' => $this->faker->randomElement(['Never', 'Date', 'Count']),
+            'period_end_type' => $periodEndType,
             'period_end_date' => $periodEndType === 'Date' ? $this->faker->date() : null,
             'period_end_count' => $periodEndType === 'Count' ? $this->faker->numberBetween(1, 10) : null,
             'transaction_ids' => []
