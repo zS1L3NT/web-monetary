@@ -34,7 +34,6 @@ class Recurrence extends Model
         'amount' => 'double',
         'automatic' => 'boolean',
         'period_start_date' => 'date',
-        'period_week_days' => 'array',
         'period_interval' => 'integer',
         'period_end_date' => 'date',
         'period_end_count' => 'integer',
@@ -43,6 +42,14 @@ class Recurrence extends Model
     protected $appends = [
         'transaction_ids'
     ];
+
+    public function getPeriodWeekDaysAttribute() {
+        return $this->attributes['period_week_days'] ? explode(',', $this->attributes['period_week_days']) : [];
+    }
+
+    public function setPeriodWeekDaysAttribute(array $periodWeekDays) {
+        $this->attributes['period_week_days'] = implode(',', $periodWeekDays);
+    }
 
     public function getTransactionIdsAttribute()
     {
