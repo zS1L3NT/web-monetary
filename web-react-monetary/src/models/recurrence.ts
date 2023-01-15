@@ -60,6 +60,44 @@ export default class Recurrence extends Model {
 		return this.$period_end_date ? DateTime.fromISO(this.$period_end_date) : null
 	}
 
+	*getNextDate(): Generator<DateTime | null> {
+		let date = this.period_start_date
+		let count = 0
+
+		while (
+			(this.period_end_type === "Never" ||
+				(this.period_end_type === "Date" && date <= this.period_end_date!) ||
+				(this.period_end_type === "Count" && count < this.period_end_count!)) &&
+			date <= DateTime.local()
+		) {
+			yield date
+			date = date.plus({ [this.period_type.toLowerCase()]: this.period_interval })
+			count++
+		}
+
+		yield null
+	}
+
+	formatPeriod(): string {
+		return [
+			"Every",
+			this.period_interval > 1 ? this.period_interval + "" : null,
+			this.period_type.toLowerCase() + (this.period_interval > 1 ? "s" : ""),
+			this.period_type === "Week" ? " on " + this.period_start_date.toFormat("cccc") : null,
+			"from",
+			this.period_start_date.toFormat("d MMM yyyy"),
+			this.period_end_type === "Never" ? "recurring forever" : null,
+			this.period_end_type === "Date"
+				? "to " + this.period_end_date?.toFormat("d MMM yyyy")
+				: null,
+			this.period_end_type === "Count"
+				? "recurring " + this.period_end_count! + " times"
+				: null
+		]
+			.filter(s => s !== null)
+			.join(" ")
+	}
+
 	static fromJSON(json: typeof Recurrence.type): Recurrence {
 		const parsed = Recurrence.schema.parse(json)
 

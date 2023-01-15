@@ -1,4 +1,4 @@
-import { Badge, Box, Card, CardBody, Flex, Skeleton, Tag, Text, Tooltip } from "@chakra-ui/react"
+import { Badge, Box, Card, CardBody, Flex, Skeleton, Tag, Text } from "@chakra-ui/react"
 
 import { useGetCategoryQuery } from "../../../api/categories"
 import { useGetTransactionsQuery } from "../../../api/transactions"
@@ -44,18 +44,11 @@ const RecurrenceItem = ({ recurrence }: { recurrence: Recurrence }) => {
 									fontWeight: 500
 								}}>
 								{recurrence.name}
-								<Tooltip
-									label={
-										recurrence.automatic
-											? "Automatic approval"
-											: "Requires your approval"
-									}>
-									<Badge
-										sx={{ ml: 2 }}
-										colorScheme={recurrence.automatic ? "green" : "red"}>
-										{recurrence.automatic ? "AUTO" : "MANUAL"}
-									</Badge>
-								</Tooltip>
+								<Badge
+									sx={{ ml: 2 }}
+									colorScheme={recurrence.automatic ? "green" : "red"}>
+									{recurrence.automatic ? "AUTO" : "MANUAL"}
+								</Badge>
 							</Text>
 							<Tag
 								sx={{
@@ -102,7 +95,7 @@ const RecurrenceItem = ({ recurrence }: { recurrence: Recurrence }) => {
 									fontSize: 14,
 									opacity: 0.5
 								}}>
-								n days overdue
+								{/* {recurrence.formatPeriod()} */}
 							</Text>
 						</Box>
 					</Flex>
