@@ -27,6 +27,17 @@ export default class Category extends Model {
 		super(id, created_at, updated_at)
 	}
 
+	getSubcategories(categories: Category[]): Category[] {
+		if (this.category_ids.length > 0) {
+			return this.category_ids
+				.map(c => categories.find(c_ => c_.id === c)!)
+				.map(c => [c, ...c.getSubcategories(categories)])
+				.flat()
+		} else {
+			return []
+		}
+	}
+
 	static fromJSON(json: typeof Category.type): Category {
 		const parsed = Category.schema.parse(json)
 

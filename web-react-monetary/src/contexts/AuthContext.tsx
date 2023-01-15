@@ -1,9 +1,10 @@
 import { createContext, PropsWithChildren, useEffect, useState } from "react"
 
-import { iUser, useGetUserQuery } from "../api/authentication"
+import { useGetUserQuery } from "../api/authentication"
+import User from "../models/user"
 
 const AuthContext = createContext<{
-	user: iUser | null
+	user: User | null
 	token: string | null
 	setToken: (token: string | null) => void
 }>({
@@ -36,7 +37,7 @@ export const AuthProvider = ({ children }: PropsWithChildren<{}>) => {
 	return (
 		<AuthContext.Provider
 			value={{
-				user: token ? user?.user ?? null : null,
+				user: token ? user ?? null : null,
 				token,
 				setToken: setTokenAndLocalStorage
 			}}>

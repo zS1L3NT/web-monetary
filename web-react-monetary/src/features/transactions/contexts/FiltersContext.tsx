@@ -4,7 +4,6 @@ import {
 
 import Account from "../../../models/account"
 import Category from "../../../models/category"
-import { getSubcategories } from "../../../utils/dataUtils"
 import AccountsContext from "./AccountsContext"
 import CategoriesContext from "./CategoriesContext"
 import TransactionsContext from "./TransactionsContext"
@@ -95,7 +94,7 @@ export const FiltersProvider = ({ children }: PropsWithChildren<{}>) => {
 						...new Set<string>([
 							...(selectedCategoryIds ?? []),
 							category.id,
-							...getSubcategories(category, categories ?? []).map(c => c.id)
+							...category.getSubcategories(categories ?? []).map(c => c.id)
 						])
 					])
 				},
@@ -105,7 +104,7 @@ export const FiltersProvider = ({ children }: PropsWithChildren<{}>) => {
 							c =>
 								![
 									category.id,
-									...getSubcategories(category, categories ?? []).map(c => c.id)
+									...category.getSubcategories(categories ?? []).map(c => c.id)
 								].includes(c)
 						)
 					)

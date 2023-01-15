@@ -9,9 +9,10 @@ import {
 
 import { useGetAccountsQuery } from "../api/accounts"
 import { useGetCategoriesQuery } from "../api/categories"
-import { iTransaction, TransactionType, useUpdateTransactionMutation } from "../api/transactions"
+import { useUpdateTransactionMutation } from "../api/transactions"
 import useOnlyAuthenticated from "../hooks/useOnlyAuthenticated"
 import useToastError from "../hooks/useToastError"
+import Transaction from "../models/transaction"
 import CategoryDropdown from "./CategoryDropdown"
 import Dropdown from "./Dropdown"
 
@@ -20,7 +21,7 @@ const EditTransactionModal = ({
 	isOpen,
 	onClose
 }: {
-	transaction: iTransaction
+	transaction: Transaction
 	isOpen: boolean
 	onClose: () => void
 }) => {
@@ -39,7 +40,7 @@ const EditTransactionModal = ({
 	const [type, setType] = useState(transaction.type)
 	const [amount, setAmount] = useState(transaction.amount)
 	const [description, setDescription] = useState(transaction.description)
-	const [date, setDate] = useState(new Date(transaction.date))
+	const [date, setDate] = useState(transaction.date)
 
 	useToastError(accountsError, true)
 	useToastError(categoriesError, true)
@@ -47,7 +48,7 @@ const EditTransactionModal = ({
 
 	const handleEdit = async () => {
 		if (invalid) return
-		
+
 		await updateTransaction({
 			token,
 			transaction_id: transaction.id,
@@ -57,16 +58,16 @@ const EditTransactionModal = ({
 			type,
 			amount,
 			description,
-			date: date.toISOString()
+			date: date.toISO()
 		})
 		onClose()
 	}
-	
+
 	const invalid = type === "Transfer" && !toAccountId
-	
+
 	return (
 		<Modal
-		finalFocusRef={finalFocusRef}
+			finalFocusRef={finalFocusRef}
 			isOpen={isOpen}
 			onClose={onClose}>
 			<ModalOverlay />
@@ -84,23 +85,23 @@ const EditTransactionModal = ({
 								}}
 								isAttached
 								variant="outline">
-								{(["Outgoing", "Incoming", "Transfer"] as TransactionType[]).map(
-									t => (
-										<Button
-											key={t}
-											variant={type === t ? "primary" : "outline"}
-											onClick={() => {
-												if (type === "Transfer" && t !== "Transfer") {
-													setToAcccountId(null)
-												} else if (fromAccountId !== transaction.to_account_id) {	
-													setToAcccountId(transaction.to_account_id)
-												}
-												setType(t)
-											}}>
-											{t}
-										</Button>
-									)
-								)}
+								{(["Outgoing", "Incoming", "Transfer"] as const).map(t => (
+									<Button
+										key={t}
+										variant={type === t ? "primary" : "outline"}
+										onClick={() => {
+											if (type === "Transfer" && t !== "Transfer") {
+												setToAcccountId(null)
+											} else if (
+												fromAccountId !== transaction.to_account_id
+											) {
+												setToAcccountId(transaction.to_account_id)
+											}
+											setType(t)
+										}}>
+										{t}
+									</Button>
+								))}
 							</ButtonGroup>
 
 							<Flex
@@ -150,8 +151,8 @@ const EditTransactionModal = ({
 							<Text sx={{ mt: 4 }}>Date and Time</Text>
 							<Input
 								type="datetime-local"
-								value={DateTime.fromJSDate(date).toFormat("yyyy-MM-dd'T'HH:mm''")}
-								onChange={e => setDate(new Date(e.target.value))}
+								value={date.toFormat("yyyy-MM-dd'T'HH:mm''")}
+								onChange={e => setDate(DateTime.fromISO(e.target.value))}
 							/>
 
 							<Text sx={{ mt: 4 }}>Category</Text>

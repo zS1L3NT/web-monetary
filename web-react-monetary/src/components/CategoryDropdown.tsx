@@ -4,7 +4,7 @@ import Select, { components, OptionProps } from "react-select"
 import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons"
 import { Flex, useColorModeValue } from "@chakra-ui/react"
 
-import { iCategory } from "../api/categories"
+import Category from "../models/category"
 
 const CategoryDropdown = ({
 	categories,
@@ -12,7 +12,7 @@ const CategoryDropdown = ({
 	setSelectedCategoryId,
 	isDisabled
 }: {
-	categories: iCategory[]
+	categories: Category[]
 	selectedCategoryId: string | null
 	setSelectedCategoryId: (choice: string | null) => void
 	isDisabled?: boolean
@@ -102,10 +102,7 @@ const CategoryDropdown = ({
 						provided["borderColor"] === "hsl(0, 0%, 80%)"
 							? "var(--chakra-colors-chakra-border-color)"
 							: "#63b3ed",
-					boxShadow:
-						provided["boxShadow"] === undefined
-							? "none"
-							: "0 0 0 1px #63b3ed",
+					boxShadow: provided["boxShadow"] === undefined ? "none" : "0 0 0 1px #63b3ed",
 					transition: "border-color 0.3s ease, border-width 0.3s ease",
 					":hover": {
 						borderColor:

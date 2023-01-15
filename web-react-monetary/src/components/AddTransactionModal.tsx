@@ -9,7 +9,7 @@ import {
 
 import { useGetAccountsQuery } from "../api/accounts"
 import { useGetCategoriesQuery } from "../api/categories"
-import { TransactionType, useCreateTransactionMutation } from "../api/transactions"
+import { useCreateTransactionMutation } from "../api/transactions"
 import useOnlyAuthenticated from "../hooks/useOnlyAuthenticated"
 import useToastError from "../hooks/useToastError"
 import CategoryDropdown from "./CategoryDropdown"
@@ -28,7 +28,7 @@ const AddTransactionModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
 	const [categoryId, setCategoryId] = useState<string | null>(null)
 	const [fromAccountId, setFromAcccountId] = useState<string | null>(null)
 	const [toAccountId, setToAcccountId] = useState<string | null>(null)
-	const [type, setType] = useState<TransactionType>("Outgoing")
+	const [type, setType] = useState<"Outgoing" | "Incoming" | "Transfer">("Outgoing")
 	const [amount, setAmount] = useState<number>()
 	const [description, setDescription] = useState("")
 	const [date, setDate] = useState(new Date())
@@ -76,21 +76,19 @@ const AddTransactionModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
 								}}
 								isAttached
 								variant="outline">
-								{(["Outgoing", "Incoming", "Transfer"] as TransactionType[]).map(
-									t => (
-										<Button
-											key={t}
-											variant={type === t ? "primary" : "outline"}
-											onClick={() => {
-												if (type === "Transfer" && t !== "Transfer") {
-													setToAcccountId(null)
-												}
-												setType(t)
-											}}>
-											{t}
-										</Button>
-									)
-								)}
+								{(["Outgoing", "Incoming", "Transfer"] as const).map(t => (
+									<Button
+										key={t}
+										variant={type === t ? "primary" : "outline"}
+										onClick={() => {
+											if (type === "Transfer" && t !== "Transfer") {
+												setToAcccountId(null)
+											}
+											setType(t)
+										}}>
+										{t}
+									</Button>
+								))}
 							</ButtonGroup>
 
 							<Flex

@@ -1,6 +1,7 @@
 import { DateTime } from "luxon"
 import { z } from "zod"
 
+import Account from "./account"
 import Model from "./model"
 
 export default class Transaction extends Model {
@@ -38,6 +39,27 @@ export default class Transaction extends Model {
 
 	get date(): DateTime {
 		return DateTime.fromISO(this.$date)
+	}
+
+	getAmount(account: Account): number {
+		if (this.type === "Outgoing" && this.from_account_id === account.id) {
+			return -this.amount
+		}
+
+		if (this.type === "Incoming" && this.from_account_id === account.id) {
+			return this.amount
+		}
+
+		if (this.type === "Transfer") {
+			if (this.from_account_id === account.id) {
+				return -this.amount
+			}
+			if (this.to_account_id === account.id) {
+				return this.amount
+			}
+		}
+
+		return 0
 	}
 
 	static fromJSON(json: typeof Transaction.type): Transaction {
