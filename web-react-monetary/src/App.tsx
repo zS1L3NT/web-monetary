@@ -10,6 +10,7 @@ import Logout from "./features/authentication/pages/Logout"
 import Register from "./features/authentication/pages/Register"
 import Dashboard from "./features/dashboard/pages/Dashboard"
 import Landing from "./features/landing/pages/Landing"
+import Recurrence from "./features/recurrences/pages/Recurrence"
 import Recurrences from "./features/recurrences/pages/Recurrences"
 import Transactions from "./features/transactions/pages/Transactions"
 
@@ -33,7 +34,7 @@ const App = () => {
 				}}>
 				<Routes>
 					<Route
-						path="/"
+						index
 						element={<Landing />}
 					/>
 					<Route
@@ -56,10 +57,16 @@ const App = () => {
 						path="transactions"
 						element={<Transactions />}
 					/>
-					<Route
-						path="recurrences"
-						element={<Recurrences />}
-					/>
+					<Route path="recurrences">
+						<Route
+							index
+							element={<Recurrences />}
+						/>
+						<Route
+							path=":recurrence_id"
+							element={<Recurrence />}
+						/>
+					</Route>
 				</Routes>
 			</Flex>
 		</Flex>

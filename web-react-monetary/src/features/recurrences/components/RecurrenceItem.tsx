@@ -1,4 +1,5 @@
 import { DateTime } from "luxon"
+import { useNavigate } from "react-router-dom"
 
 import { Badge, Box, Card, CardBody, Flex, Skeleton, Tag, Text } from "@chakra-ui/react"
 
@@ -16,6 +17,7 @@ const RecurrenceItem = ({
 	nextDate?: DateTime
 }) => {
 	const { token } = useOnlyAuthenticated()
+	const navigate = useNavigate()
 
 	const {
 		data: category,
@@ -38,7 +40,8 @@ const RecurrenceItem = ({
 				":hover": {
 					transform: "scale(1.01)"
 				}
-			}}>
+			}}
+			onClick={() => navigate(recurrence.id)}>
 			<CardBody>
 				{categoryLoading ? (
 					<Skeleton sx={{ height: nextDate ? 81 : 59 }} />
