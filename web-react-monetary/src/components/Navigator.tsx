@@ -88,39 +88,44 @@ const Navigator = () => {
 	return (
 		<>
 			<Flex
-				h="60px"
-				w="full"
-				bg="card"
-				p={2}
-				shadow="lg"
-				zIndex={10}
-				align="center">
+				sx={{
+					h: "60px",
+					w: "full",
+					alignItems: "center",
+					p: 2,
+					zIndex: 10,
+					shadow: "lg"
+				}}>
 				<IconButton
 					aria-label="Open Drawer"
 					variant="ghost"
 					onClick={onDrawerToggle}
 					icon={
 						<HamburgerIcon
-							w={5}
-							h={5}
+							sx={{
+								w: 5,
+								h: 5
+							}}
 						/>
 					}
 				/>
 				<Text
-					fontFamily="heading"
-					fontWeight="medium"
-					fontSize="xl"
-					ml={2}
-					_hover={{ cursor: "pointer" }}
+					sx={{
+						ml: 2,
+						fontFamily: "heading",
+						fontWeight: "medium",
+						fontSize: "xl",
+						_hover: { cursor: "pointer" }
+					}}
 					onClick={() => navigate("/")}>
 					Monetary
 				</Text>
 
 				<Tooltip label="Add Transaction">
 					<IconButton
+						sx={{ ml: "auto" }}
 						aria-label="Add Transaction"
 						variant="ghost"
-						ml="auto"
 						icon={<AddIcon />}
 						onClick={onAddTransactionModalOpen}
 					/>
@@ -128,9 +133,9 @@ const Navigator = () => {
 
 				<Tooltip label="Toggle Color Scheme">
 					<IconButton
+						sx={{ ml: 3 }}
 						aria-label="Toggle Color Scheme"
 						variant="ghost"
-						ml={3}
 						icon={useColorModeValue(<SunIcon />, <MoonIcon />)}
 						onClick={toggleColorMode}
 					/>
@@ -144,7 +149,7 @@ const Navigator = () => {
 					<DrawerOverlay />
 					<DrawerContent>
 						<DrawerHeader
-							_hover={{ cursor: "pointer" }}
+							sx={{ cursor: "pointer" }}
 							onClick={() => {
 								navigate("/")
 								onDrawerClose()
@@ -152,15 +157,18 @@ const Navigator = () => {
 							Monetary
 						</DrawerHeader>
 						<DrawerBody>
-							<Divider mt={-2} />
+							<Divider sx={{ mt: -2 }} />
 							{items.map(item =>
 								item.render ? (
 									<Button
 										key={item.navigate}
-										w="full"
-										display="flex"
-										justifyContent="start"
-										mt={3}
+										sx={{
+											w: "full",
+											display: "flex",
+											justifyContent: "start",
+											mt: 3
+										}}
+										variant="ghost"
 										onClick={() => {
 											navigate(item.navigate)
 											onDrawerClose()
@@ -171,8 +179,10 @@ const Navigator = () => {
 							)}
 						</DrawerBody>
 						<DrawerCloseButton
-							mt={2}
-							mr={3}
+							sx={{
+								mt: 2,
+								mr: 3
+							}}
 						/>
 					</DrawerContent>
 				</Drawer>

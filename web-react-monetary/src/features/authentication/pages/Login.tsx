@@ -76,7 +76,7 @@ const Login = ({}: {}) => {
 			<Text align="center">to gain full access to Monetary</Text>
 			<Stack
 				maxW="md"
-				bg="card"
+				bg="gray.700"
 				rounded="lg"
 				boxShadow="lg"
 				mt={{
@@ -142,7 +142,6 @@ const Login = ({}: {}) => {
 					}}>
 					<Button
 						size="lg"
-						variant="primary"
 						isLoading={isLoading}
 						loadingText="Logging in..."
 						onClick={handleLogin}>
@@ -159,7 +158,7 @@ const Login = ({}: {}) => {
 						align="center">
 						Don't have an account yet?{" "}
 						<Link
-							color="primary"
+							color="primary.300"
 							onClick={() => navigate("/register")}>
 							Register
 						</Link>

@@ -29,7 +29,7 @@ const AccountComponent = ({ account }: { account: Account }) => {
 				borderRadius: "12px",
 				cursor: "pointer",
 				transition: "filter 0.3s, background 0.3s",
-				"&:hover": {
+				_hover: {
 					filter: "brightness(1.2)"
 				}
 			}}
@@ -87,6 +87,7 @@ const AccountComponent = ({ account }: { account: Account }) => {
 			</Flex>
 			<IconButton
 				aria-label="More Account Options"
+				colorScheme="gray"
 				size="sm"
 				icon={
 					<Icon

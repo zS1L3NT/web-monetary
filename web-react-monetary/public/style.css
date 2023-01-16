@@ -30,6 +30,6 @@ body,
 
 ::-webkit-scrollbar-thumb,
 ::-webkit-scrollbar-thumb:horizontal {
-	background: var(--chakra-colors-primary);
+	background: var(--chakra-colors-primary-400);
 	border-radius: 24px;
 }

@@ -33,25 +33,17 @@ const PeriodSelectModal = ({
 				<ModalCloseButton />
 				<ModalBody>
 					<Button
-						sx={{
-							bg: period === Period.Today ? "primary" : "",
-							"&:hover": { bg: period === Period.Today ? "primary" : "" }
-						}}
-						variant="outline"
+						variant={period === Period.Today ? "solid" : "outline"}
 						onClick={() => setPeriod(Period.Today)}>
 						Today
 					</Button>
 					<ButtonGroup
 						sx={{ mt: 3 }}
-						isAttached
-						variant="outline">
+						isAttached>
 						{[Period.Past7Days, Period.Past30Days, Period.Past365Days].map(p => (
 							<Button
 								key={p}
-								sx={{
-									bg: p === period ? "primary" : "",
-									"&:hover": { bg: p === period ? "primary" : "" }
-								}}
+								variant={period === p ? "solid" : "outline"}
 								onClick={() => setPeriod(p)}>
 								{p}
 							</Button>
@@ -59,15 +51,11 @@ const PeriodSelectModal = ({
 					</ButtonGroup>
 					<ButtonGroup
 						sx={{ mt: 3 }}
-						isAttached
-						variant="outline">
+						isAttached>
 						{[Period.ThisWeek, Period.ThisMonth, Period.ThisYear].map(p => (
 							<Button
 								key={p}
-								sx={{
-									bg: p === period ? "primary" : "",
-									"&:hover": { bg: p === period ? "primary" : "" }
-								}}
+								variant={period === p ? "solid" : "outline"}
 								onClick={() => setPeriod(p)}>
 								{p}
 							</Button>
@@ -77,11 +65,11 @@ const PeriodSelectModal = ({
 				<ModalFooter>
 					<Button
 						sx={{ mr: 3 }}
+						variant="ghost"
 						onClick={onClose}>
 						Close
 					</Button>
 					<Button
-						variant="primary"
 						disabled={!period}
 						onClick={() => {
 							setParentPeriod(period)

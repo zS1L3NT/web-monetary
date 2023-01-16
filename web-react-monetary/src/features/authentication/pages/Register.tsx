@@ -82,7 +82,7 @@ const Register = () => {
 			<Text align="center">to start using Monetary</Text>
 			<Stack
 				maxW="md"
-				bg="card"
+				bg="gray.700"
 				rounded="lg"
 				boxShadow="lg"
 				mt={{
@@ -165,7 +165,6 @@ const Register = () => {
 					}}>
 					<Button
 						size="lg"
-						variant="primary"
 						isLoading={isLoading}
 						loadingText="Registering..."
 						onClick={handleRegister}>
@@ -182,7 +181,7 @@ const Register = () => {
 						align="center">
 						Already have an account?{" "}
 						<Link
-							color="primary"
+							color="primary.300"
 							onClick={() => navigate("/login")}>
 							Login
 						</Link>
