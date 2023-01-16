@@ -24,6 +24,9 @@ export default extendTheme(
 				900: "#00150d"
 			}
 		},
+		shadows: {
+			outline: "0 0 0 3px rgb(123, 209, 182, 0.6)"
+		},
 		components: {
 			Input: {
 				defaultProps: {
