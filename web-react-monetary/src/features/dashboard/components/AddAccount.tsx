@@ -6,7 +6,7 @@ const AddAccount = ({}: {}) => {
 	return (
 		<GridItem
 			sx={{
-				w: "100%",
+				w: "full",
 				h: "64px",
 				px: 3,
 				display: "flex",
@@ -14,11 +14,11 @@ const AddAccount = ({}: {}) => {
 				justifyContent: "space-between",
 				borderRadius: "12px",
 				borderWidth: 1,
-				borderColor: "primary",
+				borderColor: "primary.200",
 				cursor: "pointer",
 				transition: "background 0.3s",
-				"&:hover": {
-					bg: "primary"
+				_hover: {
+					bg: "primary.300"
 				}
 			}}>
 			<Flex

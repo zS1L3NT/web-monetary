@@ -88,7 +88,7 @@ const EditTransactionModal = ({
 								{(["Outgoing", "Incoming", "Transfer"] as const).map(t => (
 									<Button
 										key={t}
-										variant={type === t ? "primary" : "outline"}
+										variant={type === t ? "solid" : "outline"}
 										onClick={() => {
 											if (type === "Transfer" && t !== "Transfer") {
 												setToAcccountId(null)
@@ -179,11 +179,11 @@ const EditTransactionModal = ({
 				<ModalFooter>
 					<Button
 						sx={{ mr: 3 }}
+						variant="ghost"
 						onClick={onClose}>
 						Close
 					</Button>
 					<Button
-						variant="primary"
 						isLoading={isLoading}
 						disabled={invalid}
 						onClick={handleEdit}>

@@ -96,37 +96,37 @@ const CategoryDropdown = ({
 				control: provided => ({
 					...provided,
 					cursor: "pointer",
-					background: "var(--chakra-colors-card)",
+					background: "var(--chakra-colors-gray-700)",
 					borderWidth: "1px",
 					borderColor:
 						provided["borderColor"] === "hsl(0, 0%, 80%)"
 							? "var(--chakra-colors-chakra-border-color)"
-							: "#63b3ed",
-					boxShadow: provided["boxShadow"] === undefined ? "none" : "0 0 0 1px #63b3ed",
+							: "var(--chakra-colors-primary-300)",
+					boxShadow: provided["boxShadow"] === undefined ? "none" : "0 0 0 1px var(--chakra-colors-primary-300)",
 					transition: "border-color 0.3s ease, border-width 0.3s ease",
 					":hover": {
 						borderColor:
 							((provided as any)["&:hover"]["borderColor"] as string) ===
 							"hsl(0, 0%, 70%)"
 								? "var(--chakra-colors-whiteAlpha-400)"
-								: "#63b3ed"
+								: "var(--chakra-colors-primary-300)"
 					}
 				}),
 				menu: provided => ({
 					...provided,
-					background: "var(--chakra-colors-card)"
+					background: "var(--chakra-colors-gray-600)"
 				}),
 				option: (provided, state) => ({
 					...provided,
 					cursor: "pointer",
 					color: "var(--chakra-colors-chakra-body-text)",
-					background: "var(--chakra-colors-card)",
+					background: "var(--chakra-colors-gray-600)",
 					filter: state.isSelected
 						? useColorModeValue("brightness(0.9)", "brightness(1.2)")
 						: "none",
 					":hover": {
 						filter: useColorModeValue("brightness(0.9)", "brightness(1.2)"),
-						background: "var(--chakra-colors-card)"
+						background: "var(--chakra-colors-gray-600)"
 					}
 				}),
 				singleValue: provided => ({

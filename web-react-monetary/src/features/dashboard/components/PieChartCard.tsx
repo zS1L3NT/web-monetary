@@ -54,6 +54,7 @@ const PieChartCard = ({}: {}) => {
 						</Box>
 						<IconButton
 							aria-label="More Settings"
+							variant="ghost"
 							icon={<Icon as={HiDotsVertical} />}
 							onClick={onPeriodModalOpen}
 						/>

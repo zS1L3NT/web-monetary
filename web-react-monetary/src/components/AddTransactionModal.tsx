@@ -79,7 +79,7 @@ const AddTransactionModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
 								{(["Outgoing", "Incoming", "Transfer"] as const).map(t => (
 									<Button
 										key={t}
-										variant={type === t ? "primary" : "outline"}
+										variant={type === t ? "solid" : "outline"}
 										onClick={() => {
 											if (type === "Transfer" && t !== "Transfer") {
 												setToAcccountId(null)
@@ -159,11 +159,11 @@ const AddTransactionModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
 				<ModalFooter>
 					<Button
 						sx={{ mr: 3 }}
+						variant="ghost"
 						onClick={onClose}>
 						Close
 					</Button>
 					<Button
-						variant="primary"
 						isLoading={isLoading}
 						disabled={invalid}
 						onClick={handleCreate}>
