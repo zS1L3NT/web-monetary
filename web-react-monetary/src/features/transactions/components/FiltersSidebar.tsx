@@ -82,8 +82,8 @@ const FiltersSidebar = ({}: {}) => {
 						value={sortBy}
 						onChange={e => setSortBy(e as "date-desc" | "date-asc")}>
 						<Stack>
-							<Radio value="date-asc">Date Ascending</Radio>
-							<Radio value="date-desc">Date Descending</Radio>
+							<Radio value="date-asc">Date Asc</Radio>
+							<Radio value="date-desc">Date Desc</Radio>
 						</Stack>
 					</RadioGroup>
 				</Box>

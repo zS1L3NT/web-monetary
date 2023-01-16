@@ -1,13 +1,20 @@
+import { DateTime } from "luxon"
+
 import { Badge, Box, Card, CardBody, Flex, Skeleton, Tag, Text } from "@chakra-ui/react"
 
 import { useGetCategoryQuery } from "../../../api/categories"
-import { useGetTransactionsQuery } from "../../../api/transactions"
 import useOnlyAuthenticated from "../../../hooks/useOnlyAuthenticated"
 import useToastError from "../../../hooks/useToastError"
 import Recurrence from "../../../models/recurrence"
 import textColorOnBackground from "../../../utils/textColorOnBackground"
 
-const RecurrenceItem = ({ recurrence }: { recurrence: Recurrence }) => {
+const RecurrenceItem = ({
+	recurrence,
+	nextDate
+}: {
+	recurrence: Recurrence
+	nextDate?: DateTime
+}) => {
 	const { token } = useOnlyAuthenticated()
 
 	const {
@@ -18,23 +25,23 @@ const RecurrenceItem = ({ recurrence }: { recurrence: Recurrence }) => {
 		token,
 		category_id: recurrence.category_id
 	})
-	const {
-		data: transactions,
-		error: transactionsError,
-		isLoading: transactionsLoading
-	} = useGetTransactionsQuery({
-		token,
-		transaction_ids: recurrence.transaction_ids
-	})
 
 	useToastError(categoryError, true)
-	useToastError(transactionsError, true)
 
 	return (
-		<Card sx={{ width: "full", my: 4 }}>
+		<Card
+			sx={{
+				width: "full",
+				my: 4,
+				transition: "transform 0.3s",
+				cursor: "pointer",
+				":hover": {
+					transform: "scale(1.01)"
+				}
+			}}>
 			<CardBody>
-				{categoryLoading || transactionsLoading ? (
-					<Skeleton sx={{ height: 62 }} />
+				{categoryLoading ? (
+					<Skeleton sx={{ height: nextDate ? 81 : 59 }} />
 				) : (
 					<Flex>
 						<Box>
@@ -73,7 +80,6 @@ const RecurrenceItem = ({ recurrence }: { recurrence: Recurrence }) => {
 							}}>
 							<Text
 								sx={{
-									width: "100px",
 									textAlign: "right",
 									color:
 										recurrence.type === "Outgoing"
@@ -87,16 +93,29 @@ const RecurrenceItem = ({ recurrence }: { recurrence: Recurrence }) => {
 									: recurrence.type === "Incoming"
 									? "+"
 									: ""}
-								${recurrence.amount}
+								${recurrence.amount.toFixed(2)}
 							</Text>
-							<Text
-								sx={{
-									textAlign: "right",
-									fontSize: 14,
-									opacity: 0.5
-								}}>
-								{/* {recurrence.formatPeriod()} */}
-							</Text>
+							{nextDate ? (
+								<>
+									<Text
+										sx={{
+											textAlign: "right",
+											fontSize: 14,
+											opacity: 0.5
+										}}>
+										{nextDate.toFormat("d MMM yyyy")}
+									</Text>
+									<Text
+										sx={{
+											height: "36px",
+											textAlign: "right",
+											fontSize: 12,
+											opacity: 0.25
+										}}>
+										{recurrence.formatPeriod()}
+									</Text>
+								</>
+							) : null}
 						</Box>
 					</Flex>
 				)}

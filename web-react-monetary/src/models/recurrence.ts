@@ -60,15 +60,33 @@ export default class Recurrence extends Model {
 		return this.$period_end_date ? DateTime.fromISO(this.$period_end_date) : null
 	}
 
+	getIsActive(): boolean {
+		switch (this.period_end_type) {
+			case "Never":
+				return true
+			case "Date":
+				return DateTime.now() < this.period_end_date!
+			case "Count":
+				return (
+					DateTime.now() <
+					this.period_start_date.plus({
+						[this.period_type.toLowerCase()]:
+							this.period_interval * this.period_end_count!
+					})
+				)
+		}
+	}
+
 	*getNextDate(): Generator<DateTime | null> {
-		let date = this.period_start_date
 		let count = 0
+		let date = this.period_start_date.plus({
+			[this.period_type.toLowerCase()]: this.period_interval
+		})
 
 		while (
-			(this.period_end_type === "Never" ||
-				(this.period_end_type === "Date" && date <= this.period_end_date!) ||
-				(this.period_end_type === "Count" && count < this.period_end_count!)) &&
-			date <= DateTime.local()
+			this.period_end_type === "Never" ||
+			(this.period_end_type === "Date" && date <= this.period_end_date!) ||
+			(this.period_end_type === "Count" && count < this.period_end_count!)
 		) {
 			yield date
 			date = date.plus({ [this.period_type.toLowerCase()]: this.period_interval })
@@ -82,16 +100,18 @@ export default class Recurrence extends Model {
 		return [
 			"Every",
 			this.period_interval > 1 ? this.period_interval + "" : null,
-			this.period_type.toLowerCase() + (this.period_interval > 1 ? "s" : ""),
-			this.period_type === "Week" ? " on " + this.period_start_date.toFormat("cccc") : null,
-			"from",
-			this.period_start_date.toFormat("d MMM yyyy"),
-			this.period_end_type === "Never" ? "recurring forever" : null,
-			this.period_end_type === "Date"
-				? "to " + this.period_end_date?.toFormat("d MMM yyyy")
-				: null,
+			(this.period_type === "Week"
+				? this.period_start_date.toFormat("cccc")
+				: this.period_type.toLowerCase()) + (this.period_interval > 1 ? "s" : ""),
+			this.period_end_type === "Never" ? null : "until",
+			this.period_end_type === "Date" ? this.period_end_date?.toFormat("d MMM yyyy") : null,
 			this.period_end_type === "Count"
-				? "recurring " + this.period_end_count! + " times"
+				? this.period_start_date
+						.plus({
+							[this.period_type.toLowerCase()]:
+								this.period_interval * this.period_end_count!
+						})
+						?.toFormat("d MMM yyyy")
 				: null
 		]
 			.filter(s => s !== null)

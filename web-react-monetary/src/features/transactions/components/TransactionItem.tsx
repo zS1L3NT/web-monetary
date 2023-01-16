@@ -131,7 +131,7 @@ const TransactionItem = ({ transaction }: { transaction: Transaction }) => {
 										: transaction.type === "Incoming"
 										? "+"
 										: ""}
-									${transaction.amount}
+									${transaction.amount.toFixed(2)}
 								</Text>
 								<Text
 									sx={{

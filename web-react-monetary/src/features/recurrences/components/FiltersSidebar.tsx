@@ -1,7 +1,9 @@
+import { useContext } from "react"
+
 import {
 	Box, Card, CardBody, CardHeader, Heading, Radio, RadioGroup, Stack, Text
 } from "@chakra-ui/react"
-import { useContext } from "react"
+
 import FiltersContext from "../contexts/FiltersContext"
 
 const FiltersSidebar = ({}: {}) => {
@@ -26,10 +28,16 @@ const FiltersSidebar = ({}: {}) => {
 					<RadioGroup
 						sx={{ mt: 2 }}
 						value={sortBy}
-						onChange={e => setSortBy(e as "date-desc" | "date-asc")}>
+						onChange={e =>
+							setSortBy(
+								e as "name-asc" | "name-desc" | "due-date-asc" | "due-date-desc"
+							)
+						}>
 						<Stack>
-							<Radio value="date-asc">Date Ascending</Radio>
-							<Radio value="date-desc">Date Descending</Radio>
+							<Radio value="name-asc">Name Asc</Radio>
+							<Radio value="name-desc">Name Desc</Radio>
+							<Radio value="due-date-asc">Due Date Asc</Radio>
+							<Radio value="due-date-desc">Due Date Desc</Radio>
 						</Stack>
 					</RadioGroup>
 				</Box>
