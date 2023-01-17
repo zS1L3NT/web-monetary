@@ -12,7 +12,10 @@ const categories = api.injectEndpoints({
 			transformResponse: value => (<any>value).map(Category.fromJSON.bind(Category)),
 			providesTags: ["Category"]
 		}),
-		createCategory: builder.mutation<ApiResponse, typeof Category.fillable & RequireToken>({
+		createCategory: builder.mutation<
+			ApiResponse & { id: string },
+			typeof Category.fillable & RequireToken
+		>({
 			query: ({ token, ...category }) => ({
 				url: `/categories`,
 				method: "POST",

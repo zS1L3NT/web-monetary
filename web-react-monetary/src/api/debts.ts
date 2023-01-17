@@ -12,7 +12,10 @@ const debts = api.injectEndpoints({
 			transformResponse: value => (<any>value).map(Debt.fromJSON.bind(Debt)),
 			providesTags: ["Debt"]
 		}),
-		createDebt: builder.mutation<ApiResponse, typeof Debt.fillable & RequireToken>({
+		createDebt: builder.mutation<
+			ApiResponse & { id: string },
+			typeof Debt.fillable & RequireToken
+		>({
 			query: ({ token, ...debt }) => ({
 				url: `/debts`,
 				method: "POST",

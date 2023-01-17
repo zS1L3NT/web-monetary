@@ -12,7 +12,10 @@ const budgets = api.injectEndpoints({
 			transformResponse: value => (<any[]>value).map(Budget.fromJSON.bind(Budget)),
 			providesTags: ["Budget"]
 		}),
-		createBudget: builder.mutation<ApiResponse, typeof Budget.fillable & RequireToken>({
+		createBudget: builder.mutation<
+			ApiResponse & { id: string },
+			typeof Budget.fillable & RequireToken
+		>({
 			query: ({ token, ...budget }) => ({
 				url: `/budgets`,
 				method: "POST",

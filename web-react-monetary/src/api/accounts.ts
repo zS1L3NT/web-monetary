@@ -13,7 +13,7 @@ const accounts = api.injectEndpoints({
 			providesTags: ["Account"]
 		}),
 		createAccount: builder.mutation<
-			ApiResponse,
+			ApiResponse & { id: string },
 			Omit<typeof Account.fillable, "balance"> & RequireToken
 		>({
 			query: ({ token, ...account }) => ({

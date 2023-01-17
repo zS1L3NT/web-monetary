@@ -12,7 +12,10 @@ const recurrences = api.injectEndpoints({
 			transformResponse: value => (<any>value).map(Recurrence.fromJSON.bind(Recurrence)),
 			providesTags: ["Recurrence"]
 		}),
-		createRecurrence: builder.mutation<ApiResponse, typeof Recurrence.fillable & RequireToken>({
+		createRecurrence: builder.mutation<
+			ApiResponse & { id: string },
+			typeof Recurrence.fillable & RequireToken
+		>({
 			query: ({ token, ...recurrence }) => ({
 				url: `/recurrences`,
 				method: "POST",

@@ -38,7 +38,7 @@ const transactions = api.injectEndpoints({
 			providesTags: ["Transaction"]
 		}),
 		createTransaction: builder.mutation<
-			ApiResponse,
+			ApiResponse & { id: string },
 			typeof Transaction.fillable & RequireToken
 		>({
 			query: ({ token, ...transaction }) => ({
