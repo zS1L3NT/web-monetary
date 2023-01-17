@@ -32,7 +32,7 @@ export default class Account extends Model {
 		super(id, created_at, updated_at)
 	}
 
-	renderAccount(toAccount?: Account, right = true) {
+	renderAccount(toAccount?: Account, right = false) {
 		return (
 			<Flex
 				sx={{

@@ -21,9 +21,7 @@ export const CategoryProvider = ({ children }: PropsWithChildren<{}>) => {
 			token,
 			category_id: recurrence?.category_id ?? ""
 		},
-		{
-			skip: !recurrence
-		}
+		{ skip: !recurrence }
 	)
 
 	useToastError(categoryError, true)

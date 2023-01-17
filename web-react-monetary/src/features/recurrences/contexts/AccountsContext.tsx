@@ -24,18 +24,14 @@ export const AccountsProvider = ({ children }: PropsWithChildren<{}>) => {
 			token,
 			account_id: recurrence?.from_account_id ?? ""
 		},
-		{
-			skip: !recurrence
-		}
+		{ skip: !recurrence }
 	)
 	const { data: toAccount, error: toAccountError } = useGetAccountQuery(
 		{
 			token,
 			account_id: recurrence?.to_account_id ?? ""
 		},
-		{
-			skip: !recurrence || !recurrence.to_account_id
-		}
+		{ skip: !recurrence || !recurrence.to_account_id }
 	)
 
 	useToastError(fromAccountError, true)

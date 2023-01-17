@@ -1,7 +1,8 @@
+import { AnimatePresence, motion } from "framer-motion"
 import { DateTime } from "luxon"
-import { useContext } from "react"
+import { useContext, useMemo } from "react"
 
-import { Card, CardBody, Stack } from "@chakra-ui/react"
+import { Stack } from "@chakra-ui/react"
 
 import { useGetTransactionsQuery } from "../../../api/transactions"
 import useOnlyAuthenticated from "../../../hooks/useOnlyAuthenticated"
@@ -23,21 +24,38 @@ const TransactionList = () => {
 
 	useToastError(transactionsError, true)
 
-	const nextTransactionDate = (
-		(transactions ?? []).sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0))[0]
-			?.date ?? (recurrence?.getNextDate().next().value as DateTime | undefined)
-	)?.minus({ hours: 8 })
+	// Generate a list of dates that I want to show a confirm button for
+	const dates = useMemo(() => {
+		if (!recurrence) return []
+
+		const nextDate = recurrence.getNextDate([])
+		const dates: DateTime[] = []
+
+		for (const date of nextDate) {
+			if (!date) break
+
+			dates.push(date)
+			if (date > DateTime.now() && !transactions?.find(t => t.date.equals(date))) break
+		}
+
+		return dates.reverse()
+	}, [recurrence, transactions])
 
 	return (
 		<Stack sx={{ mt: 4 }}>
-			{nextTransactionDate ? <TransactionItem date={nextTransactionDate} /> : null}
-			{(transactions ?? [])
-				.sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0))
-				.map(t => (
-					<Card key={t.id}>
-						<CardBody></CardBody>
-					</Card>
+			<AnimatePresence>
+				{dates.map(d => (
+					<motion.div
+						key={d.toMillis()}
+						layout
+						layoutId={d.toMillis() + ""}>
+						<TransactionItem
+							date={d}
+							transaction={transactions?.find(t => t.date.equals(d))}
+						/>
+					</motion.div>
 				))}
+			</AnimatePresence>
 		</Stack>
 	)
 }

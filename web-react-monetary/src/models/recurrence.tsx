@@ -4,6 +4,7 @@ import { z } from "zod"
 import { Badge, Text, Tooltip } from "@chakra-ui/react"
 
 import Model from "./model"
+import Transaction from "./transaction"
 
 export default class Recurrence extends Model {
 	static type: z.infer<typeof Recurrence.schema>
@@ -79,7 +80,7 @@ export default class Recurrence extends Model {
 		}
 	}
 
-	*getNextDate(): Generator<DateTime | null> {
+	*getNextDate(transactions: Transaction[]): Generator<DateTime | null> {
 		let count = 0
 		let date = this.period_start_date.plus({
 			[this.period_type.toLowerCase()]: this.period_interval
@@ -90,7 +91,7 @@ export default class Recurrence extends Model {
 			(this.period_end_type === "Date" && date <= this.period_end_date!) ||
 			(this.period_end_type === "Count" && count < this.period_end_count!)
 		) {
-			yield date
+			if (!transactions.find(t => t.date.equals(date))) yield date
 			date = date.plus({ [this.period_type.toLowerCase()]: this.period_interval })
 			count++
 		}
@@ -120,11 +121,11 @@ export default class Recurrence extends Model {
 			.join(" ")
 	}
 
-	renderAmount() {
+	renderAmount(right = true) {
 		return (
 			<Text
 				sx={{
-					textAlign: "right",
+					textAlign: right ? "right" : "left",
 					color:
 						this.type === "Outgoing"
 							? "red.500"

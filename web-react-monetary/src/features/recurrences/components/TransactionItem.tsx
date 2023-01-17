@@ -1,27 +1,76 @@
 import { DateTime } from "luxon"
-import { useContext, useRef } from "react"
+import { useContext, useRef, useState } from "react"
 
 import {
 	AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogHeader,
 	AlertDialogOverlay, Box, Button, Card, CardBody, Flex, Heading, Stack, Text, useDisclosure
 } from "@chakra-ui/react"
 
+import { useUpdateRecurrenceMutation } from "../../../api/recurrences"
+import { useCreateTransactionMutation } from "../../../api/transactions"
+import useOnlyAuthenticated from "../../../hooks/useOnlyAuthenticated"
+import useToastError from "../../../hooks/useToastError"
 import Transaction from "../../../models/transaction"
-import CategoryContext from "../contexts/CategoryContext"
 import AccountsContext from "../contexts/AccountsContext"
+import CategoryContext from "../contexts/CategoryContext"
+import RecurrenceContext from "../contexts/RecurrenceContext"
 
 const TransactionItem = ({ date, transaction }: { date: DateTime; transaction?: Transaction }) => {
-	const { isOpen, onOpen, onClose } = useDisclosure()
-	const cancelRef = useRef(null)
-
+	const { token } = useOnlyAuthenticated()
+	const { recurrence } = useContext(RecurrenceContext)
 	const { fromAccount, toAccount } = useContext(AccountsContext)
 	const { category } = useContext(CategoryContext)
 
-	const handleConfirm = () => {}
+	const [
+		createTransaction,
+		{ error: createTransactionError, isLoading: createTransactionIsLoading }
+	] = useCreateTransactionMutation()
+	const [
+		updateRecurrence,
+		{ error: updateRecurrenceError, isLoading: updateRecurrenceIsLoading }
+	] = useUpdateRecurrenceMutation()
+
+	const { isOpen, onOpen, onClose } = useDisclosure()
+	const [today] = useState(DateTime.now().startOf("day").plus({ hours: 8 }))
+	const cancelRef = useRef(null)
+
+	useToastError(createTransactionError)
+	useToastError(updateRecurrenceError)
+
+	const handleConfirm = async () => {
+		if (
+			!recurrence ||
+			!fromAccount ||
+			(!toAccount && recurrence.type === "Transfer") ||
+			!category
+		)
+			return
+
+		const response = await createTransaction({
+			token,
+			category_id: category.id,
+			type: recurrence.type,
+			amount: recurrence.amount,
+			description: ``,
+			date: date.toISODate(),
+			from_account_id: fromAccount.id,
+			to_account_id: toAccount?.id ?? null
+		})
+
+		if ("data" in response) {
+			await updateRecurrence({
+				token,
+				recurrence_id: recurrence.id,
+				transaction_ids: [...recurrence.transaction_ids, response.data.id]
+			})
+		}
+
+		onClose()
+	}
 
 	return (
 		<>
-			<Card sx={{ bg: transaction ? "gray.800" : "gray.700" }}>
+			<Card variant={transaction ? "outline" : "elevated"}>
 				<CardBody>
 					<Flex
 						sx={{
@@ -37,19 +86,27 @@ const TransactionItem = ({ date, transaction }: { date: DateTime; transaction?: 
 							) : (
 								<Text
 									sx={{
-										color: DateTime.now() > date ? "red.400" : "yellow.400"
+										color:
+											today > date
+												? "red.400"
+												: today.equals(date)
+												? "yellow.400"
+												: ""
 									}}>
-									{DateTime.now() > date ? "Overdue by" : "Due in"}{" "}
-									{Math.abs(
-										date.diff(DateTime.now().startOf("day"), "days").days
-									)}{" "}
-									day(s)
+									{today > date
+										? "Overdue by"
+										: today.equals(date)
+										? "Due today"
+										: "Due in"}{" "}
+									{!today.equals(date)
+										? Math.abs(date.diff(today, "days").days) + " day(s)"
+										: ""}
 								</Text>
 							)}
 						</Stack>
 						<Button
 							variant="outline"
-							colorScheme="red"
+							colorScheme="primary"
 							isDisabled={!!transaction}
 							onClick={onOpen}>
 							{transaction ? "Paid" : "Confirm"}
@@ -69,36 +126,37 @@ const TransactionItem = ({ date, transaction }: { date: DateTime; transaction?: 
 							Confirm Transaction
 						</AlertDialogHeader>
 						<AlertDialogBody>
-							<Heading>Account</Heading>
-							<Flex>
-								{/* <Box
-									sx={{
-										width: 4,
-										height: 4,
-										borderRadius: 4,
-										bg: color
-									}}
-								/>
-								<Text
-									sx={{
-										ml: 2,
-										fontSize: 18,
-										fontWeight: 500
-									}}>
-									{name}
-								</Text> */}
-							</Flex>
+							<Stack gap={2}>
+								<Box>
+									<Heading size="sm">Account</Heading>
+									{fromAccount?.renderAccount(toAccount)}
+								</Box>
+								<Box>
+									<Heading size="sm">Category</Heading>
+									{category?.renderCategory()}
+								</Box>
+								<Box>
+									<Heading size="sm">Date</Heading>
+									{date.toFormat("d MMM yyyy")}
+								</Box>
+								<Box>
+									<Heading size="sm">Amount</Heading>
+									{recurrence?.renderAmount(false)}
+								</Box>
+							</Stack>
 						</AlertDialogBody>
 						<AlertDialogFooter>
 							<Button
 								ref={cancelRef}
 								variant="ghost"
-								colorScheme="red"
+								colorScheme="primary"
 								onClick={onClose}>
 								Cancel
 							</Button>
 							<Button
-								colorScheme="red"
+								colorScheme="primary"
+								loadingText="Confirming"
+								isLoading={createTransactionIsLoading || updateRecurrenceIsLoading}
 								onClick={handleConfirm}
 								ml={3}>
 								Confirm
