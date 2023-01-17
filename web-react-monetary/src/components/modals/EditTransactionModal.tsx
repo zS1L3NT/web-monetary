@@ -7,54 +7,65 @@ import {
 	NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper, Text, Textarea
 } from "@chakra-ui/react"
 
-import { useGetAccountsQuery } from "../api/accounts"
-import { useGetCategoriesQuery } from "../api/categories"
-import { useCreateTransactionMutation } from "../api/transactions"
-import useOnlyAuthenticated from "../hooks/useOnlyAuthenticated"
-import useToastError from "../hooks/useToastError"
-import CategoryDropdown from "./CategoryDropdown"
-import Dropdown from "./Dropdown"
+import { useGetAccountsQuery } from "../../api/accounts"
+import { useGetCategoriesQuery } from "../../api/categories"
+import { useUpdateTransactionMutation } from "../../api/transactions"
+import useOnlyAuthenticated from "../../hooks/useOnlyAuthenticated"
+import useToastError from "../../hooks/useToastError"
+import Transaction from "../../models/transaction"
+import CategoryDropdown from "../CategoryDropdown"
+import Dropdown from "../Dropdown"
 
-const AddTransactionModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
+const EditTransactionModal = ({
+	transaction,
+	isOpen,
+	onClose
+}: {
+	transaction: Transaction
+	isOpen: boolean
+	onClose: () => void
+}) => {
 	const { token } = useOnlyAuthenticated()
 
-	const [createTransaction, { isLoading, error: createTransactionError }] =
-		useCreateTransactionMutation()
+	const [
+		updateTransaction,
+		{ isLoading: updateTransactionIsLoading, error: updateTransactionError }
+	] = useUpdateTransactionMutation()
 	const { data: accounts, error: accountsError } = useGetAccountsQuery({ token })
 	const { data: categories, error: categoriesError } = useGetCategoriesQuery({ token })
 
 	const finalFocusRef = useRef(null)
 
-	const [categoryId, setCategoryId] = useState<string | null>(null)
-	const [fromAccountId, setFromAcccountId] = useState<string | null>(null)
-	const [toAccountId, setToAcccountId] = useState<string | null>(null)
-	const [type, setType] = useState<"Outgoing" | "Incoming" | "Transfer">("Outgoing")
-	const [amount, setAmount] = useState<number>()
-	const [description, setDescription] = useState("")
-	const [date, setDate] = useState(new Date())
+	const [categoryId, setCategoryId] = useState(transaction.category_id)
+	const [fromAccountId, setFromAcccountId] = useState(transaction.from_account_id)
+	const [toAccountId, setToAcccountId] = useState(transaction.to_account_id)
+	const [type, setType] = useState(transaction.type)
+	const [amount, setAmount] = useState(transaction.amount)
+	const [description, setDescription] = useState(transaction.description)
+	const [date, setDate] = useState(transaction.date)
 
 	useToastError(accountsError, true)
 	useToastError(categoriesError, true)
-	useToastError(createTransactionError)
+	useToastError(updateTransactionError)
 
-	const handleCreate = async () => {
+	const handleEdit = async () => {
 		if (invalid) return
 
-		await createTransaction({
+		await updateTransaction({
 			token,
+			transaction_id: transaction.id,
 			category_id: categoryId,
 			from_account_id: fromAccountId,
 			to_account_id: toAccountId,
 			type,
 			amount,
 			description,
-			date: date.toISOString()
+			date: date.toISO()
 		})
 		onClose()
 	}
 
-	const invalid =
-		!fromAccountId || (type === "Transfer" && !toAccountId) || !categoryId || !amount
+	const invalid = type === "Transfer" && !toAccountId
 
 	return (
 		<Modal
@@ -63,7 +74,7 @@ const AddTransactionModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
 			onClose={onClose}>
 			<ModalOverlay />
 			<ModalContent>
-				<ModalHeader>Add Transaction</ModalHeader>
+				<ModalHeader>Edit Transaction</ModalHeader>
 				<ModalCloseButton />
 				<ModalBody>
 					{accounts && categories ? (
@@ -83,6 +94,10 @@ const AddTransactionModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
 										onClick={() => {
 											if (type === "Transfer" && t !== "Transfer") {
 												setToAcccountId(null)
+											} else if (
+												fromAccountId !== transaction.to_account_id
+											) {
+												setToAcccountId(transaction.to_account_id)
 											}
 											setType(t)
 										}}>
@@ -98,10 +113,12 @@ const AddTransactionModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
 									<Text>{type === "Transfer" ? "From " : ""}Account</Text>
 									<Dropdown
 										choices={accounts
-											.filter(a => a.id !== toAccountId)
-											.map(a => ({ id: a.id, text: a.name }))}
+											.map(a => ({ id: a.id, text: a.name }))
+											.filter(a => a.id !== toAccountId)}
 										selectedChoiceId={fromAccountId}
-										setSelectedChoiceId={setFromAcccountId}
+										setSelectedChoiceId={selectedChoiceId =>
+											setFromAcccountId(selectedChoiceId ?? fromAccountId)
+										}
 									/>
 								</Box>
 								{type === "Transfer" ? (
@@ -109,10 +126,12 @@ const AddTransactionModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
 										<Text>To Account</Text>
 										<Dropdown
 											choices={accounts
-												.filter(a => a.id !== fromAccountId)
-												.map(a => ({ id: a.id, text: a.name }))}
+												.map(a => ({ id: a.id, text: a.name }))
+												.filter(a => a.id !== fromAccountId)}
 											selectedChoiceId={toAccountId}
-											setSelectedChoiceId={setToAcccountId}
+											setSelectedChoiceId={selectedChoiceId =>
+												setToAcccountId(selectedChoiceId)
+											}
 										/>
 									</Box>
 								) : null}
@@ -120,6 +139,7 @@ const AddTransactionModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
 
 							<Text sx={{ mt: 4 }}>Amount</Text>
 							<NumberInput
+								defaultValue={amount}
 								onBlur={e => setAmount(+e.target.value.replace(/^\$/, ""))}
 								precision={2}
 								step={0.05}>
@@ -133,15 +153,17 @@ const AddTransactionModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
 							<Text sx={{ mt: 4 }}>Date and Time</Text>
 							<Input
 								type="datetime-local"
-								value={DateTime.fromJSDate(date).toFormat("yyyy-MM-dd'T'HH:mm''")}
-								onChange={e => setDate(new Date(e.target.value))}
+								value={date.toFormat("yyyy-MM-dd'T'HH:mm''")}
+								onChange={e => setDate(DateTime.fromISO(e.target.value))}
 							/>
 
 							<Text sx={{ mt: 4 }}>Category</Text>
 							<CategoryDropdown
 								categories={categories}
 								selectedCategoryId={categoryId}
-								setSelectedCategoryId={setCategoryId}
+								setSelectedCategoryId={selectedCategoryId =>
+									setCategoryId(selectedCategoryId ?? categoryId)
+								}
 							/>
 
 							<Text sx={{ mt: 4 }}>Description (optional)</Text>
@@ -164,10 +186,10 @@ const AddTransactionModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
 						Close
 					</Button>
 					<Button
-						isLoading={isLoading}
+						isLoading={updateTransactionIsLoading}
 						disabled={invalid}
-						onClick={handleCreate}>
-						Create
+						onClick={handleEdit}>
+						Edit
 					</Button>
 				</ModalFooter>
 			</ModalContent>
@@ -175,4 +197,4 @@ const AddTransactionModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
 	)
 }
 
-export default AddTransactionModal
+export default EditTransactionModal

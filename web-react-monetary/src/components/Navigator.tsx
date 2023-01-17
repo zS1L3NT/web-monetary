@@ -1,14 +1,16 @@
 import { useContext } from "react"
-import { useNavigate } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 
-import { AddIcon, HamburgerIcon, MoonIcon, SunIcon } from "@chakra-ui/icons"
+import { AddIcon, EditIcon, HamburgerIcon, MoonIcon, SunIcon } from "@chakra-ui/icons"
 import {
 	Button, Divider, Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerHeader,
 	DrawerOverlay, Flex, IconButton, Text, Tooltip, useColorMode, useColorModeValue, useDisclosure
 } from "@chakra-ui/react"
 
 import AuthContext from "../contexts/AuthContext"
-import AddTransactionModal from "./AddTransactionModal"
+import AddRecurrenceModal from "./modals/AddRecurrenceModal"
+import AddTransactionModal from "./modals/AddTransactionModal"
+import EditRecurrenceModal from "./modals/EditRecurrenceModal"
 
 interface iNavItem {
 	title: string
@@ -19,6 +21,7 @@ interface iNavItem {
 const Navigator = () => {
 	const { token } = useContext(AuthContext)
 	const { toggleColorMode } = useColorMode()
+	const location = useLocation()
 	const navigate = useNavigate()
 
 	const {
@@ -30,6 +33,16 @@ const Navigator = () => {
 		isOpen: isAddTransactionModalOpen,
 		onOpen: onAddTransactionModalOpen,
 		onClose: onAddTransactionModalClose
+	} = useDisclosure()
+	const {
+		isOpen: isAddRecurrenceModalOpen,
+		onOpen: onAddRecurrenceModalOpen,
+		onClose: onAddRecurrenceModalClose
+	} = useDisclosure()
+	const {
+		isOpen: isEditRecurrenceModalOpen,
+		onOpen: onEditRecurrenceModalOpen,
+		onClose: onEditRecurrenceModalClose
 	} = useDisclosure()
 
 	const items: iNavItem[] = [
@@ -85,6 +98,38 @@ const Navigator = () => {
 		}
 	]
 
+	const getLabel = () => {
+		if (location.pathname.startsWith("/recurrences")) {
+			if (location.pathname.startsWith("/recurrences/")) {
+				return "Edit Recurrence"
+			} else {
+				return "Add Recurrence"
+			}
+		} else {
+			return "Add Transaction"
+		}
+	}
+
+	const getIcon = () => {
+		if (location.pathname.startsWith("/recurrences/")) {
+			return <EditIcon />
+		} else {
+			return <AddIcon />
+		}
+	}
+
+	const handleActionButtonClick = () => {
+		if (location.pathname.startsWith("/recurrences")) {
+			if (location.pathname.startsWith("/recurrences/")) {
+				onEditRecurrenceModalOpen()
+			} else {
+				onAddRecurrenceModalOpen()
+			}
+		} else {
+			onAddTransactionModalOpen()
+		}
+	}
+
 	return (
 		<>
 			<Flex
@@ -121,21 +166,19 @@ const Navigator = () => {
 					Monetary
 				</Text>
 
-				<Tooltip label="Add Transaction">
-					<IconButton
-						sx={{ ml: "auto" }}
-						aria-label="Add Transaction"
-						variant="ghost"
-						icon={<AddIcon />}
-						onClick={onAddTransactionModalOpen}
-					/>
-				</Tooltip>
+				<Button
+					sx={{ ml: "auto" }}
+					variant="outline"
+					leftIcon={getIcon()}
+					onClick={handleActionButtonClick}>
+					{getLabel()}
+				</Button>
 
 				<Tooltip label="Toggle Color Scheme">
 					<IconButton
 						sx={{ ml: 3 }}
 						aria-label="Toggle Color Scheme"
-						variant="ghost"
+						variant="outline"
 						icon={useColorModeValue(<SunIcon />, <MoonIcon />)}
 						onClick={toggleColorMode}
 					/>
@@ -189,6 +232,14 @@ const Navigator = () => {
 				<AddTransactionModal
 					isOpen={isAddTransactionModalOpen}
 					onClose={onAddTransactionModalClose}
+				/>
+				<AddRecurrenceModal
+					isOpen={isAddRecurrenceModalOpen}
+					onClose={onAddRecurrenceModalClose}
+				/>
+				<EditRecurrenceModal
+					isOpen={isEditRecurrenceModalOpen}
+					onClose={onEditRecurrenceModalClose}
 				/>
 			</Flex>
 		</>
