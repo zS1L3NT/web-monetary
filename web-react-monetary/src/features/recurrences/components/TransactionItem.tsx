@@ -1,5 +1,5 @@
 import { DateTime } from "luxon"
-import { useRef } from "react"
+import { useContext, useRef } from "react"
 
 import {
 	AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogHeader,
@@ -7,10 +7,15 @@ import {
 } from "@chakra-ui/react"
 
 import Transaction from "../../../models/transaction"
+import CategoryContext from "../contexts/CategoryContext"
+import AccountsContext from "../contexts/AccountsContext"
 
 const TransactionItem = ({ date, transaction }: { date: DateTime; transaction?: Transaction }) => {
 	const { isOpen, onOpen, onClose } = useDisclosure()
 	const cancelRef = useRef(null)
+
+	const { fromAccount, toAccount } = useContext(AccountsContext)
+	const { category } = useContext(CategoryContext)
 
 	const handleConfirm = () => {}
 
@@ -52,7 +57,7 @@ const TransactionItem = ({ date, transaction }: { date: DateTime; transaction?: 
 					</Flex>
 				</CardBody>
 			</Card>
-			{/* <AlertDialog
+			<AlertDialog
 				isOpen={isOpen}
 				leastDestructiveRef={cancelRef}
 				onClose={onClose}>
@@ -66,7 +71,7 @@ const TransactionItem = ({ date, transaction }: { date: DateTime; transaction?: 
 						<AlertDialogBody>
 							<Heading>Account</Heading>
 							<Flex>
-								<Box
+								{/* <Box
 									sx={{
 										width: 4,
 										height: 4,
@@ -81,7 +86,7 @@ const TransactionItem = ({ date, transaction }: { date: DateTime; transaction?: 
 										fontWeight: 500
 									}}>
 									{name}
-								</Text>
+								</Text> */}
 							</Flex>
 						</AlertDialogBody>
 						<AlertDialogFooter>
@@ -101,7 +106,7 @@ const TransactionItem = ({ date, transaction }: { date: DateTime; transaction?: 
 						</AlertDialogFooter>
 					</AlertDialogContent>
 				</AlertDialogOverlay>
-			</AlertDialog> */}
+			</AlertDialog>
 		</>
 	)
 }

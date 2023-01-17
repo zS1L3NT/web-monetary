@@ -1,24 +1,20 @@
+import { useContext } from "react"
+
 import { ArrowForwardIcon } from "@chakra-ui/icons"
 import {
 	Badge, Box, Card, CardBody, Center, Flex, Heading, Spinner, Tag, Text, Tooltip
 } from "@chakra-ui/react"
 
-import Account from "../../../models/account"
-import Category from "../../../models/category"
-import Recurrence from "../../../models/recurrence"
 import textColorOnBackground from "../../../utils/textColorOnBackground"
+import AccountsContext from "../contexts/AccountsContext"
+import CategoryContext from "../contexts/CategoryContext"
+import RecurrenceContext from "../contexts/RecurrenceContext"
 
-const RecurrenceDetails = ({
-	recurrence,
-	fromAccount,
-	toAccount,
-	category
-}: {
-	recurrence: Recurrence | null
-	fromAccount: Account | null
-	toAccount: Account | null
-	category: Category | null
-}) => {
+const RecurrenceDetails = () => {
+	const { recurrence } = useContext(RecurrenceContext)
+	const { fromAccount, toAccount } = useContext(AccountsContext)
+	const { category } = useContext(CategoryContext)
+
 	const renderAccount = (name: string | undefined, color: string | undefined) => {
 		return (
 			<>

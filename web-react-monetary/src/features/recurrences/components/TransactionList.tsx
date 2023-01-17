@@ -1,27 +1,17 @@
 import { DateTime } from "luxon"
+import { useContext } from "react"
 
 import { Card, CardBody, Stack } from "@chakra-ui/react"
 
 import { useGetTransactionsQuery } from "../../../api/transactions"
 import useOnlyAuthenticated from "../../../hooks/useOnlyAuthenticated"
 import useToastError from "../../../hooks/useToastError"
-import Account from "../../../models/account"
-import Category from "../../../models/category"
-import Recurrence from "../../../models/recurrence"
+import RecurrenceContext from "../contexts/RecurrenceContext"
 import TransactionItem from "./TransactionItem"
 
-const TransactionList = ({
-	recurrence,
-	fromAccount,
-	toAccount,
-	category
-}: {
-	recurrence: Recurrence | null
-	fromAccount: Account | null
-	toAccount: Account | null
-	category: Category | null
-}) => {
+const TransactionList = () => {
 	const { token } = useOnlyAuthenticated()
+	const { recurrence } = useContext(RecurrenceContext)
 
 	const { data: transactions, error: transactionsError } = useGetTransactionsQuery(
 		{
