@@ -33,10 +33,11 @@ class AccountController extends Controller
 
     public function store()
     {
-        Account::query()->create(request()->all());
+        $account = Account::query()->create(request()->all());
 
         return [
             "message" => "Account created successfully!",
+            "id" => $account->id,
         ];
     }
 

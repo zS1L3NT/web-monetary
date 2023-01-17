@@ -58,6 +58,7 @@ class DebtController extends Controller
 
         return [
             'message' => 'Debt created successfully!',
+            'id' => $debt->id,
         ];
     }
 

@@ -35,10 +35,11 @@ class CategoryController extends Controller
 
     public function store()
     {
-        Category::query()->create(request()->all());
+        $category = Category::query()->create(request()->all());
 
         return [
             "message" => "Category created successfully!",
+            "id" => $category->id,
         ];
     }
 

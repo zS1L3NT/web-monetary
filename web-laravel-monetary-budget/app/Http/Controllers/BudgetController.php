@@ -41,10 +41,11 @@ class BudgetController extends Controller
 
     public function store()
     {
-        Budget::query()->create(request()->all());
+        $budget = Budget::query()->create(request()->all());
 
         return [
             "message" => "Budget created successfully!",
+            "id" => $budget->id,
         ];
     }
 

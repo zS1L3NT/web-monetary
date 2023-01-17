@@ -92,10 +92,11 @@ class TransactionController extends Controller
 
     public function store()
     {
-        Transaction::query()->create(request()->all());
+        $transaction = Transaction::query()->create(request()->all());
 
         return [
             "message" => "Transaction created successfully!",
+            "id" => $transaction->id,
         ];
     }
 
