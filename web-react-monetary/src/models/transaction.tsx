@@ -1,6 +1,8 @@
 import { DateTime } from "luxon"
 import { z } from "zod"
 
+import { Text } from "@chakra-ui/react"
+
 import Account from "./account"
 import Model from "./model"
 
@@ -60,6 +62,24 @@ export default class Transaction extends Model {
 		}
 
 		return 0
+	}
+
+	renderAmount() {
+		return (
+			<Text
+				sx={{
+					textAlign: "right",
+					color:
+						this.type === "Outgoing"
+							? "red.500"
+							: this.type === "Incoming"
+							? "green.500"
+							: "yellow.500"
+				}}>
+				{this.type === "Outgoing" ? "-" : this.type === "Incoming" ? "+" : ""}$
+				{this.amount.toFixed(2)}
+			</Text>
+		)
 	}
 
 	static fromJSON(json: typeof Transaction.type): Transaction {

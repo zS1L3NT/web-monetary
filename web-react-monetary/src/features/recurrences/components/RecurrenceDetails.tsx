@@ -1,11 +1,7 @@
 import { useContext } from "react"
 
-import { ArrowForwardIcon } from "@chakra-ui/icons"
-import {
-	Badge, Box, Card, CardBody, Center, Flex, Heading, Spinner, Tag, Text, Tooltip
-} from "@chakra-ui/react"
+import { Box, Card, CardBody, Center, Heading, Spinner, Text } from "@chakra-ui/react"
 
-import textColorOnBackground from "../../../utils/textColorOnBackground"
 import AccountsContext from "../contexts/AccountsContext"
 import CategoryContext from "../contexts/CategoryContext"
 import RecurrenceContext from "../contexts/RecurrenceContext"
@@ -14,29 +10,6 @@ const RecurrenceDetails = () => {
 	const { recurrence } = useContext(RecurrenceContext)
 	const { fromAccount, toAccount } = useContext(AccountsContext)
 	const { category } = useContext(CategoryContext)
-
-	const renderAccount = (name: string | undefined, color: string | undefined) => {
-		return (
-			<>
-				<Box
-					sx={{
-						width: 4,
-						height: 4,
-						borderRadius: 4,
-						bg: color
-					}}
-				/>
-				<Text
-					sx={{
-						ml: 2,
-						fontSize: 18,
-						fontWeight: 500
-					}}>
-					{name}
-				</Text>
-			</>
-		)
-	}
 
 	return (
 		<Card
@@ -49,30 +22,11 @@ const RecurrenceDetails = () => {
 					<Box sx={{ position: "relative" }}>
 						<Heading>
 							{recurrence.name}
-							<Tooltip
-								sx={{ textAlign: "center" }}
-								label={
-									recurrence.automatic
-										? "Transactions are automatically added without your confirmation"
-										: "Transactions require your confirmation to be created"
-								}>
-								<Badge
-									sx={{ ml: 2 }}
-									colorScheme={recurrence.automatic ? "green" : "red"}>
-									{recurrence.automatic ? "AUTO" : "MANUAL"}
-								</Badge>
-							</Tooltip>
+
+							{recurrence.renderAutomatic(true)}
 						</Heading>
-						<Tag
-							sx={{
-								width: "fit-content",
-								mt: 2,
-								color: textColorOnBackground(category?.color),
-								bg: category?.color
-							}}
-							variant="subtle">
-							{category?.name}
-						</Tag>
+
+						{category?.renderCategory()}
 						<Text
 							sx={{
 								mt: 4,
@@ -89,39 +43,12 @@ const RecurrenceDetails = () => {
 								right: 0
 							}}>
 							<Heading
-								sx={{
-									textAlign: "right",
-									color:
-										recurrence.type === "Outgoing"
-											? "red.500"
-											: recurrence.type === "Incoming"
-											? "green.500"
-											: "yellow.500"
-								}}
+								sx={{ mb: 2 }}
 								size="md">
-								{recurrence.type === "Outgoing"
-									? "-"
-									: recurrence.type === "Incoming"
-									? "+"
-									: ""}
-								${recurrence.amount.toFixed(2)}
+								{recurrence.renderAmount()}
 							</Heading>
-							<Flex
-								sx={{
-									justifyContent: "right",
-									alignItems: "center",
-									mt: 2
-								}}>
-								{fromAccount
-									? renderAccount(fromAccount.name, fromAccount.color)
-									: null}
-								{toAccount && recurrence.type === "Transfer" ? (
-									<>
-										<ArrowForwardIcon sx={{ mx: 2 }} />
-										{renderAccount(toAccount!.name, toAccount!.color)}
-									</>
-								) : null}
-							</Flex>
+
+							{fromAccount?.renderAccount(toAccount, true)}
 						</Box>
 					</Box>
 				) : (

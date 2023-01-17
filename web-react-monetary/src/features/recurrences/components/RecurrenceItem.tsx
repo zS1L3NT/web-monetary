@@ -1,13 +1,12 @@
 import { DateTime } from "luxon"
 import { useNavigate } from "react-router-dom"
 
-import { Badge, Box, Card, CardBody, Flex, Skeleton, Tag, Text } from "@chakra-ui/react"
+import { Box, Card, CardBody, Flex, Skeleton, Text } from "@chakra-ui/react"
 
 import { useGetCategoryQuery } from "../../../api/categories"
 import useOnlyAuthenticated from "../../../hooks/useOnlyAuthenticated"
 import useToastError from "../../../hooks/useToastError"
 import Recurrence from "../../../models/recurrence"
-import textColorOnBackground from "../../../utils/textColorOnBackground"
 
 const RecurrenceItem = ({
 	recurrence,
@@ -46,7 +45,7 @@ const RecurrenceItem = ({
 				{categoryLoading ? (
 					<Skeleton sx={{ height: nextDate ? 81 : 59 }} />
 				) : (
-					<Flex>
+					<Flex sx={{ justifyContent: "space-between" }}>
 						<Box>
 							<Text
 								sx={{
@@ -54,24 +53,12 @@ const RecurrenceItem = ({
 									fontWeight: 500
 								}}>
 								{recurrence.name}
-								<Badge
-									sx={{ ml: 2 }}
-									colorScheme={recurrence.automatic ? "green" : "red"}>
-									{recurrence.automatic ? "AUTO" : "MANUAL"}
-								</Badge>
-							</Text>
-							<Tag
-								sx={{
-									mt: 2,
-									color: textColorOnBackground(category?.color),
-									bg: category?.color
-								}}
-								variant="subtle">
-								{category?.name}
-							</Tag>
-						</Box>
 
-						<Flex sx={{ flex: 1 }} />
+								{recurrence.renderAutomatic()}
+							</Text>
+
+							{category?.renderCategory()}
+						</Box>
 
 						<Box
 							sx={{
@@ -81,23 +68,8 @@ const RecurrenceItem = ({
 									lg: 4
 								}
 							}}>
-							<Text
-								sx={{
-									textAlign: "right",
-									color:
-										recurrence.type === "Outgoing"
-											? "red.500"
-											: recurrence.type === "Incoming"
-											? "green.500"
-											: "yellow.500"
-								}}>
-								{recurrence.type === "Outgoing"
-									? "-"
-									: recurrence.type === "Incoming"
-									? "+"
-									: ""}
-								${recurrence.amount.toFixed(2)}
-							</Text>
+							{recurrence.renderAmount()}
+
 							{nextDate ? (
 								<>
 									<Text

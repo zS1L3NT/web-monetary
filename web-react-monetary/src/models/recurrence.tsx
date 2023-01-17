@@ -1,6 +1,8 @@
 import { DateTime } from "luxon"
 import { z } from "zod"
 
+import { Badge, Text, Tooltip } from "@chakra-ui/react"
+
 import Model from "./model"
 
 export default class Recurrence extends Model {
@@ -116,6 +118,52 @@ export default class Recurrence extends Model {
 		]
 			.filter(s => s !== null)
 			.join(" ")
+	}
+
+	renderAmount() {
+		return (
+			<Text
+				sx={{
+					textAlign: "right",
+					color:
+						this.type === "Outgoing"
+							? "red.500"
+							: this.type === "Incoming"
+							? "green.500"
+							: "yellow.500"
+				}}>
+				{this.type === "Outgoing" ? "-" : this.type === "Incoming" ? "+" : ""}$
+				{this.amount.toFixed(2)}
+			</Text>
+		)
+	}
+
+	renderAutomatic(tooltip = false) {
+		if (tooltip) {
+			return (
+				<Tooltip
+					sx={{ textAlign: "center" }}
+					label={
+						this.automatic
+							? "Transactions are automatically added without your confirmation"
+							: "Transactions require your confirmation to be created"
+					}>
+					<Badge
+						sx={{ ml: 2 }}
+						colorScheme={this.automatic ? "green" : "red"}>
+						{this.automatic ? "AUTO" : "MANUAL"}
+					</Badge>
+				</Tooltip>
+			)
+		} else {
+			return (
+				<Badge
+					sx={{ ml: 2 }}
+					colorScheme={this.automatic ? "green" : "red"}>
+					{this.automatic ? "AUTO" : "MANUAL"}
+				</Badge>
+			)
+		}
 	}
 
 	static fromJSON(json: typeof Recurrence.type): Recurrence {
