@@ -26,7 +26,7 @@ class RecurrenceController extends Controller
             'period_end_date' => 'nullable|date',
             'period_end_count' => 'nullable|integer',
             'transaction_ids' => 'required|array',
-            'transaction_ids.*' => 'uuid|exists:transaction,id|distinct'
+            'transaction_ids.*' => 'uuid|exists:transactions,id|distinct'
         ]);
 
         $this->validate('update', [
@@ -45,7 +45,7 @@ class RecurrenceController extends Controller
             'period_end_date' => 'nullable|date',
             'period_end_count' => 'nullable|integer',
             'transaction_ids' => 'array',
-            'transaction_ids.*' => 'uuid|exists:transaction,id|distinct'
+            'transaction_ids.*' => 'uuid|exists:transactions,id|distinct'
         ]);
     }
 
