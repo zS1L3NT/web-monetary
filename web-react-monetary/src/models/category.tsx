@@ -1,5 +1,8 @@
 import { z } from "zod"
 
+import { Tag } from "@chakra-ui/react"
+
+import textColorOnBackground from "../utils/textColorOnBackground"
 import Model from "./model"
 
 export default class Category extends Model {
@@ -36,6 +39,20 @@ export default class Category extends Model {
 		} else {
 			return []
 		}
+	}
+
+	renderCategory() {
+		return (
+			<Tag
+				sx={{
+					mt: 2,
+					color: textColorOnBackground(this.color),
+					bg: this.color
+				}}
+				variant="subtle">
+				{this.name}
+			</Tag>
+		)
 	}
 
 	static fromJSON(json: typeof Category.type): Category {
