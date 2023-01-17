@@ -28,6 +28,7 @@ class Recurrence extends Model
         'period_end_type',
         'period_end_date',
         'period_end_count',
+        'transaction_ids',
     ];
 
     protected $casts = [

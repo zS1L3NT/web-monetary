@@ -15,6 +15,8 @@ class Budget extends Model
         'name',
         'amount',
         'period_type',
+        'account_ids',
+        'category_ids',
     ];
 
     protected $casts = [

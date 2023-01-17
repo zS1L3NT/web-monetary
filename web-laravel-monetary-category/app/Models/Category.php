@@ -14,6 +14,7 @@ class Category extends Model
         'user_id',
         'name',
         'color',
+        'category_ids'
     ];
 
     protected $appends = [
