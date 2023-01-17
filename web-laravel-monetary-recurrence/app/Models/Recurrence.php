@@ -23,8 +23,6 @@ class Recurrence extends Model
         'period_start_date',
         'period_type',
         'period_interval',
-        'period_week_days',
-        'period_month_day_of',
         'period_end_type',
         'period_end_date',
         'period_end_count',
@@ -35,7 +33,6 @@ class Recurrence extends Model
         'amount' => 'double',
         'automatic' => 'boolean',
         'period_start_date' => 'date',
-        'period_week_days' => 'array',
         'period_interval' => 'integer',
         'period_end_date' => 'date',
         'period_end_count' => 'integer',
@@ -85,19 +82,6 @@ class Recurrence extends Model
             }
         }
         $this->attributes['to_account_id'] = $toAccountId;
-    }
-
-    public function setPeriodTypeAttribute(string $periodType)
-    {
-        if ($periodType !== "Week") {
-            $this->attributes['period_week_days'] = null;
-        }
-
-        if ($periodType !== "Month") {
-            $this->attributes['period_month_day_of'] = null;
-        }
-
-        $this->attributes['period_type'] = $periodType;
     }
 
     public function setPeriodEndTypeAttribute(string $periodEndType)

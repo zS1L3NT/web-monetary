@@ -32,9 +32,13 @@ export default class Account extends Model {
 		super(id, created_at, updated_at)
 	}
 
-	renderAccount(toAccount?: Account) {
+	renderAccount(toAccount?: Account, right = false) {
 		return (
-			<Flex sx={{ alignItems: "center" }}>
+			<Flex
+				sx={{
+					justifyContent: right ? "end" : "start",
+					alignItems: "center"
+				}}>
 				<Box
 					sx={{
 						width: 4,

@@ -59,7 +59,7 @@ const TransactionItem = ({ transaction }: { transaction: Transaction }) => {
 					{categoryLoading || fromAccountLoading || toAccountLoading ? (
 						<Skeleton sx={{ height: 59 }} />
 					) : (
-						<Flex>
+						<Flex sx={{ justifyContent: "space-between" }}>
 							<Box>
 								<Flex sx={{ alignItems: "center" }}>
 									{fromAccount!.renderAccount(toAccount)}
@@ -68,8 +68,6 @@ const TransactionItem = ({ transaction }: { transaction: Transaction }) => {
 								{category?.renderCategory()}
 							</Box>
 
-							<Flex sx={{ flex: 1 }} />
-
 							<Box
 								sx={{
 									mr: {
@@ -77,23 +75,8 @@ const TransactionItem = ({ transaction }: { transaction: Transaction }) => {
 										lg: 4
 									}
 								}}>
-								<Text
-									sx={{
-										textAlign: "right",
-										color:
-											transaction.type === "Outgoing"
-												? "red.500"
-												: transaction.type === "Incoming"
-												? "green.500"
-												: "yellow.500"
-									}}>
-									{transaction.type === "Outgoing"
-										? "-"
-										: transaction.type === "Incoming"
-										? "+"
-										: ""}
-									${transaction.amount.toFixed(2)}
-								</Text>
+								{transaction.renderAmount()}
+
 								<Text
 									sx={{
 										textAlign: "right",

@@ -13,7 +13,7 @@ class TransactionController extends Controller
         $this->validate('store', [
             'category_id' => 'required|uuid|exists:categories,id',
             'from_account_id' => 'required|uuid|exists:accounts,id',
-            'to_account_id' => 'required_if:type,Transfer|prohibited_unless:type,Transfer|uuid|exists:accounts,id',
+            'to_account_id' => 'nullable|uuid|exists:accounts,id',
             'type' => 'required|in:Incoming,Outgoing,Transfer',
             'amount' => 'required|numeric',
             'date' => 'required|date',
@@ -36,6 +36,11 @@ class TransactionController extends Controller
         $query = Transaction::query()
             ->where('user_id', request('user_id'))
             ->orderByDesc('date');
+
+        if ($transaction_ids = request('transaction_ids')) {
+            $transaction_ids = explode(',', $transaction_ids);
+            $query->whereIn('id', $transaction_ids);
+        }
 
         if ($from_account_ids = request('from_account_ids')) {
             $from_account_ids = explode(',', $from_account_ids);
