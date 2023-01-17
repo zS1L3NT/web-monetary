@@ -1,5 +1,8 @@
 import { z } from "zod"
 
+import { ArrowForwardIcon } from "@chakra-ui/icons"
+import { Box, Flex, Text } from "@chakra-ui/react"
+
 import Model from "./model"
 
 export default class Account extends Model {
@@ -27,6 +30,50 @@ export default class Account extends Model {
 		updated_at: string
 	) {
 		super(id, created_at, updated_at)
+	}
+
+	renderAccount(toAccount?: Account) {
+		return (
+			<Flex sx={{ alignItems: "center" }}>
+				<Box
+					sx={{
+						width: 4,
+						height: 4,
+						borderRadius: 4,
+						bg: this.color
+					}}
+				/>
+				<Text
+					sx={{
+						ml: 2,
+						fontSize: 18,
+						fontWeight: 500
+					}}>
+					{this.name}
+				</Text>
+				{toAccount ? (
+					<>
+						<ArrowForwardIcon sx={{ mx: 2 }} />
+						<Box
+							sx={{
+								width: 4,
+								height: 4,
+								borderRadius: 4,
+								bg: toAccount.color
+							}}
+						/>
+						<Text
+							sx={{
+								ml: 2,
+								fontSize: 18,
+								fontWeight: 500
+							}}>
+							{toAccount.name}
+						</Text>
+					</>
+				) : null}
+			</Flex>
+		)
 	}
 
 	static fromJSON(json: typeof Account.type): Account {

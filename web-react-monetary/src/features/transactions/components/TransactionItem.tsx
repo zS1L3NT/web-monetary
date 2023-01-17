@@ -1,5 +1,4 @@
-import { ArrowForwardIcon } from "@chakra-ui/icons"
-import { Box, Card, CardBody, Flex, Skeleton, Tag, Text, useDisclosure } from "@chakra-ui/react"
+import { Box, Card, CardBody, Flex, Skeleton, Text, useDisclosure } from "@chakra-ui/react"
 
 import { useGetAccountQuery } from "../../../api/accounts"
 import { useGetCategoryQuery } from "../../../api/categories"
@@ -7,7 +6,6 @@ import EditTransactionModal from "../../../components/EditTransactionModal"
 import useOnlyAuthenticated from "../../../hooks/useOnlyAuthenticated"
 import useToastError from "../../../hooks/useToastError"
 import Transaction from "../../../models/transaction"
-import textColorOnBackground from "../../../utils/textColorOnBackground"
 
 const TransactionItem = ({ transaction }: { transaction: Transaction }) => {
 	const { token } = useOnlyAuthenticated()
@@ -44,29 +42,6 @@ const TransactionItem = ({ transaction }: { transaction: Transaction }) => {
 		onClose: onEditTransactionModalClose
 	} = useDisclosure()
 
-	const renderAccount = (name: string | undefined, color: string | undefined) => {
-		return (
-			<>
-				<Box
-					sx={{
-						width: 4,
-						height: 4,
-						borderRadius: 4,
-						bg: color
-					}}
-				/>
-				<Text
-					sx={{
-						ml: 2,
-						fontSize: 18,
-						fontWeight: 500
-					}}>
-					{name}
-				</Text>
-			</>
-		)
-	}
-
 	return (
 		<>
 			<Card
@@ -87,24 +62,10 @@ const TransactionItem = ({ transaction }: { transaction: Transaction }) => {
 						<Flex>
 							<Box>
 								<Flex sx={{ alignItems: "center" }}>
-									{renderAccount(fromAccount!.name, fromAccount!.color)}
-									{toAccount || transaction.type === "Transfer" ? (
-										<>
-											<ArrowForwardIcon sx={{ mx: 2 }} />
-											{renderAccount(toAccount!.name, toAccount!.color)}
-										</>
-									) : null}
+									{fromAccount!.renderAccount(toAccount)}
 								</Flex>
 
-								<Tag
-									sx={{
-										mt: 2,
-										color: textColorOnBackground(category?.color),
-										bg: category?.color
-									}}
-									variant="subtle">
-									{category?.name}
-								</Tag>
+								{category?.renderCategory()}
 							</Box>
 
 							<Flex sx={{ flex: 1 }} />
