@@ -16,6 +16,7 @@ class Debt extends Model
         'amount',
         'description',
         'active',
+        'transaction_ids',
     ];
 
     protected $casts = [
