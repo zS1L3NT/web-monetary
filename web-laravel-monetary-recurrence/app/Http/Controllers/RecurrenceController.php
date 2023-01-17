@@ -13,7 +13,7 @@ class RecurrenceController extends Controller
         $this->validate('store', [
             'category_id' => 'required|uuid|exists:categories,id',
             'from_account_id' => 'required|uuid|exists:accounts,id',
-            'to_account_id' => 'required_if:type,Transfer|prohibited_unless:type,Transfer|uuid|exists:accounts,id',
+            'to_account_id' => 'nullable|uuid|exists:accounts,id',
             'type' => 'required|in:Incoming,Outgoing,Transfer',
             'name' => 'required|string',
             'amount' => 'required|numeric',
@@ -23,8 +23,8 @@ class RecurrenceController extends Controller
             'period_type' => 'required|in:Day,Week,Month,Year',
             'period_interval' => 'required|integer',
             'period_end_type' => 'required|in:Never,Date,Count',
-            'period_end_date' => 'required_if:period_end_type,Date|prohibited_unless:period_end_type,Date|date',
-            'period_end_count' => 'required_if:period_end_type,Count|prohibited_unless:period_end_type,Count|integer',
+            'period_end_date' => 'nullable|date',
+            'period_end_count' => 'nullable|integer',
             'transaction_ids' => 'required|array',
             'transaction_ids.*' => 'uuid|exists:transaction,id|distinct'
         ]);
@@ -42,8 +42,8 @@ class RecurrenceController extends Controller
             'period_type' => 'in:Day,Week,Month,Year',
             'period_interval' => 'integer',
             'period_end_type' => 'in:Never,Date,Count',
-            'period_end_date' => 'required_if:period_end_type,Date|prohibited_unless:period_end_type,Date|date',
-            'period_end_count' => 'required_if:period_end_type,Count|prohibited_unless:period_end_type,Count|integer',
+            'period_end_date' => 'nullable|date',
+            'period_end_count' => 'nullable|integer',
             'transaction_ids' => 'array',
             'transaction_ids.*' => 'uuid|exists:transaction,id|distinct'
         ]);

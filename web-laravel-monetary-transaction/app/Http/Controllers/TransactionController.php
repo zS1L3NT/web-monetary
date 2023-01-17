@@ -13,7 +13,7 @@ class TransactionController extends Controller
         $this->validate('store', [
             'category_id' => 'required|uuid|exists:categories,id',
             'from_account_id' => 'required|uuid|exists:accounts,id',
-            'to_account_id' => 'required_if:type,Transfer|prohibited_unless:type,Transfer|uuid|exists:accounts,id',
+            'to_account_id' => 'nullable|uuid|exists:accounts,id',
             'type' => 'required|in:Incoming,Outgoing,Transfer',
             'amount' => 'required|numeric',
             'date' => 'required|date',
