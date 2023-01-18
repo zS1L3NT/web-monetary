@@ -11,6 +11,8 @@ import AuthContext from "../contexts/AuthContext"
 import AddRecurrenceModal from "./modals/AddRecurrenceModal"
 import AddTransactionModal from "./modals/AddTransactionModal"
 import EditRecurrenceModal from "./modals/EditRecurrenceModal"
+import AddCategoryModal from "./modals/AddCategoryModal"
+import EditCategoryModal from "./modals/EditCategoryModal"
 
 interface iNavItem {
 	title: string
@@ -43,6 +45,16 @@ const Navigator = () => {
 		isOpen: isEditRecurrenceModalOpen,
 		onOpen: onEditRecurrenceModalOpen,
 		onClose: onEditRecurrenceModalClose
+	} = useDisclosure()
+	const {
+		isOpen: isAddCategoryModalOpen,
+		onOpen: onAddCategoryModalOpen,
+		onClose: onAddCategoryModalClose
+	} = useDisclosure()
+	const {
+		isOpen: isEditCategoryModalOpen,
+		onOpen: onEditCategoryModalOpen,
+		onClose: onEditCategoryModalClose
 	} = useDisclosure()
 
 	const items: iNavItem[] = [
@@ -77,6 +89,11 @@ const Navigator = () => {
 			render: !!token
 		},
 		{
+			title: "Categories",
+			navigate: "/categories",
+			render: !!token
+		},
+		{
 			title: "Budgets",
 			navigate: "/budgets",
 			render: !!token
@@ -105,13 +122,19 @@ const Navigator = () => {
 			} else {
 				return "Add Recurrence"
 			}
+		} else if (location.pathname.startsWith("/categories")) {
+			if (location.pathname.startsWith("/categories/")) {
+				return "Edit Category"
+			} else {
+				return "Add Category"
+			}
 		} else {
 			return "Add Transaction"
 		}
 	}
 
 	const getIcon = () => {
-		if (location.pathname.startsWith("/recurrences/")) {
+		if (location.pathname.match(/\/\w+\//)) {
 			return <EditIcon />
 		} else {
 			return <AddIcon />
@@ -124,6 +147,12 @@ const Navigator = () => {
 				onEditRecurrenceModalOpen()
 			} else {
 				onAddRecurrenceModalOpen()
+			}
+		} else if (location.pathname.startsWith("/categories")) {
+			if (location.pathname.startsWith("/categories/")) {
+				onEditCategoryModalOpen()
+			} else {
+				onAddCategoryModalOpen()
 			}
 		} else {
 			onAddTransactionModalOpen()
@@ -240,6 +269,14 @@ const Navigator = () => {
 				<EditRecurrenceModal
 					isOpen={isEditRecurrenceModalOpen}
 					onClose={onEditRecurrenceModalClose}
+				/>
+				<AddCategoryModal
+					isOpen={isAddCategoryModalOpen}
+					onClose={onAddCategoryModalClose}
+				/>
+				<EditCategoryModal
+					isOpen={isEditCategoryModalOpen}
+					onClose={onEditCategoryModalClose}
 				/>
 			</Flex>
 		</>

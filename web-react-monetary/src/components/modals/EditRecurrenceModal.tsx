@@ -22,22 +22,21 @@ import TypeInput from "./inputs/TypeInput"
 const EditRecurrenceModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
 	const { token } = useOnlyAuthenticated()
 	const location = useLocation()
-	const finalFocusRef = useRef(null)
 	const recurrenceId = location.pathname.slice(13)
 
+	const [
+		updateRecurrence,
+		{ error: updateRecurrenceError, isLoading: updateRecurrenceIsLoading }
+	] = useUpdateRecurrenceMutation()
 	const { data: recurrence, error: recurrenceError } = useGetRecurrenceQuery(
 		{
 			token,
 			recurrence_id: recurrenceId!
 		},
-		{ skip: !recurrenceId }
+		{ skip: location.pathname.slice(1, 12) !== "recurrences" || !recurrenceId }
 	)
 	const { data: accounts, error: accountsError } = useGetAccountsQuery({ token })
 	const { data: categories, error: categoriesError } = useGetCategoriesQuery({ token })
-	const [
-		updateRecurrence,
-		{ error: updateRecurrenceError, isLoading: updateRecurrenceIsLoading }
-	] = useUpdateRecurrenceMutation()
 
 	const [categoryId, setCategoryId] = useState<string | null>(null)
 	const [type, setType] = useState<"Outgoing" | "Incoming" | "Transfer">("Outgoing")
@@ -47,11 +46,12 @@ const EditRecurrenceModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
 	const [automatic, setAutomatic] = useState(false)
 	const [fromAccountId, setFromAcccountId] = useState<string | null>(null)
 	const [toAccountId, setToAccountId] = useState<string | null>(null)
+	const finalFocusRef = useRef(null)
 
-	useToastError(recurrenceError, true)
-	useToastError(accountsError, true)
-	useToastError(categoriesError, true)
-	useToastError(updateRecurrenceError, true)
+	useToastError(updateRecurrenceError)
+	useToastError(recurrenceError)
+	useToastError(accountsError)
+	useToastError(categoriesError)
 
 	useEffect(() => {
 		if (recurrence) {
@@ -141,7 +141,7 @@ const EditRecurrenceModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
 							/>
 
 							<Alert
-							 	sx={{ display: "flex" }}
+								sx={{ display: "flex" }}
 								variant="left-accent"
 								status="info">
 								<AlertIcon />

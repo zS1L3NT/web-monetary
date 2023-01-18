@@ -28,8 +28,6 @@ const AddTransactionModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
 	const { data: accounts, error: accountsError } = useGetAccountsQuery({ token })
 	const { data: categories, error: categoriesError } = useGetCategoriesQuery({ token })
 
-	const finalFocusRef = useRef(null)
-
 	const [categoryId, setCategoryId] = useState<string | null>(null)
 	const [fromAccountId, setFromAccountId] = useState<string | null>(null)
 	const [toAccountId, setToAccountId] = useState<string | null>(null)
@@ -37,7 +35,8 @@ const AddTransactionModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
 	const [amount, setAmount] = useState(0)
 	const [description, setDescription] = useState("")
 	const [date, setDate] = useState(DateTime.now())
-
+	const finalFocusRef = useRef(null)
+	
 	useToastError(accountsError, true)
 	useToastError(categoriesError, true)
 	useToastError(createTransactionError)
@@ -126,7 +125,7 @@ const AddTransactionModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
 						isLoading={createTransactionIsLoading}
 						disabled={invalid}
 						onClick={handleCreate}>
-						Create
+						Add
 					</Button>
 				</ModalFooter>
 			</ModalContent>

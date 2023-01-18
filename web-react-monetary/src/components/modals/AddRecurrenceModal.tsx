@@ -22,15 +22,14 @@ import TypeInput from "./inputs/TypeInput"
 
 const AddRecurrenceModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
 	const { token } = useOnlyAuthenticated()
-	const finalFocusRef = useRef(null)
-
+	
 	const [
 		createRecurrence,
 		{ error: createRecurrenceError, isLoading: createRecurrenceIsLoading }
 	] = useCreateRecurrenceMutation()
 	const { data: accounts, error: accountsError } = useGetAccountsQuery({ token })
 	const { data: categories, error: categoriesError } = useGetCategoriesQuery({ token })
-
+	
 	const [categoryId, setCategoryId] = useState<string | null>(null)
 	const [type, setType] = useState<"Outgoing" | "Incoming" | "Transfer">("Outgoing")
 	const [name, setName] = useState("")
@@ -45,7 +44,8 @@ const AddRecurrenceModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () 
 	const [periodEndCount, setPeriodEndCount] = useState<number | null>(null)
 	const [fromAccountId, setFromAcccountId] = useState<string | null>(null)
 	const [toAccountId, setToAccountId] = useState<string | null>(null)
-
+	const finalFocusRef = useRef(null)
+	
 	useToastError(createRecurrenceError)
 	useToastError(accountsError)
 	useToastError(categoriesError)
@@ -71,6 +71,7 @@ const AddRecurrenceModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () 
 			from_account_id: fromAccountId,
 			to_account_id: toAccountId
 		})
+		onClose()
 	}
 
 	const invalid =
@@ -163,7 +164,7 @@ const AddRecurrenceModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () 
 						isLoading={createRecurrenceIsLoading}
 						disabled={invalid}
 						onClick={handleCreate}>
-						Create
+						Add
 					</Button>
 				</ModalFooter>
 			</ModalContent>

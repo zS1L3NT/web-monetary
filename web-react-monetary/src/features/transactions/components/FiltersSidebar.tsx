@@ -132,10 +132,14 @@ const FiltersSidebar = ({}: {}) => {
 							{categories ? (
 								<CheckboxGroup>
 									{renderCategories(
-										(categories.find(c => c.category_ids.length > 0)
-											? categories.filter(c => c.category_ids.length > 0)
-											: categories
-										).map(c => c.id),
+										categories
+											.filter(
+												c =>
+													!categories?.find(c_ =>
+														c_.category_ids.includes(c.id)
+													)
+											)
+											.map(c => c.id),
 										0
 									)}
 								</CheckboxGroup>
