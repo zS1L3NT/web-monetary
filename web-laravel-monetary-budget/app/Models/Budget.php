@@ -28,6 +28,10 @@ class Budget extends Model
         'category_ids'
     ];
 
+    protected $hidden = [
+        'user_id',
+    ];
+
     public function getAccountIdsAttribute()
     {
         return BudgetAccounts::query()->where("budget_id", $this->id)->pluck('account_id')->toArray();

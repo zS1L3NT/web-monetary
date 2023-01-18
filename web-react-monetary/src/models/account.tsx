@@ -7,10 +7,9 @@ import Model from "./model"
 
 export default class Account extends Model {
 	static type: z.infer<typeof Account.schema>
-	static fillable: Omit<typeof Account.type, "id" | "user_id" | "created_at" | "updated_at">
+	static fillable: Omit<typeof Account.type, "id" | "created_at" | "updated_at">
 	static schema = z.object({
 		id: z.string(),
-		user_id: z.string(),
 		name: z.string(),
 		initial_balance: z.number(),
 		balance: z.number(),
@@ -21,7 +20,6 @@ export default class Account extends Model {
 
 	private constructor(
 		id: string,
-		public user_id: string,
 		public name: string,
 		public initial_balance: number,
 		public balance: number,
@@ -85,7 +83,6 @@ export default class Account extends Model {
 
 		return new Account(
 			parsed.id,
-			parsed.user_id,
 			parsed.name,
 			parsed.initial_balance,
 			parsed.balance,
@@ -98,7 +95,6 @@ export default class Account extends Model {
 	toJSON(): typeof Account.type {
 		return {
 			id: this.id,
-			user_id: this.user_id,
 			name: this.name,
 			initial_balance: this.initial_balance,
 			balance: this.balance,

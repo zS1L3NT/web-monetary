@@ -42,6 +42,10 @@ class Recurrence extends Model
         'transaction_ids'
     ];
 
+    protected $hidden = [
+        'user_id',
+    ];
+
     public function getTransactionIdsAttribute()
     {
         return RecurrenceTransactions::query()->where('recurrence_id', $this->id)->pluck('transaction_id')->toArray();

@@ -7,10 +7,9 @@ import Model from "./model"
 
 export default class Category extends Model {
 	static type: z.infer<typeof Category.schema>
-	static fillable: Omit<typeof Category.type, "id" | "user_id" | "created_at" | "updated_at">
+	static fillable: Omit<typeof Category.type, "id" | "created_at" | "updated_at">
 	static schema = z.object({
 		id: z.string(),
-		user_id: z.string(),
 		name: z.string(),
 		color: z.string(),
 		category_ids: z.array(z.string()),
@@ -20,7 +19,6 @@ export default class Category extends Model {
 
 	private constructor(
 		id: string,
-		public user_id: string,
 		public name: string,
 		public color: string,
 		public category_ids: string[],
@@ -60,7 +58,6 @@ export default class Category extends Model {
 
 		return new Category(
 			parsed.id,
-			parsed.user_id,
 			parsed.name,
 			parsed.color,
 			parsed.category_ids,
@@ -72,7 +69,6 @@ export default class Category extends Model {
 	toJSON(): typeof Category.type {
 		return {
 			id: this.id,
-			user_id: this.user_id,
 			name: this.name,
 			color: this.color,
 			category_ids: this.category_ids,

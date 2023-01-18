@@ -26,6 +26,10 @@ class Account extends Model
         'balance',
     ];
 
+    protected $hidden = [
+        'user_id',
+    ];
+
     public function getBalanceAttribute()
     {
         return round($this->initial_balance

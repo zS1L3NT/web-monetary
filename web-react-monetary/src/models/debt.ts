@@ -4,10 +4,9 @@ import Model from "./model"
 
 export default class Debt extends Model {
 	static type: z.infer<typeof Debt.schema>
-	static fillable: Omit<typeof Debt.type, "id" | "user_id" | "created_at" | "updated_at">
+	static fillable: Omit<typeof Debt.type, "id" | "created_at" | "updated_at">
 	static schema = z.object({
 		id: z.string(),
-		user_id: z.string(),
 		type: z.enum(["Loan", "Debt"]),
 		amount: z.number(),
 		description: z.string(),
@@ -19,7 +18,6 @@ export default class Debt extends Model {
 
 	private constructor(
 		id: string,
-		public user_id: string,
 		public type: "Loan" | "Debt",
 		public amount: number,
 		public description: string,
@@ -36,7 +34,6 @@ export default class Debt extends Model {
 
 		return new Debt(
 			parsed.id,
-			parsed.user_id,
 			parsed.type,
 			parsed.amount,
 			parsed.description,
@@ -50,7 +47,6 @@ export default class Debt extends Model {
 	toJSON(): typeof Debt.type {
 		return {
 			id: this.id,
-			user_id: this.user_id,
 			type: this.type,
 			amount: this.amount,
 			description: this.description,

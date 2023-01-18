@@ -21,6 +21,10 @@ class Category extends Model
         'category_ids'
     ];
 
+    protected $hidden = [
+        'user_id',
+    ];
+
     public function getCategoryIdsAttribute()
     {
         return NestedCategory::query()->where('parent_category_id', $this->id)->pluck('child_category_id')->toArray();

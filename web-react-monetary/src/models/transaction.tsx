@@ -8,10 +8,9 @@ import Model from "./model"
 
 export default class Transaction extends Model {
 	static type: z.infer<typeof Transaction.schema>
-	static fillable: Omit<typeof Transaction.type, "id" | "user_id" | "created_at" | "updated_at">
+	static fillable: Omit<typeof Transaction.type, "id" | "created_at" | "updated_at">
 	static schema = z.object({
 		id: z.string(),
-		user_id: z.string(),
 		category_id: z.string(),
 		type: z.enum(["Outgoing", "Incoming", "Transfer"]),
 		amount: z.number(),
@@ -25,7 +24,6 @@ export default class Transaction extends Model {
 
 	private constructor(
 		id: string,
-		public user_id: string,
 		public category_id: string,
 		public type: "Outgoing" | "Incoming" | "Transfer",
 		public amount: number,
@@ -87,7 +85,6 @@ export default class Transaction extends Model {
 
 		return new Transaction(
 			parsed.id,
-			parsed.user_id,
 			parsed.category_id,
 			parsed.type,
 			parsed.amount,
@@ -103,7 +100,6 @@ export default class Transaction extends Model {
 	toJSON(): typeof Transaction.type {
 		return {
 			id: this.id,
-			user_id: this.user_id,
 			category_id: this.category_id,
 			type: this.type,
 			amount: this.amount,

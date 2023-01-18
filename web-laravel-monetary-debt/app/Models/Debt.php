@@ -28,6 +28,10 @@ class Debt extends Model
         'transaction_ids'
     ];
 
+    protected $hidden = [
+        'user_id',
+    ];
+
     public function getTransactionIdsAttribute()
     {
         return DebtTransactions::query()->where('debt_id', $this->id)->pluck('transaction_id')->toArray();

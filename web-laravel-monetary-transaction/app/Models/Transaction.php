@@ -27,6 +27,10 @@ class Transaction extends Model
         'date' => 'date',
     ];
 
+    protected $hidden = [
+        'user_id',
+    ];
+
     public function setTypeAttribute(string $type)
     {
         if (array_key_exists('to_account_id', $this->attributes)) {

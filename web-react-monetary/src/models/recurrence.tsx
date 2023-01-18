@@ -8,10 +8,9 @@ import Transaction from "./transaction"
 
 export default class Recurrence extends Model {
 	static type: z.infer<typeof Recurrence.schema>
-	static fillable: Omit<typeof Recurrence.type, "id" | "user_id" | "created_at" | "updated_at">
+	static fillable: Omit<typeof Recurrence.type, "id" | "created_at" | "updated_at">
 	static schema = z.object({
 		id: z.string(),
-		user_id: z.string(),
 		category_id: z.string(),
 		type: z.enum(["Outgoing", "Incoming", "Transfer"]),
 		name: z.string(),
@@ -33,7 +32,6 @@ export default class Recurrence extends Model {
 
 	private constructor(
 		id: string,
-		public user_id: string,
 		public category_id: string,
 		public type: "Outgoing" | "Incoming" | "Transfer",
 		public name: string,
@@ -172,7 +170,6 @@ export default class Recurrence extends Model {
 
 		return new Recurrence(
 			parsed.id,
-			parsed.user_id,
 			parsed.category_id,
 			parsed.type,
 			parsed.name,
@@ -196,7 +193,6 @@ export default class Recurrence extends Model {
 	toJSON(): typeof Recurrence.type {
 		return {
 			id: this.id,
-			user_id: this.user_id,
 			category_id: this.category_id,
 			type: this.type,
 			name: this.name,

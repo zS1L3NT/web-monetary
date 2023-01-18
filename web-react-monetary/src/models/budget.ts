@@ -4,10 +4,9 @@ import Model from "./model"
 
 export default class Budget extends Model {
 	static type: z.infer<typeof Budget.schema>
-	static fillable: Omit<typeof Budget.type, "id" | "user_id" | "created_at" | "updated_at">
+	static fillable: Omit<typeof Budget.type, "id" | "created_at" | "updated_at">
 	static schema = z.object({
 		id: z.string(),
-		user_id: z.string(),
 		name: z.string(),
 		amount: z.number(),
 		period_type: z.enum(["Day", "Week", "Month", "Year"]),
@@ -19,7 +18,6 @@ export default class Budget extends Model {
 
 	private constructor(
 		id: string,
-		public user_id: string,
 		public name: string,
 		public amount: number,
 		public period_type: "Day" | "Week" | "Month" | "Year",
@@ -36,7 +34,6 @@ export default class Budget extends Model {
 
 		return new Budget(
 			parsed.id,
-			parsed.user_id,
 			parsed.name,
 			parsed.amount,
 			parsed.period_type,
@@ -50,7 +47,6 @@ export default class Budget extends Model {
 	toJSON(): typeof Budget.type {
 		return {
 			id: this.id,
-			user_id: this.user_id,
 			name: this.name,
 			amount: this.amount,
 			period_type: this.period_type,
