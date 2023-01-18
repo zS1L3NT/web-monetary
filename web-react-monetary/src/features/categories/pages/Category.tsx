@@ -1,8 +1,12 @@
 import { useParams } from "react-router-dom"
 
-import { Center, Container, Heading, Spinner, Stack } from "@chakra-ui/react"
+import { AddIcon } from "@chakra-ui/icons"
+import {
+	Center, Container, Flex, Heading, IconButton, Spinner, Stack, useDisclosure
+} from "@chakra-ui/react"
 
 import { useGetCategoriesQuery } from "../../../api/categories"
+import AddCategoryModal from "../../../components/modals/AddCategoryModal"
 import useOnlyAuthenticated from "../../../hooks/useOnlyAuthenticated"
 import useToastError from "../../../hooks/useToastError"
 import CategoryItem from "../components/CategoryItem"
@@ -16,6 +20,12 @@ const Category = ({}: {}) => {
 		error: categoriesError,
 		isLoading: categoriesAreLoading
 	} = useGetCategoriesQuery({ token })
+
+	const {
+		isOpen: isAddCategoryModalOpen,
+		onOpen: onAddCategoryModalOpen,
+		onClose: onAddCategoryModalClose
+	} = useDisclosure()
 
 	useToastError(categoriesError, true)
 
@@ -39,7 +49,21 @@ const Category = ({}: {}) => {
 						<Spinner />
 					</Center>
 				)}
-				{category?.category_ids.length ? <Heading size="md">Subcategories</Heading> : null}
+				<Flex sx={{ alignItems: "center" }}>
+					<Heading
+						sx={{ flex: 1 }}
+						size="md">
+						Subcategories
+					</Heading>
+					<IconButton
+						aria-label="Add subcategory"
+						variant="outline"
+						icon={<AddIcon />}
+						size="sm"
+						onClick={onAddCategoryModalOpen}>
+						Add subcategory
+					</IconButton>
+				</Flex>
 				{!categoriesAreLoading ? (
 					<Stack>
 						{categories!
@@ -58,6 +82,11 @@ const Category = ({}: {}) => {
 					</Center>
 				)}
 			</Stack>
+			<AddCategoryModal
+				parentCategoryId={category?.id}
+				isOpen={isAddCategoryModalOpen}
+				onClose={onAddCategoryModalClose}
+			/>
 		</Container>
 	)
 }
