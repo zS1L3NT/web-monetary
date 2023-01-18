@@ -8,6 +8,8 @@ import Navigator from "./components/Navigator"
 import Login from "./features/authentication/pages/Login"
 import Logout from "./features/authentication/pages/Logout"
 import Register from "./features/authentication/pages/Register"
+import Categories from "./features/categories/pages/Categories"
+import Category from "./features/categories/pages/Category"
 import Dashboard from "./features/dashboard/pages/Dashboard"
 import Landing from "./features/landing/pages/Landing"
 import Recurrence from "./features/recurrences/pages/Recurrence"
@@ -65,6 +67,16 @@ const App = () => {
 						<Route
 							path=":recurrence_id"
 							element={<Recurrence />}
+						/>
+					</Route>
+					<Route path="categories">
+						<Route
+							index
+							element={<Categories />}
+						/>
+						<Route
+							path=":category_id"
+							element={<Category />}
 						/>
 					</Route>
 				</Routes>

@@ -77,6 +77,11 @@ const Navigator = () => {
 			render: !!token
 		},
 		{
+			title: "Categories",
+			navigate: "/categories",
+			render: !!token
+		},
+		{
 			title: "Budgets",
 			navigate: "/budgets",
 			render: !!token
