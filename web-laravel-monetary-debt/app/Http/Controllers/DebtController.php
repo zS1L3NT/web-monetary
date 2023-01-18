@@ -14,7 +14,7 @@ class DebtController extends Controller
             'amount' => 'required|decimal:0,2',
             'description' => 'string',
             'active' => 'boolean',
-            'transaction_ids' => 'required|array',
+            'transaction_ids' => 'array',
             'transaction_ids.*' => 'uuid|exists:transactions,id|distinct'
         ]);
 

@@ -2,9 +2,8 @@ import { DateTime } from "luxon"
 import { useRef, useState } from "react"
 
 import {
-	Box, Button, ButtonGroup, Center, CircularProgress, Flex, Input, Modal, ModalBody,
-	ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, NumberDecrementStepper,
-	NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper, Text, Textarea
+	Button, Center, CircularProgress, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter,
+	ModalHeader, ModalOverlay, Stack
 } from "@chakra-ui/react"
 
 import { useGetAccountsQuery } from "../../api/accounts"
@@ -12,8 +11,12 @@ import { useGetCategoriesQuery } from "../../api/categories"
 import { useCreateTransactionMutation } from "../../api/transactions"
 import useOnlyAuthenticated from "../../hooks/useOnlyAuthenticated"
 import useToastError from "../../hooks/useToastError"
-import CategoryDropdown from "../CategoryDropdown"
-import Dropdown from "../Dropdown"
+import AccountsInput from "./inputs/AccountsInput"
+import AmountInput from "./inputs/AmountInput"
+import CategoryInput from "./inputs/CategoryInput"
+import DateTimeInput from "./inputs/DateTimeInput"
+import DescriptionInput from "./inputs/DescriptionInput"
+import TypeInput from "./inputs/TypeInput"
 
 const AddTransactionModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
 	const { token } = useOnlyAuthenticated()
@@ -28,12 +31,12 @@ const AddTransactionModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
 	const finalFocusRef = useRef(null)
 
 	const [categoryId, setCategoryId] = useState<string | null>(null)
-	const [fromAccountId, setFromAcccountId] = useState<string | null>(null)
-	const [toAccountId, setToAcccountId] = useState<string | null>(null)
+	const [fromAccountId, setFromAccountId] = useState<string | null>(null)
+	const [toAccountId, setToAccountId] = useState<string | null>(null)
 	const [type, setType] = useState<"Outgoing" | "Incoming" | "Transfer">("Outgoing")
-	const [amount, setAmount] = useState<number>()
+	const [amount, setAmount] = useState(0)
 	const [description, setDescription] = useState("")
-	const [date, setDate] = useState(new Date())
+	const [date, setDate] = useState(DateTime.now())
 
 	useToastError(accountsError, true)
 	useToastError(categoriesError, true)
@@ -50,7 +53,7 @@ const AddTransactionModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
 			type,
 			amount,
 			description,
-			date: date.toISOString()
+			date: date.toISO()
 		})
 		onClose()
 	}
@@ -69,89 +72,43 @@ const AddTransactionModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
 				<ModalCloseButton />
 				<ModalBody>
 					{accounts && categories ? (
-						<>
-							<ButtonGroup
-								sx={{
-									position: "relative",
-									left: "50%",
-									transform: "translateX(-50%)"
-								}}
-								isAttached
-								variant="outline">
-								{(["Outgoing", "Incoming", "Transfer"] as const).map(t => (
-									<Button
-										key={t}
-										variant={type === t ? "solid" : "outline"}
-										onClick={() => {
-											if (type === "Transfer" && t !== "Transfer") {
-												setToAcccountId(null)
-											}
-											setType(t)
-										}}>
-										{t}
-									</Button>
-								))}
-							</ButtonGroup>
-
-							<Flex
-								sx={{ mt: 4 }}
-								gap={3}>
-								<Box sx={{ w: "full" }}>
-									<Text>{type === "Transfer" ? "From " : ""}Account</Text>
-									<Dropdown
-										choices={accounts
-											.filter(a => a.id !== toAccountId)
-											.map(a => ({ id: a.id, text: a.name }))}
-										selectedChoiceId={fromAccountId}
-										setSelectedChoiceId={setFromAcccountId}
-									/>
-								</Box>
-								{type === "Transfer" ? (
-									<Box sx={{ w: "full" }}>
-										<Text>To Account</Text>
-										<Dropdown
-											choices={accounts
-												.filter(a => a.id !== fromAccountId)
-												.map(a => ({ id: a.id, text: a.name }))}
-											selectedChoiceId={toAccountId}
-											setSelectedChoiceId={setToAcccountId}
-										/>
-									</Box>
-								) : null}
-							</Flex>
-
-							<Text sx={{ mt: 4 }}>Amount</Text>
-							<NumberInput
-								onBlur={e => setAmount(+e.target.value.replace(/^\$/, ""))}
-								precision={2}
-								step={0.05}>
-								<NumberInputField />
-								<NumberInputStepper>
-									<NumberIncrementStepper />
-									<NumberDecrementStepper />
-								</NumberInputStepper>
-							</NumberInput>
-
-							<Text sx={{ mt: 4 }}>Date and Time</Text>
-							<Input
-								type="datetime-local"
-								value={DateTime.fromJSDate(date).toFormat("yyyy-MM-dd'T'HH:mm''")}
-								onChange={e => setDate(new Date(e.target.value))}
+						<Stack sx={{ gap: 2 }}>
+							<TypeInput
+								type={type}
+								setType={setType}
+								setToAccountId={setToAccountId}
 							/>
 
-							<Text sx={{ mt: 4 }}>Category</Text>
-							<CategoryDropdown
+							<AccountsInput
+								accounts={accounts}
+								type={type}
+								fromAccountId={fromAccountId}
+								setFromAccountId={setFromAccountId}
+								toAccountId={toAccountId}
+								setToAccountId={setToAccountId}
+							/>
+
+							<CategoryInput
 								categories={categories}
-								selectedCategoryId={categoryId}
-								setSelectedCategoryId={setCategoryId}
+								categoryId={categoryId}
+								setCategoryId={setCategoryId}
 							/>
 
-							<Text sx={{ mt: 4 }}>Description (optional)</Text>
-							<Textarea
-								value={description}
-								onChange={e => setDescription(e.target.value)}
+							<AmountInput
+								amount={amount}
+								setAmount={setAmount}
 							/>
-						</>
+
+							<DateTimeInput
+								date={date}
+								setDate={setDate}
+							/>
+
+							<DescriptionInput
+								description={description}
+								setDescription={setDescription}
+							/>
+						</Stack>
 					) : (
 						<Center>
 							<CircularProgress />

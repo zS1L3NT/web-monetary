@@ -6,11 +6,13 @@ const Dropdown = ({
 	choices,
 	selectedChoiceId,
 	setSelectedChoiceId,
+	placeholder = "Select a choice",
 	isDisabled
 }: {
 	choices: { id: string; text: string }[]
 	selectedChoiceId: string | null
 	setSelectedChoiceId: (choiceId: string | null) => void
+	placeholder: string
 	isDisabled?: boolean
 }) => {
 	return (
@@ -28,7 +30,7 @@ const Dropdown = ({
 			isMulti={false}
 			isSearchable={false}
 			isDisabled={isDisabled}
-			placeholder="Select a choice"
+			placeholder={placeholder}
 			styles={{
 				indicatorSeparator: provided => ({
 					...provided,

@@ -14,7 +14,7 @@ class CategoryController extends Controller
         $this->validate('store', [
             'name' => 'required|string',
             'color' => 'required|string',
-            'category_ids' => 'required|array',
+            'category_ids' => 'array',
             'category_ids.*' => 'uuid|exists:categories,id|distinct'
         ]);
 

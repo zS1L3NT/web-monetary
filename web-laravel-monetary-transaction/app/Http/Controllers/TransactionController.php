@@ -23,10 +23,9 @@ class TransactionController extends Controller
         $this->validate('update', [
             'category_id' => 'uuid|exists:categories,id',
             'from_account_id' => 'uuid|exists:accounts,id',
-            'to_account_id' => 'uuid|exists:accounts,id',
+            'to_account_id' => 'nullable|uuid|exists:accounts,id',
             'type' => 'in:Incoming,Outgoing,Transfer',
             'amount' => 'numeric',
-            'date' => 'date',
             'description' => 'string',
         ]);
     }

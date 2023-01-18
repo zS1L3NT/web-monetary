@@ -5,9 +5,16 @@ import { useGetCategoryQuery } from "../../../api/categories"
 import EditTransactionModal from "../../../components/modals/EditTransactionModal"
 import useOnlyAuthenticated from "../../../hooks/useOnlyAuthenticated"
 import useToastError from "../../../hooks/useToastError"
+import Recurrence from "../../../models/recurrence"
 import Transaction from "../../../models/transaction"
 
-const TransactionItem = ({ transaction }: { transaction: Transaction }) => {
+const TransactionItem = ({
+	transaction,
+	recurrence
+}: {
+	transaction: Transaction
+	recurrence: Recurrence | null
+}) => {
 	const { token } = useOnlyAuthenticated()
 
 	const {
@@ -92,6 +99,7 @@ const TransactionItem = ({ transaction }: { transaction: Transaction }) => {
 			</Card>
 			<EditTransactionModal
 				transaction={transaction}
+				recurrence={recurrence}
 				isOpen={isEditTransactionModalOpen}
 				onClose={onEditTransactionModalClose}
 			/>

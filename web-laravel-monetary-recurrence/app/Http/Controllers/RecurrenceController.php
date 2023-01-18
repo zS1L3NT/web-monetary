@@ -25,25 +25,19 @@ class RecurrenceController extends Controller
             'period_end_type' => 'required|in:Never,Date,Count',
             'period_end_date' => 'nullable|date',
             'period_end_count' => 'nullable|integer',
-            'transaction_ids' => 'required|array',
+            'transaction_ids' => 'array',
             'transaction_ids.*' => 'uuid|exists:transactions,id|distinct'
         ]);
 
         $this->validate('update', [
             'category_id' => 'uuid|exists:categories,id',
             'from_account_id' => 'uuid|exists:accounts,id',
-            'to_account_id' => 'uuid|exists:accounts,id',
+            'to_account_id' => 'nullable|uuid|exists:accounts,id',
             'type' => 'in:Incoming,Outgoing,Transfer',
             'name' => 'string',
             'amount' => 'numeric',
             'description' => 'string',
             'automatic' => 'boolean',
-            'period_start_date' => 'date',
-            'period_type' => 'in:Day,Week,Month,Year',
-            'period_interval' => 'integer',
-            'period_end_type' => 'in:Never,Date,Count',
-            'period_end_date' => 'nullable|date',
-            'period_end_count' => 'nullable|integer',
             'transaction_ids' => 'array',
             'transaction_ids.*' => 'uuid|exists:transactions,id|distinct'
         ]);

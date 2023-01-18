@@ -3,15 +3,23 @@ import { Fragment, useContext } from "react"
 
 import { Box, Center, Spinner, Text } from "@chakra-ui/react"
 
+import { useGetRecurrencesQuery } from "../../../api/recurrences"
+import useOnlyAuthenticated from "../../../hooks/useOnlyAuthenticated"
+import useToastError from "../../../hooks/useToastError"
 import Transaction from "../../../models/transaction"
 import FiltersContext from "../contexts/FiltersContext"
 import TransactionsContext from "../contexts/TransactionsContext"
 import TransactionItem from "./TransactionItem"
 
 const TransactionList = ({}: {}) => {
+	const { token } = useOnlyAuthenticated()
 	const { transactions } = useContext(TransactionsContext)
 	const { sortBy, selectedAccounts, selectedCategories, transactionTypes, minAmount, maxAmount } =
 		useContext(FiltersContext)
+
+	const { data: recurrences, error: recurrencesError } = useGetRecurrencesQuery({ token })
+
+	useToastError(recurrencesError, true)
 
 	return (
 		<AnimatePresence>
@@ -62,7 +70,14 @@ const TransactionList = ({}: {}) => {
 									key={t.id}
 									layout
 									layoutId={t.id}>
-									<TransactionItem transaction={t} />
+									<TransactionItem
+										transaction={t}
+										recurrence={
+											recurrences?.find(r =>
+												r.transaction_ids.includes(t?.id ?? "")
+											) ?? null
+										}
+									/>
 								</motion.div>
 							))}
 						</Fragment>
