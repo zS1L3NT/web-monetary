@@ -30,6 +30,7 @@ const AccountsInput = ({
 						.map(a => ({ id: a.id, text: a.name }))}
 					selectedChoiceId={fromAccountId}
 					setSelectedChoiceId={setFromAccountId}
+					placeholder="Select an account"
 				/>
 			</Box>
 			{type === "Transfer" ? (
@@ -41,6 +42,7 @@ const AccountsInput = ({
 							.map(a => ({ id: a.id, text: a.name }))}
 						selectedChoiceId={toAccountId}
 						setSelectedChoiceId={setToAccountId}
+						placeholder="Select an account"
 					/>
 				</Box>
 			) : null}

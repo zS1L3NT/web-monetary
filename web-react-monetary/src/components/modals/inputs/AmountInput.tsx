@@ -19,7 +19,8 @@ const AmountInput = ({
 				defaultValue={amount}
 				onBlur={e => setAmount(+e.target.value.replace(/^\$/, ""))}
 				precision={2}
-				step={0.05}>
+				step={0.05}
+				placeholder="Enter the amount">
 				<NumberInputField />
 				<NumberInputStepper>
 					<NumberIncrementStepper />

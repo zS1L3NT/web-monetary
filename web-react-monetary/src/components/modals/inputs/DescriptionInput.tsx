@@ -15,6 +15,7 @@ const DescriptionInput = ({
 			<Textarea
 				value={description}
 				onChange={e => setDescription(e.target.value)}
+				placeholder="Enter a description"
 			/>
 		</Box>
 	)
