@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react"
 import { useLocation } from "react-router-dom"
 
 import {
-	Alert, AlertIcon, AlertTitle, Button, Modal, ModalBody, ModalCloseButton, ModalContent,
+	Alert, AlertDescription, AlertIcon, Button, Modal, ModalBody, ModalCloseButton, ModalContent,
 	ModalFooter, ModalHeader, ModalOverlay, Stack
 } from "@chakra-ui/react"
 
@@ -141,12 +141,13 @@ const EditRecurrenceModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
 							/>
 
 							<Alert
+							 	sx={{ display: "flex" }}
 								variant="left-accent"
 								status="info">
 								<AlertIcon />
-								<AlertTitle>
+								<AlertDescription>
 									Editing the recurrence period is not allowed
-								</AlertTitle>
+								</AlertDescription>
 							</Alert>
 						</Stack>
 					) : null}

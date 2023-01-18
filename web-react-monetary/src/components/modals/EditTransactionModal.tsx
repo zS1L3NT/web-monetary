@@ -1,8 +1,8 @@
 import { useRef, useState } from "react"
 
 import {
-	Button, Center, CircularProgress, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter,
-	ModalHeader, ModalOverlay, Stack
+	Alert, AlertDescription, AlertIcon, Button, Center, CircularProgress, Modal, ModalBody,
+	ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Stack
 } from "@chakra-ui/react"
 
 import { useGetAccountsQuery } from "../../api/accounts"
@@ -10,6 +10,7 @@ import { useGetCategoriesQuery } from "../../api/categories"
 import { useUpdateTransactionMutation } from "../../api/transactions"
 import useOnlyAuthenticated from "../../hooks/useOnlyAuthenticated"
 import useToastError from "../../hooks/useToastError"
+import Recurrence from "../../models/recurrence"
 import Transaction from "../../models/transaction"
 import AccountsInput from "./inputs/AccountsInput"
 import AmountInput from "./inputs/AmountInput"
@@ -20,10 +21,12 @@ import TypeInput from "./inputs/TypeInput"
 
 const EditTransactionModal = ({
 	transaction,
+	recurrence,
 	isOpen,
 	onClose
 }: {
 	transaction: Transaction
+	recurrence: Recurrence | null
 	isOpen: boolean
 	onClose: () => void
 }) => {
@@ -67,7 +70,8 @@ const EditTransactionModal = ({
 		onClose()
 	}
 
-	const invalid = !categoryId || !fromAccountId || (type === "Transfer" && !toAccountId) || !amount
+	const invalid =
+		!categoryId || !fromAccountId || (type === "Transfer" && !toAccountId) || !amount
 
 	return (
 		<Modal
@@ -116,6 +120,16 @@ const EditTransactionModal = ({
 								description={description}
 								setDescription={setDescription}
 							/>
+
+							<Alert
+								sx={{ display: recurrence ? "flex" : "none" }}
+								variant="left-accent"
+								status="info">
+								<AlertIcon />
+								<AlertDescription>
+									You cannot edit the date of a recurring transaction
+								</AlertDescription>
+							</Alert>
 						</Stack>
 					) : (
 						<Center>

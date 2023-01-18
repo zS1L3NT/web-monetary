@@ -26,7 +26,6 @@ class TransactionController extends Controller
             'to_account_id' => 'nullable|uuid|exists:accounts,id',
             'type' => 'in:Incoming,Outgoing,Transfer',
             'amount' => 'numeric',
-            'date' => 'date',
             'description' => 'string',
         ]);
     }
