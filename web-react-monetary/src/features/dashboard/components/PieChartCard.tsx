@@ -66,13 +66,20 @@ const PieChartCard = ({}: {}) => {
 							options={{ aspectRatio: 1.5 }}
 							data={{
 								labels: categories
-									.filter(c => c.category_ids.length !== 0)
+									.filter(
+										c => !categories?.find(c_ => c_.category_ids.includes(c.id))
+									)
 									.map(c => c.name),
 								datasets: [
 									{
 										label: "Monthly Spending",
 										data: categories
-											.filter(c => c.category_ids.length !== 0)
+											.filter(
+												c =>
+													!categories?.find(c_ =>
+														c_.category_ids.includes(c.id)
+													)
+											)
 											.map(c =>
 												transactionsForPeriod.filter(t =>
 													[
@@ -85,7 +92,12 @@ const PieChartCard = ({}: {}) => {
 											)
 											.map(t => t.reduce((a, b) => a + b.amount, 0)),
 										backgroundColor: categories
-											.filter(c => c.category_ids.length !== 0)
+											.filter(
+												c =>
+													!categories?.find(c_ =>
+														c_.category_ids.includes(c.id)
+													)
+											)
 											.map(c => c.color)
 									}
 								]

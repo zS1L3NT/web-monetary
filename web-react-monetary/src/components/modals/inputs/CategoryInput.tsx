@@ -35,10 +35,8 @@ const CategoryInput = ({
 						: { value: "", label: "" },
 					...categories
 						.filter(c =>
-							categories.every(c => c.category_ids.length === 0)
-								? true
-								: parentCategoryId === null
-								? c.category_ids.length > 0
+							parentCategoryId === null
+								? !categories?.find(c_ => c_.category_ids.includes(c.id))
 								: categories
 										.find(c => c.id === parentCategoryId)!
 										.category_ids.includes(c.id)
