@@ -1,5 +1,5 @@
 import { KeyboardEvent, useContext, useEffect, useState } from "react"
-import { useNavigate, useSearchParams } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons"
 import {
@@ -14,21 +14,20 @@ import useOnlyUnauthenticated from "../../../hooks/useOnlyUnautheticated"
 import { setError } from "../../../slices/ErrorSlice"
 
 const Login = ({}: {}) => {
+	useOnlyUnauthenticated(new URLSearchParams(location.search).get("continue") ?? "/dashboard")
 	const { setToken } = useContext(AuthContext)
-	const dispatch = useAppDispatch()
+
 	const navigate = useNavigate()
-	const [params] = useSearchParams()
 	const toast = useToast()
 
-	const [login, { isLoading }] = useLoginMutation()
+	const [login, { isLoading: loginIsLoading }] = useLoginMutation()
+	const dispatch = useAppDispatch()
 
 	const [showPassword, setShowPassword] = useState(false)
 	const [email, setEmail] = useState("")
 	const [password, setPassword] = useState("")
 	const [emailError, setEmailError] = useState<string | null>(null)
 	const [passwordError, setPasswordError] = useState<string | null>(null)
-
-	useOnlyUnauthenticated(params.get("continue") ?? "/dashboard")
 
 	useEffect(() => {
 		setEmailError(null)
@@ -142,7 +141,7 @@ const Login = ({}: {}) => {
 					}}>
 					<Button
 						size="lg"
-						isLoading={isLoading}
+						isLoading={loginIsLoading}
 						loadingText="Logging in..."
 						onClick={handleLogin}>
 						Login

@@ -10,8 +10,10 @@ import useAppDispatch from "./useAppDispatch"
 
 const useToastError = (error: ApiError | SerializedError | undefined, redirect = false) => {
 	const { token } = useContext(AuthContext)
-	const dispatch = useAppDispatch()
+
 	const navigate = useNavigate()
+
+	const dispatch = useAppDispatch()
 
 	useEffect(() => {
 		if (error) {

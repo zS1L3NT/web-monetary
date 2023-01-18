@@ -6,10 +6,12 @@ import { setError } from "../slices/ErrorSlice"
 import useAppDispatch from "./useAppDispatch"
 
 const useOnlyAuthenticated = () => {
-	const dispatch = useAppDispatch()
-	const location = useLocation()
-	const navigate = useNavigate()
 	const { token, user } = useContext(AuthContext)
+
+	const navigate = useNavigate()
+	const location = useLocation()
+
+	const dispatch = useAppDispatch()
 
 	useEffect(() => {
 		if (token === null) {

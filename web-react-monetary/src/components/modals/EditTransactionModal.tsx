@@ -39,8 +39,6 @@ const EditTransactionModal = ({
 	const { data: accounts, error: accountsError } = useGetAccountsQuery({ token })
 	const { data: categories, error: categoriesError } = useGetCategoriesQuery({ token })
 
-	const finalFocusRef = useRef(null)
-
 	const [categoryId, setCategoryId] = useState<string | null>(transaction.category_id)
 	const [fromAccountId, setFromAccountId] = useState<string | null>(transaction.from_account_id)
 	const [toAccountId, setToAcccountId] = useState(transaction.to_account_id)
@@ -48,6 +46,7 @@ const EditTransactionModal = ({
 	const [amount, setAmount] = useState(transaction.amount)
 	const [description, setDescription] = useState(transaction.description)
 	const [date, setDate] = useState(transaction.date)
+	const finalFocusRef = useRef(null)
 
 	useToastError(accountsError, true)
 	useToastError(categoriesError, true)

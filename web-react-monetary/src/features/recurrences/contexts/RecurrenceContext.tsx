@@ -16,6 +16,7 @@ const RecurrenceContext = createContext<{
 
 export const RecurrenceProvider = ({ children }: PropsWithChildren<{}>) => {
 	const { token } = useOnlyAuthenticated()
+
 	const { recurrence_id } = useParams()
 
 	const {

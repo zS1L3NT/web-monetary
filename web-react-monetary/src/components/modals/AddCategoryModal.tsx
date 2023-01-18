@@ -27,12 +27,12 @@ const AddCategoryModal = ({
 	const [updateCategory, { error: updateCategoryError, isLoading: updateCategoryIsLoading }] =
 	useUpdateCategoryMutation()
 	
-	useToastError(createCategoryError, true)
-	useToastError(updateCategoryError, true)
-	
 	const [name, setName] = useState("")
 	const [color, setColor] = useState("#FFFFFF")
 	const finalFocusRef = useRef(null)
+	
+	useToastError(createCategoryError, true)
+	useToastError(updateCategoryError, true)
 
 	const handleCreate = async () => {
 		if (invalid) return

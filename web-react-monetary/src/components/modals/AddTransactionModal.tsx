@@ -39,7 +39,7 @@ const AddTransactionModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
 	
 	useToastError(accountsError, true)
 	useToastError(categoriesError, true)
-	useToastError(createTransactionError)
+	useToastError(createTransactionError, true)
 
 	const handleCreate = async () => {
 		if (invalid) return

@@ -13,6 +13,7 @@ import CategoryItem from "../components/CategoryItem"
 
 const Category = ({}: {}) => {
 	const { token } = useOnlyAuthenticated()
+
 	const { category_id } = useParams()
 
 	const {

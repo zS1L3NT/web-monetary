@@ -10,6 +10,7 @@ import useToastError from "../../../hooks/useToastError"
 
 const Logout = () => {
 	const { token, setToken } = useContext(AuthContext)
+
 	const navigate = useNavigate()
 	const toast = useToast()
 

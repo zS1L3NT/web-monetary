@@ -18,9 +18,8 @@ const PeriodSelectModal = ({
 	period: Period
 	setPeriod: (period: Period) => void
 }) => {
-	const finalFocusRef = useRef(null)
-
 	const [period, setPeriod] = useState<Period>(parentPeriod)
+	const finalFocusRef = useRef(null)
 
 	return (
 		<Modal

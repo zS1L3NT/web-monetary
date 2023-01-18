@@ -14,6 +14,7 @@ import NameInput from "./inputs/NameInput"
 
 const EditCategoryModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
 	const { token } = useOnlyAuthenticated()
+
 	const location = useLocation()
 	const categoryId = location.pathname.slice(12)
 
@@ -27,12 +28,12 @@ const EditCategoryModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () =
 		{ skip: location.pathname.slice(1, 11) !== "categories" || !categoryId }
 	)
 
-	useToastError(updateCategoryError, true)
-	useToastError(categoryError, true)
-
 	const [name, setName] = useState("")
 	const [color, setColor] = useState("#FFFFFF")
 	const finalFocusRef = useRef(null)
+
+	useToastError(updateCategoryError, true)
+	useToastError(categoryError, true)
 
 	useEffect(() => {
 		if (category) {

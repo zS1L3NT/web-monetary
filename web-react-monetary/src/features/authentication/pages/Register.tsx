@@ -14,12 +14,14 @@ import useOnlyUnauthenticated from "../../../hooks/useOnlyUnautheticated"
 import { setError } from "../../../slices/ErrorSlice"
 
 const Register = () => {
+	useOnlyUnauthenticated()
 	const { setToken } = useContext(AuthContext)
-	const dispatch = useAppDispatch()
-	const toast = useToast()
-	const navigate = useNavigate()
 
+	const navigate = useNavigate()
+	const toast = useToast()
+	
 	const [register, { isLoading }] = useRegisterMutation()
+	const dispatch = useAppDispatch()
 
 	const [showPassword, setShowPassword] = useState(false)
 	const [username, setUsername] = useState("")
@@ -28,8 +30,6 @@ const Register = () => {
 	const [usernameError, setUsernameError] = useState<string | null>(null)
 	const [emailError, setEmailError] = useState<string | null>(null)
 	const [passwordError, setPasswordError] = useState<string | null>(null)
-
-	useOnlyUnauthenticated()
 
 	useEffect(() => {
 		setUsernameError(null)

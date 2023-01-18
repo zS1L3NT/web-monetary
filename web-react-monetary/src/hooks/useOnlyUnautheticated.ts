@@ -5,6 +5,7 @@ import AuthContext from "../contexts/AuthContext"
 
 const useOnlyUnauthenticated = (redirect = "/forms") => {
 	const { token } = useContext(AuthContext)
+
 	const navigate = useNavigate()
 
 	useEffect(() => {

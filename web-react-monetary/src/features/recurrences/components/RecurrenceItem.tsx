@@ -16,6 +16,7 @@ const RecurrenceItem = ({
 	nextDate?: DateTime
 }) => {
 	const { token } = useOnlyAuthenticated()
+
 	const navigate = useNavigate()
 
 	const {
@@ -75,7 +76,8 @@ const RecurrenceItem = ({
 									<Text
 										sx={{
 											textAlign: "right",
-											color: DateTime.now() > nextDate ? "red.400" : "inherit",
+											color:
+												DateTime.now() > nextDate ? "red.400" : "inherit",
 											fontSize: 14,
 											fontWeight: DateTime.now() > nextDate ? 600 : 400,
 											opacity: 0.5

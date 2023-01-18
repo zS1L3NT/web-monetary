@@ -8,11 +8,11 @@ import {
 } from "@chakra-ui/react"
 
 import AuthContext from "../contexts/AuthContext"
+import AddCategoryModal from "./modals/AddCategoryModal"
 import AddRecurrenceModal from "./modals/AddRecurrenceModal"
 import AddTransactionModal from "./modals/AddTransactionModal"
-import EditRecurrenceModal from "./modals/EditRecurrenceModal"
-import AddCategoryModal from "./modals/AddCategoryModal"
 import EditCategoryModal from "./modals/EditCategoryModal"
+import EditRecurrenceModal from "./modals/EditRecurrenceModal"
 
 interface iNavItem {
 	title: string
@@ -22,9 +22,10 @@ interface iNavItem {
 
 const Navigator = () => {
 	const { token } = useContext(AuthContext)
-	const { toggleColorMode } = useColorMode()
-	const location = useLocation()
+
 	const navigate = useNavigate()
+	const location = useLocation()
+	const { toggleColorMode } = useColorMode()
 
 	const {
 		isOpen: isDrawerOpen,
@@ -56,6 +57,50 @@ const Navigator = () => {
 		onOpen: onEditCategoryModalOpen,
 		onClose: onEditCategoryModalClose
 	} = useDisclosure()
+
+	const getLabel = () => {
+		if (location.pathname.startsWith("/recurrences")) {
+			if (location.pathname.startsWith("/recurrences/")) {
+				return "Edit Recurrence"
+			} else {
+				return "Add Recurrence"
+			}
+		} else if (location.pathname.startsWith("/categories")) {
+			if (location.pathname.startsWith("/categories/")) {
+				return "Edit Category"
+			} else {
+				return "Add Category"
+			}
+		} else {
+			return "Add Transaction"
+		}
+	}
+
+	const getIcon = () => {
+		if (location.pathname.match(/\/\w+\//)) {
+			return <EditIcon />
+		} else {
+			return <AddIcon />
+		}
+	}
+
+	const handleActionButtonClick = () => {
+		if (location.pathname.startsWith("/recurrences")) {
+			if (location.pathname.startsWith("/recurrences/")) {
+				onEditRecurrenceModalOpen()
+			} else {
+				onAddRecurrenceModalOpen()
+			}
+		} else if (location.pathname.startsWith("/categories")) {
+			if (location.pathname.startsWith("/categories/")) {
+				onEditCategoryModalOpen()
+			} else {
+				onAddCategoryModalOpen()
+			}
+		} else {
+			onAddTransactionModalOpen()
+		}
+	}
 
 	const items: iNavItem[] = [
 		{
@@ -114,50 +159,6 @@ const Navigator = () => {
 			render: !!token
 		}
 	]
-
-	const getLabel = () => {
-		if (location.pathname.startsWith("/recurrences")) {
-			if (location.pathname.startsWith("/recurrences/")) {
-				return "Edit Recurrence"
-			} else {
-				return "Add Recurrence"
-			}
-		} else if (location.pathname.startsWith("/categories")) {
-			if (location.pathname.startsWith("/categories/")) {
-				return "Edit Category"
-			} else {
-				return "Add Category"
-			}
-		} else {
-			return "Add Transaction"
-		}
-	}
-
-	const getIcon = () => {
-		if (location.pathname.match(/\/\w+\//)) {
-			return <EditIcon />
-		} else {
-			return <AddIcon />
-		}
-	}
-
-	const handleActionButtonClick = () => {
-		if (location.pathname.startsWith("/recurrences")) {
-			if (location.pathname.startsWith("/recurrences/")) {
-				onEditRecurrenceModalOpen()
-			} else {
-				onAddRecurrenceModalOpen()
-			}
-		} else if (location.pathname.startsWith("/categories")) {
-			if (location.pathname.startsWith("/categories/")) {
-				onEditCategoryModalOpen()
-			} else {
-				onAddCategoryModalOpen()
-			}
-		} else {
-			onAddTransactionModalOpen()
-		}
-	}
 
 	return (
 		<>

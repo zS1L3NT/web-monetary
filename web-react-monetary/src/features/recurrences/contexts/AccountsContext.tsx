@@ -16,7 +16,6 @@ const AccountsContext = createContext<{
 
 export const AccountsProvider = ({ children }: PropsWithChildren<{}>) => {
 	const { token } = useOnlyAuthenticated()
-
 	const { recurrence } = useContext(RecurrenceContext)
 
 	const { data: fromAccount, error: fromAccountError } = useGetAccountQuery(

@@ -21,6 +21,7 @@ import TypeInput from "./inputs/TypeInput"
 
 const EditRecurrenceModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
 	const { token } = useOnlyAuthenticated()
+
 	const location = useLocation()
 	const recurrenceId = location.pathname.slice(13)
 

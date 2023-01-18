@@ -12,8 +12,8 @@ const TransactionsContext = createContext({
 
 export const TransactionsProvider = ({ children }: PropsWithChildren<{}>) => {
 	const { token } = useOnlyAuthenticated()
-
 	const { selectedAccounts } = useContext(AccountsContext)
+
 	const { data: transactions, error: transactionsError } = useGetTransactionsQuery({
 		token,
 		from_account_ids: ["null", ...(selectedAccounts ?? []).map(account => account.id)],

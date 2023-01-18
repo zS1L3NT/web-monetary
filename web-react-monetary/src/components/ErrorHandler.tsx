@@ -8,11 +8,14 @@ import useAppSelector from "../hooks/useAppSelector"
 
 const ErrorHandler = () => {
 	const { setToken } = useContext(AuthContext)
-	const error = useAppSelector(state => state.error)
-	const prevError = usePrevious(error)
-	const location = useLocation()
+
 	const navigate = useNavigate()
+	const location = useLocation()
 	const toast = useToast()
+
+	const error = useAppSelector(state => state.error)
+
+	const prevError = usePrevious(error)
 
 	useEffect(() => {
 		if (!error) return
