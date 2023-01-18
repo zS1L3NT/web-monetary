@@ -43,6 +43,16 @@ export default extendTheme(
 					focusBorderColor: "primary.300"
 				}
 			},
+			Modal: {
+				baseStyle: {
+					dialog: {
+						w: {
+							base: "90%",
+							md: "full"
+						}
+					}
+				}
+			},
 			Container: {
 				variants: {
 					page: {
