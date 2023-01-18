@@ -8,23 +8,35 @@ import Recurrence from "../../../models/recurrence"
 
 const RecurrenceContext = createContext<{
 	recurrence: Recurrence | undefined
+	recurrenceIsLoading: boolean
 }>({
-	recurrence: undefined
+	recurrence: undefined,
+	recurrenceIsLoading: false
 })
 
 export const RecurrenceProvider = ({ children }: PropsWithChildren<{}>) => {
 	const { token } = useOnlyAuthenticated()
 	const { recurrence_id } = useParams()
 
-	const { data: recurrence, error: recurrenceError } = useGetRecurrenceQuery({
+	const {
+		data: recurrence,
+		error: recurrenceError,
+		isLoading: recurrenceIsLoading
+	} = useGetRecurrenceQuery({
 		token,
 		recurrence_id: recurrence_id!
 	})
 
-	useToastError(recurrenceError, true)
+	useToastError(recurrenceError)
 
 	return (
-		<RecurrenceContext.Provider value={{ recurrence }}>{children}</RecurrenceContext.Provider>
+		<RecurrenceContext.Provider
+			value={{
+				recurrence,
+				recurrenceIsLoading
+			}}>
+			{children}
+		</RecurrenceContext.Provider>
 	)
 }
 

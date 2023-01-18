@@ -1,13 +1,15 @@
 import { useContext } from "react"
 
-import { Box, Card, CardBody, Center, Heading, Spinner, Text } from "@chakra-ui/react"
+import {
+	Alert, AlertIcon, AlertTitle, Box, Card, CardBody, Center, Heading, Spinner, Text
+} from "@chakra-ui/react"
 
 import AccountsContext from "../contexts/AccountsContext"
 import CategoryContext from "../contexts/CategoryContext"
 import RecurrenceContext from "../contexts/RecurrenceContext"
 
 const RecurrenceDetails = () => {
-	const { recurrence } = useContext(RecurrenceContext)
+	const { recurrence, recurrenceIsLoading } = useContext(RecurrenceContext)
 	const { fromAccount, toAccount } = useContext(AccountsContext)
 	const { category } = useContext(CategoryContext)
 
@@ -18,7 +20,7 @@ const RecurrenceDetails = () => {
 				mt: 6
 			}}>
 			<CardBody>
-				{recurrence ? (
+				{!recurrenceIsLoading && recurrence ? (
 					<Box sx={{ position: "relative" }}>
 						<Heading>
 							{recurrence.name}
@@ -51,6 +53,15 @@ const RecurrenceDetails = () => {
 							{fromAccount?.renderAccount(toAccount, true)}
 						</Box>
 					</Box>
+				) : !recurrenceIsLoading ? (
+					<Alert
+						variant="left-accent"
+						status="error">
+						<AlertIcon />
+						<AlertTitle>
+							Recurrence not found
+						</AlertTitle>
+					</Alert>
 				) : (
 					<Center>
 						<Spinner />

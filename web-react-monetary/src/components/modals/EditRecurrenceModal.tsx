@@ -30,7 +30,7 @@ const EditRecurrenceModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
 			token,
 			recurrence_id: recurrenceId!
 		},
-		{ skip: !recurrenceId }
+		{ skip: location.pathname.slice(1, 12) !== "recurrences" || !recurrenceId }
 	)
 	const { data: accounts, error: accountsError } = useGetAccountsQuery({ token })
 	const { data: categories, error: categoriesError } = useGetCategoriesQuery({ token })
@@ -48,10 +48,10 @@ const EditRecurrenceModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
 	const [fromAccountId, setFromAcccountId] = useState<string | null>(null)
 	const [toAccountId, setToAccountId] = useState<string | null>(null)
 
-	useToastError(recurrenceError, true)
-	useToastError(accountsError, true)
-	useToastError(categoriesError, true)
-	useToastError(updateRecurrenceError, true)
+	useToastError(recurrenceError)
+	useToastError(accountsError)
+	useToastError(categoriesError)
+	useToastError(updateRecurrenceError)
 
 	useEffect(() => {
 		if (recurrence) {
