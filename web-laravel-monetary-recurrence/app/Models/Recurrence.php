@@ -32,9 +32,9 @@ class Recurrence extends Model
     protected $casts = [
         'amount' => 'double',
         'automatic' => 'boolean',
-        'period_start_date' => 'date',
+        'period_start_date' => 'datetime',
         'period_interval' => 'integer',
-        'period_end_date' => 'date',
+        'period_end_date' => 'datetime',
         'period_end_count' => 'integer',
     ];
 

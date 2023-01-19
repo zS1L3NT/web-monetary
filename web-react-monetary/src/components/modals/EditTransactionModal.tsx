@@ -64,7 +64,7 @@ const EditTransactionModal = ({
 			type,
 			amount,
 			description,
-			date: date.toISO()
+			date: date.toUTC().toISO()
 		})
 		onClose()
 	}

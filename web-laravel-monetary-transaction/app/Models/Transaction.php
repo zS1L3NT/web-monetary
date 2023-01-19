@@ -24,7 +24,7 @@ class Transaction extends Model
 
     protected $casts = [
         'amount' => 'double',
-        'date' => 'date',
+        'date' => 'datetime',
     ];
 
     protected $hidden = [

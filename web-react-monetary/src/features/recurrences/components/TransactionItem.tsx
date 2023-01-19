@@ -52,7 +52,7 @@ const TransactionItem = ({ date, transaction }: { date: DateTime; transaction?: 
 			type: recurrence.type,
 			amount: recurrence.amount,
 			description: ``,
-			date: date.toISODate(),
+			date: date.toUTC().toISO(),
 			from_account_id: fromAccount.id,
 			to_account_id: toAccount?.id ?? null
 		})

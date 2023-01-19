@@ -52,7 +52,7 @@ const AddTransactionModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
 			type,
 			amount,
 			description,
-			date: date.toISO()
+			date: date.toUTC().toISO()
 		})
 		onClose()
 	}
