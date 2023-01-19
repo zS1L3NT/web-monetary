@@ -1,6 +1,8 @@
 import { DateTime } from "luxon"
 import { z } from "zod"
 
+import { Badge, Text } from "@chakra-ui/react"
+
 import Model from "./model"
 
 export default class Debt extends Model {
@@ -38,6 +40,28 @@ export default class Debt extends Model {
 
 	get due_date(): DateTime {
 		return DateTime.fromISO(this.$due_date)
+	}
+
+	renderType() {
+		return (
+			<Badge
+				sx={{ ml: 2 }}
+				colorScheme={this.type === "Borrow" ? "red" : "green"}>
+				{this.type}
+			</Badge>
+		)
+	}
+
+	renderAmount(right = true) {
+		return (
+			<Text
+				sx={{
+					textAlign: right ? "right" : "left",
+					color: this.type === "Borrow" ? "red.500" : "green.500"
+				}}>
+				{this.type === "Borrow" ? "-" : "+"}${this.amount.toFixed(2)}
+			</Text>
+		)
 	}
 
 	static fromJSON(json: typeof Debt.type): Debt {
