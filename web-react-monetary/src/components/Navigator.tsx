@@ -1,36 +1,30 @@
-import { useContext } from "react"
+import { useMemo } from "react"
 import { useLocation, useNavigate } from "react-router-dom"
 
-import { AddIcon, EditIcon, HamburgerIcon, MoonIcon, SunIcon } from "@chakra-ui/icons"
-import {
-	Button, Divider, Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerHeader,
-	DrawerOverlay, Flex, IconButton, Text, Tooltip, useColorMode, useColorModeValue, useDisclosure
-} from "@chakra-ui/react"
+import { AddIcon, DeleteIcon, EditIcon, HamburgerIcon } from "@chakra-ui/icons"
+import { Button, Flex, IconButton, Show, Text, useDisclosure } from "@chakra-ui/react"
 
-import AuthContext from "../contexts/AuthContext"
-import AddCategoryModal from "./modals/AddCategoryModal"
-import AddRecurrenceModal from "./modals/AddRecurrenceModal"
-import AddTransactionModal from "./modals/AddTransactionModal"
-import EditCategoryModal from "./modals/EditCategoryModal"
-import EditRecurrenceModal from "./modals/EditRecurrenceModal"
-
-interface iNavItem {
-	title: string
-	navigate: string
-	render: boolean
-}
+import AddCategoryModal from "./popups/AddCategoryModal"
+import AddRecurrenceModal from "./popups/AddRecurrenceModal"
+import AddTransactionModal from "./popups/AddTransactionModal"
+import DeleteModelAlertDialog from "./popups/DeleteModelAlertDialog"
+import EditCategoryModal from "./popups/EditCategoryModal"
+import EditRecurrenceModal from "./popups/EditRecurrenceModal"
+import MainDrawer from "./popups/MainDrawer"
 
 const Navigator = () => {
-	const { token } = useContext(AuthContext)
-
 	const navigate = useNavigate()
 	const location = useLocation()
-	const { toggleColorMode } = useColorMode()
 
 	const {
-		isOpen: isDrawerOpen,
-		onToggle: onDrawerToggle,
-		onClose: onDrawerClose
+		isOpen: isMainDrawerOpen,
+		onToggle: onMainDrawerToggle,
+		onClose: onMainDrawerClose
+	} = useDisclosure()
+	const {
+		isOpen: isDeleteAlertDialogOpen,
+		onOpen: onDeleteAlertDialogOpen,
+		onClose: onDeleteAlertDialogClose
 	} = useDisclosure()
 	const {
 		isOpen: isAddTransactionModalOpen,
@@ -58,31 +52,23 @@ const Navigator = () => {
 		onClose: onEditCategoryModalClose
 	} = useDisclosure()
 
-	const getLabel = () => {
-		if (location.pathname.startsWith("/recurrences")) {
-			if (location.pathname.startsWith("/recurrences/")) {
-				return "Edit Recurrence"
-			} else {
-				return "Add Recurrence"
-			}
-		} else if (location.pathname.startsWith("/categories")) {
-			if (location.pathname.startsWith("/categories/")) {
-				return "Edit Category"
-			} else {
-				return "Add Category"
-			}
-		} else {
-			return "Add Transaction"
-		}
-	}
-
-	const getIcon = () => {
+	const action = useMemo(() => {
 		if (location.pathname.match(/\/\w+\//)) {
-			return <EditIcon />
+			return "Edit"
 		} else {
-			return <AddIcon />
+			return "Add"
 		}
-	}
+	}, [location])
+
+	const model = useMemo(() => {
+		if (location.pathname.startsWith("/recurrences")) {
+			return "Recurrence"
+		} else if (location.pathname.startsWith("/categories")) {
+			return "Category"
+		} else {
+			return "Transaction"
+		}
+	}, [location])
 
 	const handleActionButtonClick = () => {
 		if (location.pathname.startsWith("/recurrences")) {
@@ -102,64 +88,6 @@ const Navigator = () => {
 		}
 	}
 
-	const items: iNavItem[] = [
-		{
-			title: "Home",
-			navigate: "/",
-			render: true
-		},
-		{
-			title: "Login",
-			navigate: "/login",
-			render: !token
-		},
-		{
-			title: "Register",
-			navigate: "/register",
-			render: !token
-		},
-		{
-			title: "Dashboard",
-			navigate: "/dashboard",
-			render: !!token
-		},
-		{
-			title: "Transactions",
-			navigate: "/transactions",
-			render: !!token
-		},
-		{
-			title: "Recurrences",
-			navigate: "/recurrences",
-			render: !!token
-		},
-		{
-			title: "Categories",
-			navigate: "/categories",
-			render: !!token
-		},
-		{
-			title: "Budgets",
-			navigate: "/budgets",
-			render: !!token
-		},
-		{
-			title: "Debts",
-			navigate: "/debts",
-			render: !!token
-		},
-		{
-			title: "Settings",
-			navigate: "/settings",
-			render: !!token
-		},
-		{
-			title: "Logout",
-			navigate: "/logout",
-			render: !!token
-		}
-	]
-
 	return (
 		<>
 			<Flex
@@ -174,7 +102,7 @@ const Navigator = () => {
 				<IconButton
 					aria-label="Open Drawer"
 					variant="ghost"
-					onClick={onDrawerToggle}
+					onClick={onMainDrawerToggle}
 					icon={
 						<HamburgerIcon
 							sx={{
@@ -187,6 +115,7 @@ const Navigator = () => {
 				<Text
 					sx={{
 						ml: 2,
+						mr: "auto",
 						fontFamily: "heading",
 						fontWeight: "medium",
 						fontSize: "xl",
@@ -196,69 +125,57 @@ const Navigator = () => {
 					Monetary
 				</Text>
 
-				<Button
-					sx={{ ml: "auto" }}
-					variant="outline"
-					leftIcon={getIcon()}
-					onClick={handleActionButtonClick}>
-					{getLabel()}
-				</Button>
+				{action === "Edit" ? (
+					<>
+						<Show above="md">
+							<Button
+								sx={{ mr: 2 }}
+								variant="outline"
+								colorScheme="red"
+								leftIcon={<DeleteIcon />}
+								onClick={onDeleteAlertDialogOpen}>
+								Delete {model}
+							</Button>
+						</Show>
+						<Show below="md">
+							<IconButton
+								sx={{ mr: 2 }}
+								aria-label={`Delete ${model}`}
+								variant="outline"
+								colorScheme="red"
+								icon={<DeleteIcon />}
+								onClick={onDeleteAlertDialogOpen}
+							/>
+						</Show>
+					</>
+				) : null}
 
-				<Tooltip label="Toggle Color Scheme">
-					<IconButton
-						sx={{ ml: 3 }}
-						aria-label="Toggle Color Scheme"
+				<Show above="md">
+					<Button
 						variant="outline"
-						icon={useColorModeValue(<SunIcon />, <MoonIcon />)}
-						onClick={toggleColorMode}
+						leftIcon={action === "Edit" ? <EditIcon /> : <AddIcon />}
+						onClick={handleActionButtonClick}>
+						{action} {model}
+					</Button>
+				</Show>
+				<Show below="md">
+					<IconButton
+						aria-label={`${action} ${model}`}
+						variant="outline"
+						icon={action === "Edit" ? <EditIcon /> : <AddIcon />}
+						onClick={handleActionButtonClick}
 					/>
-				</Tooltip>
+				</Show>
 
-				<Drawer
-					size={{ base: "full", md: "sm" }}
-					placement="left"
-					onClose={onDrawerClose}
-					isOpen={isDrawerOpen}>
-					<DrawerOverlay />
-					<DrawerContent>
-						<DrawerHeader
-							sx={{ cursor: "pointer" }}
-							onClick={() => {
-								navigate("/")
-								onDrawerClose()
-							}}>
-							Monetary
-						</DrawerHeader>
-						<DrawerBody>
-							<Divider sx={{ mt: -2 }} />
-							{items.map(item =>
-								item.render ? (
-									<Button
-										key={item.navigate}
-										sx={{
-											w: "full",
-											display: "flex",
-											justifyContent: "start",
-											mt: 3
-										}}
-										variant="ghost"
-										onClick={() => {
-											navigate(item.navigate)
-											onDrawerClose()
-										}}>
-										{item.title}
-									</Button>
-								) : null
-							)}
-						</DrawerBody>
-						<DrawerCloseButton
-							sx={{
-								mt: 2,
-								mr: 3
-							}}
-						/>
-					</DrawerContent>
-				</Drawer>
+				<MainDrawer
+					isOpen={isMainDrawerOpen}
+					onClose={onMainDrawerClose}
+				/>
+				<DeleteModelAlertDialog
+					model={model}
+					isOpen={isDeleteAlertDialogOpen}
+					onClose={onDeleteAlertDialogClose}
+				/>
 				<AddTransactionModal
 					isOpen={isAddTransactionModalOpen}
 					onClose={onAddTransactionModalClose}

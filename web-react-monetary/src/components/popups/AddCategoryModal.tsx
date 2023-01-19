@@ -50,8 +50,8 @@ const AddCategoryModal = ({
 				category_id: parentCategoryId,
 				category_ids: [response.data.id]
 			})
-			onClose()
 		}
+		onClose()
 	}
 
 	const invalid = !name

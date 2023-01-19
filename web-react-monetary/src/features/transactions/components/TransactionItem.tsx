@@ -2,7 +2,7 @@ import { Box, Card, CardBody, Flex, Skeleton, Text, useDisclosure } from "@chakr
 
 import { useGetAccountQuery } from "../../../api/accounts"
 import { useGetCategoryQuery } from "../../../api/categories"
-import EditTransactionModal from "../../../components/modals/EditTransactionModal"
+import EditTransactionModal from "../../../components/popups/EditTransactionModal"
 import useOnlyAuthenticated from "../../../hooks/useOnlyAuthenticated"
 import useToastError from "../../../hooks/useToastError"
 import Recurrence from "../../../models/recurrence"

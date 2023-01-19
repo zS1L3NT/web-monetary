@@ -6,7 +6,7 @@ import {
 } from "@chakra-ui/react"
 
 import { useGetCategoriesQuery } from "../../../api/categories"
-import AddCategoryModal from "../../../components/modals/AddCategoryModal"
+import AddCategoryModal from "../../../components/popups/AddCategoryModal"
 import useOnlyAuthenticated from "../../../hooks/useOnlyAuthenticated"
 import useToastError from "../../../hooks/useToastError"
 import CategoryItem from "../components/CategoryItem"
