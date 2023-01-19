@@ -61,21 +61,8 @@ export default class Recurrence extends Model {
 		return this.$period_end_date ? DateTime.fromISO(this.$period_end_date) : null
 	}
 
-	getIsActive(): boolean {
-		switch (this.period_end_type) {
-			case "Never":
-				return true
-			case "Date":
-				return DateTime.now() < this.period_end_date!
-			case "Count":
-				return (
-					DateTime.now() <
-					this.period_start_date.plus({
-						[this.period_type.toLowerCase()]:
-							this.period_interval * this.period_end_count!
-					})
-				)
-		}
+	getIsActive(transactions: Transaction[]): boolean {
+		return this.period_end_type === "Never" || !!this.getNextDate(transactions).next().value
 	}
 
 	*getNextDate(transactions: Transaction[]): Generator<DateTime | null> {

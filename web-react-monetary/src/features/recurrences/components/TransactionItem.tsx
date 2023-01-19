@@ -99,7 +99,11 @@ const TransactionItem = ({ date, transaction }: { date: DateTime; transaction?: 
 										? "Due today"
 										: "Due in"}{" "}
 									{!today.equals(date)
-										? Math.abs(date.diff(today, "days").days) + " day(s)"
+										? Math.abs(
+												date
+													.startOf("day")
+													.diff(today.startOf("day"), "days").days
+										  ) + " day(s)"
 										: ""}
 								</Text>
 							)}

@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from "framer-motion"
-import { useContext } from "react"
+import { useContext, useMemo } from "react"
 
 import { Box, Center, Spinner, Text } from "@chakra-ui/react"
 
@@ -31,25 +31,33 @@ const RecurrenceList = ({}: {}) => {
 	useToastError(recurrencesError, true)
 	useToastError(transactionsError, true)
 
-	const activeRecurranceIds = recurrences?.filter(r => r.getIsActive()).map(r => r.id) ?? []
-	const closedRecurranceIds = recurrences?.filter(r => !r.getIsActive()).map(r => r.id) ?? []
+	const [activeRecurrenceIds, closedRecurrenceIds] = useMemo<(string[] | undefined)[]>(() => {
+		if (recurrences && transactions) {
+			return [
+				recurrences.filter(r => r.getIsActive(transactions)).map(r => r.id),
+				recurrences.filter(r => !r.getIsActive(transactions)).map(r => r.id)
+			]
+		} else {
+			return [undefined, undefined]
+		}
+	}, [recurrences, transactions])
 
 	return (
 		<AnimatePresence>
 			<Box sx={{ flex: 1 }}>
-				{recurrencesAreLoading || activeRecurranceIds.length ? (
+				{recurrencesAreLoading || activeRecurrenceIds?.length !== 0 ? (
 					<Text
 						sx={{
 							mt: 6,
 							fontSize: 20,
 							fontWeight: 700
 						}}>
-						Active Recurrances
+						Active Recurrences
 					</Text>
 				) : null}
-				{activeRecurranceIds.length && transactions?.length ? (
+				{activeRecurrenceIds?.length && transactions?.length ? (
 					recurrences!
-						.filter(r => activeRecurranceIds.includes(r.id))
+						.filter(r => activeRecurrenceIds.includes(r.id))
 						.sort((a, b) =>
 							sortBy.startsWith("name")
 								? sortBy === "name-asc"
@@ -75,19 +83,19 @@ const RecurrenceList = ({}: {}) => {
 						<Spinner />
 					</Center>
 				) : null}
-				{recurrencesAreLoading || closedRecurranceIds.length ? (
+				{recurrencesAreLoading || closedRecurrenceIds?.length !== 0 ? (
 					<Text
 						sx={{
 							mt: 6,
 							fontSize: 20,
 							fontWeight: 700
 						}}>
-						Closed Recurrances
+						Closed Recurrences
 					</Text>
 				) : null}
-				{closedRecurranceIds.length ? (
+				{closedRecurrenceIds?.length ? (
 					recurrences!
-						.filter(r => closedRecurranceIds.includes(r.id))
+						.filter(r => closedRecurrenceIds.includes(r.id))
 						.map(r => (
 							<motion.div
 								key={r.id}
