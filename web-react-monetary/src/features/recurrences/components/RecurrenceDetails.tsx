@@ -27,7 +27,7 @@ const RecurrenceDetails = () => {
 				<CardBody>
 					{!recurrenceIsLoading && recurrence ? (
 						<Box sx={{ position: "relative" }}>
-							<Heading>
+							<Heading size="lg">
 								{recurrence.name}
 
 								{recurrence.renderAutomatic(true)}

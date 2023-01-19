@@ -61,9 +61,8 @@ const Category = ({}: {}) => {
 						variant="outline"
 						icon={<AddIcon />}
 						size="sm"
-						onClick={onAddCategoryModalOpen}>
-						Add subcategory
-					</IconButton>
+						onClick={onAddCategoryModalOpen}
+					/>
 				</Flex>
 				{!categoriesAreLoading ? (
 					<Stack>

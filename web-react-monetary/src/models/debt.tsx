@@ -1,7 +1,7 @@
 import { DateTime } from "luxon"
 import { z } from "zod"
 
-import { Badge, Text } from "@chakra-ui/react"
+import { Badge } from "@chakra-ui/react"
 
 import Model from "./model"
 
@@ -49,18 +49,6 @@ export default class Debt extends Model {
 				colorScheme={this.type === "Borrow" ? "red" : "green"}>
 				{this.type}
 			</Badge>
-		)
-	}
-
-	renderAmount(right = true) {
-		return (
-			<Text
-				sx={{
-					textAlign: right ? "right" : "left",
-					color: this.type === "Borrow" ? "red.500" : "green.500"
-				}}>
-				{this.type === "Borrow" ? "-" : "+"}${this.amount.toFixed(2)}
-			</Text>
 		)
 	}
 

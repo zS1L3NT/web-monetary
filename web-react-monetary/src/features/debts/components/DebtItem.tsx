@@ -63,7 +63,7 @@ const DebtItem = ({ debt }: { debt: Debt }) => {
 									lg: 4
 								}
 							}}>
-							{debt.renderAmount()}
+							<Text sx={{ textAlign: "right" }}>${debt.amount.toFixed(2)}</Text>
 
 							<Text
 								sx={{
