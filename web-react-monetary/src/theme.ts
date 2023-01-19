@@ -47,7 +47,7 @@ export default extendTheme(
 				baseStyle: {
 					dialog: {
 						w: {
-							base: "90%",
+							base: "95%",
 							md: "full"
 						}
 					}
@@ -56,6 +56,14 @@ export default extendTheme(
 			Container: {
 				variants: {
 					page: {
+						pl: {
+							base: 2,
+							md: 4
+						},
+						pr: {
+							base: 1,
+							md: 3
+						},
 						maxW: {
 							base: "full",
 							md: "40rem",

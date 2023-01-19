@@ -1,7 +1,7 @@
 import { DateTime } from "luxon"
 import { Dispatch, SetStateAction } from "react"
 
-import { Box, Flex, Input, Stack, Text } from "@chakra-ui/react"
+import { Box, Flex, Input, Show, Stack, Text } from "@chakra-ui/react"
 
 import Dropdown from "../../Dropdown"
 
@@ -46,6 +46,7 @@ const PeriodInput = ({
 			<Flex
 				sx={{
 					alignItems: "center",
+					flexWrap: "wrap",
 					gap: 2
 				}}>
 				<Text
