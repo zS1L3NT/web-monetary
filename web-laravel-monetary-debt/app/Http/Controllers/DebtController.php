@@ -36,26 +36,10 @@ class DebtController extends Controller
 
     public function index()
     {
-        $query = Debt::query()
+        return Debt::query()
             ->where('user_id', request('user_id'))
-            ->orderBy('type', 'desc');
-
-        if ($active = request('active')) {
-            switch (strtolower($active)) {
-                case "true":
-                    $query->where('active', true);
-                    break;
-                case "false":
-                    $query->where('active', false);
-                    break;
-                default:
-                    return response([
-                        'message' => 'Invalid value for active parameter. Must be true or false.',
-                    ], 400);
-            }
-        }
-
-        return $query->get();
+            ->orderBy('type', 'desc')
+            ->get();
     }
 
     public function store()
