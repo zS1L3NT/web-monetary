@@ -8,7 +8,7 @@ const Categories = ({}: {}) => {
 			<Heading
 				sx={{
 					mt: 6,
-					mb: 2
+					mb: 4
 				}}
 				size="md">
 				All Categories

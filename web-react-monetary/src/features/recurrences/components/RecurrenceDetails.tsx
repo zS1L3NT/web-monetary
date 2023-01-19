@@ -14,61 +14,65 @@ const RecurrenceDetails = () => {
 	const { category } = useContext(CategoryContext)
 
 	return (
-		<Card
-			sx={{
-				width: "full",
-				mt: 6
-			}}>
-			<CardBody>
-				{!recurrenceIsLoading && recurrence ? (
-					<Box sx={{ position: "relative" }}>
-						<Heading>
-							{recurrence.name}
+		<>
+			<Heading
+				sx={{
+					mt: 6,
+					mb: 4
+				}}
+				size="md">
+				Recurrence
+			</Heading>
+			<Card sx={{ width: "full" }}>
+				<CardBody>
+					{!recurrenceIsLoading && recurrence ? (
+						<Box sx={{ position: "relative" }}>
+							<Heading>
+								{recurrence.name}
 
-							{recurrence.renderAutomatic(true)}
-						</Heading>
-
-						{category?.renderCategory()}
-						<Text
-							sx={{
-								mt: 4,
-								fontSize: 18,
-								opacity: 0.5
-							}}>
-							{recurrence.formatPeriod()}
-						</Text>
-						<Text sx={{ opacity: 0.25 }}>{recurrence.description}</Text>
-						<Box
-							sx={{
-								position: "absolute",
-								top: 2,
-								right: 0
-							}}>
-							<Heading
-								sx={{ mb: 2 }}
-								size="md">
-								{recurrence.renderAmount()}
+								{recurrence.renderAutomatic(true)}
 							</Heading>
 
-							{fromAccount?.renderAccount(toAccount, true)}
+							{category?.renderCategory()}
+							<Text
+								sx={{
+									mt: 4,
+									fontSize: 18,
+									opacity: 0.5
+								}}>
+								{recurrence.formatPeriod()}
+							</Text>
+							<Text sx={{ opacity: 0.25 }}>{recurrence.description}</Text>
+							<Box
+								sx={{
+									position: "absolute",
+									top: 2,
+									right: 0
+								}}>
+								<Heading
+									sx={{ mb: 2 }}
+									size="md">
+									{recurrence.renderAmount()}
+								</Heading>
+
+								{fromAccount?.renderAccount(toAccount, true)}
+							</Box>
 						</Box>
-					</Box>
-				) : !recurrenceIsLoading ? (
-					<Alert
-						variant="left-accent"
-						status="error">
-						<AlertIcon />
-						<AlertTitle>
-							Recurrence not found
-						</AlertTitle>
-					</Alert>
-				) : (
-					<Center>
-						<Spinner />
-					</Center>
-				)}
-			</CardBody>
-		</Card>
+					) : !recurrenceIsLoading ? (
+						<Alert
+							variant="left-accent"
+							status="error">
+							<AlertIcon />
+							<AlertTitle>Recurrence not found</AlertTitle>
+						</Alert>
+					) : (
+						<Center>
+							<Spinner />
+						</Center>
+					)}
+				</CardBody>
+			</Card>
+		</>
 	)
 }
 

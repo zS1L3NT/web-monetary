@@ -134,7 +134,7 @@ const Navigator = () => {
 								colorScheme="red"
 								leftIcon={<DeleteIcon />}
 								onClick={onDeleteAlertDialogOpen}>
-								Delete {model}
+								Delete
 							</Button>
 						</Show>
 						<Show below="md">
@@ -155,7 +155,7 @@ const Navigator = () => {
 						variant="outline"
 						leftIcon={action === "Edit" ? <EditIcon /> : <AddIcon />}
 						onClick={handleActionButtonClick}>
-						{action} {model}
+						{action}
 					</Button>
 				</Show>
 				<Show below="md">
