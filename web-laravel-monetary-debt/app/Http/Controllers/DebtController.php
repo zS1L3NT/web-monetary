@@ -10,8 +10,11 @@ class DebtController extends Controller
         $this->middleware('owns.debt')->only(['show', 'update', 'destroy']);
 
         $this->validate('store', [
-            'type' => 'required|in:Loan,Debt',
+            'account_id' => 'required|uuid|exists:accounts,id',
+            'type' => 'required|in:Lend,Borrow',
             'amount' => 'required|decimal:0,2',
+            'due_date' => 'required|date',
+            'name' => 'required|string',
             'description' => 'string',
             'active' => 'boolean',
             'transaction_ids' => 'array',
@@ -19,8 +22,11 @@ class DebtController extends Controller
         ]);
 
         $this->validate('update', [
-            'type' => 'in:Loan,Debt',
+            'account_id' => 'uuid|exists:accounts,id',
+            'type' => 'in:Lend,Borrow',
             'amount' => 'decimal:0,2',
+            'due_date' => 'date',
+            'name' => 'string',
             'description' => 'string',
             'active' => 'boolean',
             'transaction_ids' => 'array',
