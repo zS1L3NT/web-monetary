@@ -59,6 +59,14 @@ services:
       - 8006:80
     env_file:
       - .env
+  web-laravel-monetary-recurrence-scheduler:
+    build: 
+      context: web-laravel-monetary-recurrence
+      dockerfile: Dockerfile
+    container_name: web-laravel-monetary-recurrence-scheduler
+    image: web-laravel-monetary-recurrence-scheduler
+    env_file:
+      - .env
   web-laravel-monetary-transaction:
     build: 
       context: web-laravel-monetary-transaction

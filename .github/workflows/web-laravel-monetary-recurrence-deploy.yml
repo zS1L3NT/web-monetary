@@ -33,3 +33,4 @@ jobs:
             echo JWT_SECRET="${{ secrets.JWT_SECRET }}" >> .env
             git pull origin main
             docker-compose up -d --build web-laravel-monetary-recurrence
+            docker-compose up -d --build web-laravel-monetary-recurrence-scheduler
