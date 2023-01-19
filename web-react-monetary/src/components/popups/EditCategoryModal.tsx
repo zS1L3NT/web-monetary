@@ -51,6 +51,7 @@ const EditCategoryModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () =
 			name,
 			color
 		})
+		onClose()
 	}
 
 	const invalid = !name

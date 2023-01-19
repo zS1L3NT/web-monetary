@@ -14,10 +14,12 @@ import useToastError from "../../hooks/useToastError"
 
 const DeleteModelAlertDialog = ({
 	model,
+	transactionId,
 	isOpen,
 	onClose
 }: {
 	model: "Recurrence" | "Category" | "Transaction"
+	transactionId?: string
 	isOpen: boolean
 	onClose: () => void
 }) => {
@@ -53,7 +55,7 @@ const DeleteModelAlertDialog = ({
 				navigate("/transactions")
 				await deleteTransaction({
 					token,
-					transaction_id: location.pathname.slice("/transactions/".length)
+					transaction_id: transactionId!
 				})
 				break
 			case "Recurrence":

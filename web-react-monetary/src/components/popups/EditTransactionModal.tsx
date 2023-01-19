@@ -2,7 +2,7 @@ import { useRef, useState } from "react"
 
 import {
 	Alert, AlertDescription, AlertIcon, Button, Center, CircularProgress, Modal, ModalBody,
-	ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Stack
+	ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Stack, useDisclosure
 } from "@chakra-ui/react"
 
 import { useGetAccountsQuery } from "../../api/accounts"
@@ -12,6 +12,7 @@ import useOnlyAuthenticated from "../../hooks/useOnlyAuthenticated"
 import useToastError from "../../hooks/useToastError"
 import Recurrence from "../../models/recurrence"
 import Transaction from "../../models/transaction"
+import DeleteModelAlertDialog from "./DeleteModelAlertDialog"
 import AccountsInput from "./inputs/AccountsInput"
 import AmountInput from "./inputs/AmountInput"
 import CategoryInput from "./inputs/CategoryInput"
@@ -39,6 +40,11 @@ const EditTransactionModal = ({
 	const { data: accounts, error: accountsError } = useGetAccountsQuery({ token })
 	const { data: categories, error: categoriesError } = useGetCategoriesQuery({ token })
 
+	const {
+		isOpen: isDeleteAlertDialogOpen,
+		onOpen: onDeleteAlertDialogOpen,
+		onClose: onDeleteAlertDialogClose
+	} = useDisclosure()
 	const [categoryId, setCategoryId] = useState<string | null>(transaction.category_id)
 	const [fromAccountId, setFromAccountId] = useState<string | null>(transaction.from_account_id)
 	const [toAccountId, setToAcccountId] = useState(transaction.to_account_id)
@@ -73,85 +79,102 @@ const EditTransactionModal = ({
 		!categoryId || !fromAccountId || (type === "Transfer" && !toAccountId) || !amount
 
 	return (
-		<Modal
-			finalFocusRef={finalFocusRef}
-			isOpen={isOpen}
-			onClose={onClose}>
-			<ModalOverlay />
-			<ModalContent>
-				<ModalHeader>Edit Transaction</ModalHeader>
-				<ModalCloseButton />
-				<ModalBody>
-					{accounts && categories ? (
-						<Stack sx={{ gap: 2 }}>
-							<TypeInput
-								type={type}
-								setType={setType}
-								setToAccountId={setToAcccountId}
-							/>
+		<>
+			<Modal
+				finalFocusRef={finalFocusRef}
+				isOpen={isOpen}
+				onClose={onClose}>
+				<ModalOverlay />
+				<ModalContent>
+					<ModalHeader>Edit Transaction</ModalHeader>
+					<ModalCloseButton />
+					<ModalBody>
+						{accounts && categories ? (
+							<Stack sx={{ gap: 2 }}>
+								<TypeInput
+									type={type}
+									setType={setType}
+									setToAccountId={setToAcccountId}
+								/>
 
-							<AccountsInput
-								accounts={accounts}
-								type={type}
-								fromAccountId={fromAccountId}
-								setFromAccountId={setFromAccountId}
-								toAccountId={toAccountId}
-								setToAccountId={setToAcccountId}
-							/>
+								<AccountsInput
+									accounts={accounts}
+									type={type}
+									fromAccountId={fromAccountId}
+									setFromAccountId={setFromAccountId}
+									toAccountId={toAccountId}
+									setToAccountId={setToAcccountId}
+								/>
 
-							<CategoryInput
-								categories={categories}
-								categoryId={categoryId}
-								setCategoryId={setCategoryId}
-							/>
+								<CategoryInput
+									categories={categories}
+									categoryId={categoryId}
+									setCategoryId={setCategoryId}
+								/>
 
-							<AmountInput
-								amount={amount}
-								setAmount={setAmount}
-							/>
+								<AmountInput
+									amount={amount}
+									setAmount={setAmount}
+								/>
 
-							<DateTimeInput
-								date={date}
-								setDate={setDate}
-							/>
+								<DateTimeInput
+									date={date}
+									setDate={setDate}
+								/>
 
-							<DescriptionInput
-								description={description}
-								setDescription={setDescription}
-							/>
+								<DescriptionInput
+									description={description}
+									setDescription={setDescription}
+								/>
 
-							<Alert
-								sx={{ display: recurrence ? "flex" : "none" }}
-								variant="left-accent"
-								status="info">
-								<AlertIcon />
-								<AlertDescription>
-									You cannot edit the date of a recurring transaction
-								</AlertDescription>
-							</Alert>
-						</Stack>
-					) : (
-						<Center>
-							<CircularProgress />
-						</Center>
-					)}
-				</ModalBody>
-				<ModalFooter>
-					<Button
-						sx={{ mr: 3 }}
-						variant="ghost"
-						onClick={onClose}>
-						Close
-					</Button>
-					<Button
-						isLoading={updateTransactionIsLoading}
-						disabled={invalid}
-						onClick={handleEdit}>
-						Edit
-					</Button>
-				</ModalFooter>
-			</ModalContent>
-		</Modal>
+								<Alert
+									sx={{ display: recurrence ? "flex" : "none" }}
+									variant="left-accent"
+									status="info">
+									<AlertIcon />
+									<AlertDescription>
+										You cannot edit the date of a recurring transaction
+									</AlertDescription>
+								</Alert>
+							</Stack>
+						) : (
+							<Center>
+								<CircularProgress />
+							</Center>
+						)}
+					</ModalBody>
+					<ModalFooter>
+						<Button
+							sx={{ mr: "auto" }}
+							colorScheme="red"
+							onClick={onDeleteAlertDialogOpen}>
+							Delete
+						</Button>
+						<Button
+							sx={{ mr: 3 }}
+							variant="ghost"
+							onClick={onClose}>
+							Close
+						</Button>
+						<Button
+							isLoading={updateTransactionIsLoading}
+							disabled={invalid}
+							onClick={handleEdit}>
+							Edit
+						</Button>
+					</ModalFooter>
+				</ModalContent>
+			</Modal>
+			<DeleteModelAlertDialog
+				model="Transaction"
+				transactionId={transaction.id}
+				isOpen={isDeleteAlertDialogOpen}
+				onClose={() => {
+					onDeleteAlertDialogClose()
+					onClose()
+				}}
+			/>
+		</>
 	)
 }
 
