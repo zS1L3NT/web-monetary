@@ -19,7 +19,6 @@ class DebtFactory extends Factory
     {
         return [
             'user_id' => DB::table('users')->first()->id,
-            'account_id' => DB::table('accounts')->inRandomOrder()->first()->id,
             'type' => $this->faker->randomElement(['Lend', 'Borrow']),
             'amount' => $this->faker->randomFloat(2, 0, 1000),
             'due_date' => $this->faker->dateTimeBetween('now', '+1 year'),

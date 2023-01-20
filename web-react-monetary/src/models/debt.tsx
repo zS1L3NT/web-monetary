@@ -10,7 +10,6 @@ export default class Debt extends Model {
 	static fillable: Omit<typeof Debt.type, "id" | "created_at" | "updated_at">
 	static schema = z.object({
 		id: z.string(),
-		account_id: z.string(),
 		type: z.enum(["Lend", "Borrow"]),
 		amount: z.number(),
 		due_date: z.string(),
@@ -24,7 +23,6 @@ export default class Debt extends Model {
 
 	private constructor(
 		id: string,
-		public account_id: string,
 		public type: "Lend" | "Borrow",
 		public amount: number,
 		private $due_date: string,
@@ -57,7 +55,6 @@ export default class Debt extends Model {
 
 		return new Debt(
 			parsed.id,
-			parsed.account_id,
 			parsed.type,
 			parsed.amount,
 			parsed.due_date,
@@ -73,7 +70,6 @@ export default class Debt extends Model {
 	toJSON(): typeof Debt.type {
 		return {
 			id: this.id,
-			account_id: this.account_id,
 			type: this.type,
 			amount: this.amount,
 			due_date: this.$due_date,

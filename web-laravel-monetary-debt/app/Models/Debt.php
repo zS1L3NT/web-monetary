@@ -12,7 +12,6 @@ class Debt extends Model
 
     protected $fillable = [
         'user_id',
-        'account_id',
         'type',
         'amount',
         'due_date',
