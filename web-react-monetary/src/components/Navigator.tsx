@@ -125,11 +125,29 @@ const Navigator = () => {
 					Monetary
 				</Text>
 
+				<Show above="md">
+					<Button
+						sx={{ mr: 2 }}
+						variant="outline"
+						leftIcon={action === "Edit" ? <EditIcon /> : <AddIcon />}
+						onClick={handleActionButtonClick}>
+						{action}
+					</Button>
+				</Show>
+				<Show below="md">
+					<IconButton
+						sx={{ mr: 2 }}
+						aria-label={`${action} ${model}`}
+						variant="outline"
+						icon={action === "Edit" ? <EditIcon /> : <AddIcon />}
+						onClick={handleActionButtonClick}
+					/>
+				</Show>
+
 				{action === "Edit" ? (
 					<>
 						<Show above="md">
 							<Button
-								sx={{ mr: 2 }}
 								variant="outline"
 								colorScheme="red"
 								leftIcon={<DeleteIcon />}
@@ -139,7 +157,6 @@ const Navigator = () => {
 						</Show>
 						<Show below="md">
 							<IconButton
-								sx={{ mr: 2 }}
 								aria-label={`Delete ${model}`}
 								variant="outline"
 								colorScheme="red"
@@ -149,23 +166,6 @@ const Navigator = () => {
 						</Show>
 					</>
 				) : null}
-
-				<Show above="md">
-					<Button
-						variant="outline"
-						leftIcon={action === "Edit" ? <EditIcon /> : <AddIcon />}
-						onClick={handleActionButtonClick}>
-						{action}
-					</Button>
-				</Show>
-				<Show below="md">
-					<IconButton
-						aria-label={`${action} ${model}`}
-						variant="outline"
-						icon={action === "Edit" ? <EditIcon /> : <AddIcon />}
-						onClick={handleActionButtonClick}
-					/>
-				</Show>
 
 				<MainDrawer
 					isOpen={isMainDrawerOpen}
