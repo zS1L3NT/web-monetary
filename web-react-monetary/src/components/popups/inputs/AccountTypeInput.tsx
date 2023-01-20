@@ -2,7 +2,7 @@ import { Dispatch, SetStateAction } from "react"
 
 import { Button, ButtonGroup } from "@chakra-ui/react"
 
-const TypeInput = ({
+const AccountTypeInput = ({
 	type,
 	setType,
 	setToAccountId
@@ -36,4 +36,4 @@ const TypeInput = ({
 	)
 }
 
-export default TypeInput
+export default AccountTypeInput

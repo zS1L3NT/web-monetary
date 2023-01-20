@@ -5,10 +5,12 @@ import { AddIcon, DeleteIcon, EditIcon, HamburgerIcon } from "@chakra-ui/icons"
 import { Button, Flex, IconButton, Show, Text, useDisclosure } from "@chakra-ui/react"
 
 import AddCategoryModal from "./popups/AddCategoryModal"
+import AddDebtModal from "./popups/AddDebtModal"
 import AddRecurrenceModal from "./popups/AddRecurrenceModal"
 import AddTransactionModal from "./popups/AddTransactionModal"
 import DeleteModelAlertDialog from "./popups/DeleteModelAlertDialog"
 import EditCategoryModal from "./popups/EditCategoryModal"
+import EditDebtModal from "./popups/EditDebtModal"
 import EditRecurrenceModal from "./popups/EditRecurrenceModal"
 import MainDrawer from "./popups/MainDrawer"
 
@@ -51,6 +53,16 @@ const Navigator = () => {
 		onOpen: onEditCategoryModalOpen,
 		onClose: onEditCategoryModalClose
 	} = useDisclosure()
+	const {
+		isOpen: isAddDebtModalOpen,
+		onOpen: onAddDebtModalOpen,
+		onClose: onAddDebtModalClose
+	} = useDisclosure()
+	const {
+		isOpen: isEditDebtModalOpen,
+		onOpen: onEditDebtModalOpen,
+		onClose: onEditDebtModalClose
+	} = useDisclosure()
 
 	const action = useMemo(() => {
 		if (location.pathname.match(/\/\w+\//)) {
@@ -65,6 +77,8 @@ const Navigator = () => {
 			return "Recurrence"
 		} else if (location.pathname.startsWith("/categories")) {
 			return "Category"
+		} else if (location.pathname.startsWith("/debts")) {
+			return "Debt"
 		} else {
 			return "Transaction"
 		}
@@ -82,6 +96,12 @@ const Navigator = () => {
 				onEditCategoryModalOpen()
 			} else {
 				onAddCategoryModalOpen()
+			}
+		} else if (location.pathname.startsWith("/debts")) {
+			if (location.pathname.startsWith("/debts/")) {
+				onEditDebtModalOpen()
+			} else {
+				onAddDebtModalOpen()
 			}
 		} else {
 			onAddTransactionModalOpen()
@@ -125,11 +145,29 @@ const Navigator = () => {
 					Monetary
 				</Text>
 
+				<Show above="md">
+					<Button
+						sx={{ mr: 2 }}
+						variant="outline"
+						leftIcon={action === "Edit" ? <EditIcon /> : <AddIcon />}
+						onClick={handleActionButtonClick}>
+						{action}
+					</Button>
+				</Show>
+				<Show below="md">
+					<IconButton
+						sx={{ mr: 2 }}
+						aria-label={`${action} ${model}`}
+						variant="outline"
+						icon={action === "Edit" ? <EditIcon /> : <AddIcon />}
+						onClick={handleActionButtonClick}
+					/>
+				</Show>
+
 				{action === "Edit" ? (
 					<>
 						<Show above="md">
 							<Button
-								sx={{ mr: 2 }}
 								variant="outline"
 								colorScheme="red"
 								leftIcon={<DeleteIcon />}
@@ -139,7 +177,6 @@ const Navigator = () => {
 						</Show>
 						<Show below="md">
 							<IconButton
-								sx={{ mr: 2 }}
 								aria-label={`Delete ${model}`}
 								variant="outline"
 								colorScheme="red"
@@ -149,23 +186,6 @@ const Navigator = () => {
 						</Show>
 					</>
 				) : null}
-
-				<Show above="md">
-					<Button
-						variant="outline"
-						leftIcon={action === "Edit" ? <EditIcon /> : <AddIcon />}
-						onClick={handleActionButtonClick}>
-						{action}
-					</Button>
-				</Show>
-				<Show below="md">
-					<IconButton
-						aria-label={`${action} ${model}`}
-						variant="outline"
-						icon={action === "Edit" ? <EditIcon /> : <AddIcon />}
-						onClick={handleActionButtonClick}
-					/>
-				</Show>
 
 				<MainDrawer
 					isOpen={isMainDrawerOpen}
@@ -195,6 +215,14 @@ const Navigator = () => {
 				<EditCategoryModal
 					isOpen={isEditCategoryModalOpen}
 					onClose={onEditCategoryModalClose}
+				/>
+				<AddDebtModal
+					isOpen={isAddDebtModalOpen}
+					onClose={onAddDebtModalClose}
+				/>
+				<EditDebtModal
+					isOpen={isEditDebtModalOpen}
+					onClose={onEditDebtModalClose}
 				/>
 			</Flex>
 		</>

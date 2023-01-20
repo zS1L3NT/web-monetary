@@ -2,7 +2,7 @@ import { DateTime } from "luxon"
 import { useRef, useState } from "react"
 
 import {
-	Button, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader,
+	Button, Checkbox, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader,
 	ModalOverlay, Stack
 } from "@chakra-ui/react"
 
@@ -12,24 +12,23 @@ import { useCreateRecurrenceMutation } from "../../api/recurrences"
 import useOnlyAuthenticated from "../../hooks/useOnlyAuthenticated"
 import useToastError from "../../hooks/useToastError"
 import AccountsInput from "./inputs/AccountsInput"
+import AccountTypeInput from "./inputs/AccountTypeInput"
 import AmountInput from "./inputs/AmountInput"
-import AutomaticInput from "./inputs/AutomaticInput"
 import CategoryInput from "./inputs/CategoryInput"
 import DescriptionInput from "./inputs/DescriptionInput"
 import NameInput from "./inputs/NameInput"
 import PeriodInput from "./inputs/PeriodInput"
-import TypeInput from "./inputs/TypeInput"
 
 const AddRecurrenceModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
 	const { token } = useOnlyAuthenticated()
-	
+
 	const [
 		createRecurrence,
 		{ error: createRecurrenceError, isLoading: createRecurrenceIsLoading }
 	] = useCreateRecurrenceMutation()
 	const { data: accounts, error: accountsError } = useGetAccountsQuery({ token })
 	const { data: categories, error: categoriesError } = useGetCategoriesQuery({ token })
-	
+
 	const [categoryId, setCategoryId] = useState<string | null>(null)
 	const [type, setType] = useState<"Outgoing" | "Incoming" | "Transfer">("Outgoing")
 	const [name, setName] = useState("")
@@ -45,7 +44,7 @@ const AddRecurrenceModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () 
 	const [fromAccountId, setFromAcccountId] = useState<string | null>(null)
 	const [toAccountId, setToAccountId] = useState<string | null>(null)
 	const finalFocusRef = useRef(null)
-	
+
 	useToastError(createRecurrenceError)
 	useToastError(accountsError)
 	useToastError(categoriesError)
@@ -95,7 +94,7 @@ const AddRecurrenceModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () 
 				<ModalBody>
 					{accounts && categories ? (
 						<Stack sx={{ gap: 2 }}>
-							<TypeInput
+							<AccountTypeInput
 								type={type}
 								setType={setType}
 								setToAccountId={setToAccountId}
@@ -146,10 +145,11 @@ const AddRecurrenceModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () 
 								setDescription={setDescription}
 							/>
 
-							<AutomaticInput
-								automatic={automatic}
-								setAutomatic={setAutomatic}
-							/>
+							<Checkbox
+								isChecked={automatic}
+								onChange={e => setAutomatic(e.target.checked)}>
+								Automatically approve transactions
+							</Checkbox>
 						</Stack>
 					) : null}
 				</ModalBody>

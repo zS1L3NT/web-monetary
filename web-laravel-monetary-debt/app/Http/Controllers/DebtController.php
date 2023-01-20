@@ -10,8 +10,10 @@ class DebtController extends Controller
         $this->middleware('owns.debt')->only(['show', 'update', 'destroy']);
 
         $this->validate('store', [
-            'type' => 'required|in:Loan,Debt',
-            'amount' => 'required|decimal:0,2',
+            'type' => 'required|in:Lend,Borrow',
+            'amount' => 'required|numeric',
+            'due_date' => 'required|date',
+            'name' => 'required|string',
             'description' => 'string',
             'active' => 'boolean',
             'transaction_ids' => 'array',
@@ -19,8 +21,10 @@ class DebtController extends Controller
         ]);
 
         $this->validate('update', [
-            'type' => 'in:Loan,Debt',
-            'amount' => 'decimal:0,2',
+            'type' => 'in:Lend,Borrow',
+            'amount' => 'numeric',
+            'due_date' => 'date',
+            'name' => 'string',
             'description' => 'string',
             'active' => 'boolean',
             'transaction_ids' => 'array',
@@ -30,26 +34,10 @@ class DebtController extends Controller
 
     public function index()
     {
-        $query = Debt::query()
+        return Debt::query()
             ->where('user_id', request('user_id'))
-            ->orderBy('type', 'desc');
-
-        if ($active = request('active')) {
-            switch (strtolower($active)) {
-                case "true":
-                    $query->where('active', true);
-                    break;
-                case "false":
-                    $query->where('active', false);
-                    break;
-                default:
-                    return response([
-                        'message' => 'Invalid value for active parameter. Must be true or false.',
-                    ], 400);
-            }
-        }
-
-        return $query->get();
+            ->orderBy('type', 'desc')
+            ->get();
     }
 
     public function store()

@@ -3,9 +3,9 @@ import api, { ApiResponse, optimistic, RequireToken } from "./api"
 
 const debts = api.injectEndpoints({
 	endpoints: builder => ({
-		getDebts: builder.query<Debt[], { active?: boolean } & RequireToken>({
-			query: ({ token, active }) => ({
-				url: `/debts` + (active !== undefined ? `?active=${active}` : ``),
+		getDebts: builder.query<Debt[], RequireToken>({
+			query: ({ token }) => ({
+				url: `/debts`,
 				method: "GET",
 				token
 			}),

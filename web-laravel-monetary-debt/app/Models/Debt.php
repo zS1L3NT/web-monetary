@@ -14,6 +14,8 @@ class Debt extends Model
         'user_id',
         'type',
         'amount',
+        'due_date',
+        'name',
         'description',
         'active',
         'transaction_ids',
@@ -21,6 +23,7 @@ class Debt extends Model
 
     protected $casts = [
         'amount' => 'double',
+        'due_date' => 'datetime',
         'active' => 'boolean',
     ];
 

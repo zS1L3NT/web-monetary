@@ -11,6 +11,8 @@ import Register from "./features/authentication/pages/Register"
 import Categories from "./features/categories/pages/Categories"
 import Category from "./features/categories/pages/Category"
 import Dashboard from "./features/dashboard/pages/Dashboard"
+import Debt from "./features/debts/pages/Debt"
+import Debts from "./features/debts/pages/Debts"
 import Landing from "./features/landing/pages/Landing"
 import Recurrence from "./features/recurrences/pages/Recurrence"
 import Recurrences from "./features/recurrences/pages/Recurrences"
@@ -77,6 +79,16 @@ const App = () => {
 						<Route
 							path=":category_id"
 							element={<Category />}
+						/>
+					</Route>
+					<Route path="debts">
+						<Route
+							index
+							element={<Debts />}
+						/>
+						<Route
+							path=":debt_id"
+							element={<Debt />}
 						/>
 					</Route>
 				</Routes>
