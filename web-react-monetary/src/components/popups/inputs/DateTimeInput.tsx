@@ -4,17 +4,17 @@ import { Dispatch, SetStateAction } from "react"
 import { Box, Input, Text } from "@chakra-ui/react"
 
 const DateTimeInput = ({
-	text = "Date and Time",
+	title = "Date and Time",
 	date,
 	setDate
 }: {
-	text?: string
+	title?: string
 	date: DateTime
 	setDate: Dispatch<SetStateAction<DateTime>>
 }) => {
 	return (
 		<Box>
-			<Text>{text}</Text>
+			<Text>{title}</Text>
 			<Input
 				type="datetime-local"
 				value={date.toFormat("yyyy-MM-dd'T'HH:mm''")}

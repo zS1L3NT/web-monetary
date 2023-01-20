@@ -10,10 +10,12 @@ import Transaction from "../../../models/transaction"
 
 const TransactionItem = ({
 	transaction,
-	recurrence
+	recurrence,
+	fullDate = false
 }: {
 	transaction: Transaction
 	recurrence: Recurrence | null
+	fullDate?: boolean
 }) => {
 	const { token } = useOnlyAuthenticated()
 
@@ -90,7 +92,9 @@ const TransactionItem = ({
 										fontSize: 14,
 										opacity: 0.5
 									}}>
-									{transaction.date.toFormat("hh:mm a")}
+									{fullDate
+										? transaction.date.toFormat("d MMM yyyy hh:mm a")
+										: transaction.date.toFormat("hh:mm a")}
 								</Text>
 							</Box>
 						</Flex>

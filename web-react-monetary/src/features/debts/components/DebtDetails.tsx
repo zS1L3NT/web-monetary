@@ -54,17 +54,16 @@ const DebtDetails = ({
 									<Skeleton sx={{ h: "24px" }} />
 								)}
 
-								<Flex
+								<Text
 									sx={{
-										justifyContent: "end",
-										alignItems: "center",
+										textAlign: "right",
 										mt: 4,
 										gap: 1,
 										fontSize: 16,
 										opacity: 0.5
 									}}>
 									Total: ${debt.amount.toFixed(2)}
-								</Flex>
+								</Text>
 
 								<Text
 									sx={{
@@ -74,7 +73,7 @@ const DebtDetails = ({
 										fontSize: 14,
 										opacity: 0.5
 									}}>
-									Due by {debt.due_date.toFormat("d MMM yyyy")}
+									Due by {debt.due_date.toFormat("d MMM yyyy hh:mm a")}
 								</Text>
 							</Box>
 						</Flex>

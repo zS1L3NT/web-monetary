@@ -74,6 +74,7 @@ const Debt = ({}: {}) => {
 						<TransactionItem
 							transaction={t}
 							recurrence={null}
+							fullDate={true}
 						/>
 					))
 				) : transactionsAreLoading ? (
