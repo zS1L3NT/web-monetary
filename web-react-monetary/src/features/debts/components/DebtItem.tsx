@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom"
 
 import { Box, Card, CardBody, Flex, Skeleton, Text } from "@chakra-ui/react"
 
-import { useGetAccountQuery } from "../../../api/accounts"
+import { useGetTransactionsQuery } from "../../../api/transactions"
 import useOnlyAuthenticated from "../../../hooks/useOnlyAuthenticated"
 import useToastError from "../../../hooks/useToastError"
 import Debt from "../../../models/debt"
@@ -14,15 +14,18 @@ const DebtItem = ({ debt }: { debt: Debt }) => {
 	const navigate = useNavigate()
 
 	const {
-		data: account,
-		error: accountError,
-		isLoading: accountIsLoading
-	} = useGetAccountQuery({
-		token,
-		account_id: debt.account_id
-	})
+		data: transactions,
+		error: transactionsError,
+		isLoading: transactionsAreLoading
+	} = useGetTransactionsQuery(
+		{
+			token,
+			transaction_ids: debt?.transaction_ids ?? []
+		},
+		{ skip: !debt || !debt.transaction_ids.length }
+	)
 
-	useToastError(accountError, true)
+	useToastError(transactionsError)
 
 	return (
 		<Card
@@ -37,47 +40,49 @@ const DebtItem = ({ debt }: { debt: Debt }) => {
 			}}
 			onClick={() => navigate(debt.id)}>
 			<CardBody>
-				{accountIsLoading ? (
-					<Skeleton sx={{ h: 54 }} />
-				) : (
-					<Flex sx={{ justifyContent: "space-between" }}>
-						<Box>
-							<Text
-								sx={{
-									fontSize: 18,
-									fontWeight: 500
-								}}>
-								{debt.name}
-
-								{debt.renderType()}
-							</Text>
-
-							{account?.renderAccount()}
-						</Box>
-
-						<Box
+				<Flex sx={{ justifyContent: "space-between" }}>
+					<Box>
+						<Text
 							sx={{
-								width: "100px",
-								mx: {
-									base: 2,
-									lg: 4
-								}
+								fontSize: 18,
+								fontWeight: 500
 							}}>
-							<Text sx={{ textAlign: "right" }}>${debt.amount.toFixed(2)}</Text>
+							{debt.name}
 
-							<Text
-								sx={{
-									textAlign: "right",
-									color: DateTime.now() > debt.due_date ? "red.400" : "inherit",
-									fontSize: 14,
-									fontWeight: DateTime.now() > debt.due_date ? 600 : 400,
-									opacity: 0.5
-								}}>
-								{debt.due_date.toFormat("d MMM yyyy")}
+							{debt.renderType()}
+						</Text>
+
+						<Text sx={{ opacity: 0.5 }}>{debt.description}</Text>
+					</Box>
+
+					<Box
+						sx={{
+							width: "100px",
+							mx: {
+								base: 2,
+								lg: 4
+							}
+						}}>
+						{!transactionsAreLoading ? (
+							<Text sx={{ textAlign: "right" }}>
+								{debt.getAmountLeft(transactions ?? [])}
 							</Text>
-						</Box>
-					</Flex>
-				)}
+						) : (
+							<Skeleton sx={{ h: "24px" }} />
+						)}
+
+						<Text
+							sx={{
+								textAlign: "right",
+								color: DateTime.now() > debt.due_date ? "red.400" : "inherit",
+								fontSize: 14,
+								fontWeight: DateTime.now() > debt.due_date ? 600 : 400,
+								opacity: 0.5
+							}}>
+							{debt.due_date.toFormat("d MMM yyyy")}
+						</Text>
+					</Box>
+				</Flex>
 			</CardBody>
 		</Card>
 	)

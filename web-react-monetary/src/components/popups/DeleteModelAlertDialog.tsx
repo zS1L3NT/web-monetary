@@ -52,7 +52,9 @@ const DeleteModelAlertDialog = ({
 		onClose()
 		switch (model) {
 			case "Transaction":
-				navigate("/transactions")
+				if (location.pathname.startsWith("/transactions/")) {
+					navigate("/transactions")
+				}
 				await deleteTransaction({
 					token,
 					transaction_id: transactionId!

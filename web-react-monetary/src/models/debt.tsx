@@ -4,6 +4,7 @@ import { z } from "zod"
 import { Badge } from "@chakra-ui/react"
 
 import Model from "./model"
+import Transaction from "./transaction"
 
 export default class Debt extends Model {
 	static type: z.infer<typeof Debt.schema>
@@ -38,6 +39,31 @@ export default class Debt extends Model {
 
 	get due_date(): DateTime {
 		return DateTime.fromISO(this.$due_date)
+	}
+
+	getAmountLeft(transactions: Transaction[]): string {
+		const paid = transactions
+			.map(t =>
+				this.type === "Borrow"
+					? t.type === "Outgoing"
+						? t.amount
+						: t.type === "Incoming"
+						? -t.amount
+						: 0
+					: t.type === "Incoming"
+					? t.amount
+					: t.type === "Outgoing"
+					? -t.amount
+					: 0
+			)
+			.reduce((acc, el) => acc + el, 0)
+		const left = this.amount - paid
+
+		return left > 0
+			? `$${left.toFixed(2)} left`
+			: left < 0
+			? `$${left.toFixed(2)} excess`
+			: `Paid in exact`
 	}
 
 	renderType() {

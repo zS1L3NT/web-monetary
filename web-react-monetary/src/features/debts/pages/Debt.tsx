@@ -5,9 +5,9 @@ import {
 	Center, Container, Flex, Heading, IconButton, Spinner, useDisclosure
 } from "@chakra-ui/react"
 
-import { useGetAccountQuery } from "../../../api/accounts"
 import { useGetDebtQuery } from "../../../api/debts"
 import { useGetTransactionsQuery } from "../../../api/transactions"
+import AddDebtTransactionModal from "../../../components/popups/AddDebtTransactionModal"
 import useOnlyAuthenticated from "../../../hooks/useOnlyAuthenticated"
 import useToastError from "../../../hooks/useToastError"
 import TransactionItem from "../../transactions/components/TransactionItem"
@@ -22,13 +22,6 @@ const Debt = ({}: {}) => {
 		token,
 		debt_id: debt_id!
 	})
-	const { data: account, error: accountError } = useGetAccountQuery(
-		{
-			token,
-			account_id: debt?.account_id ?? ""
-		},
-		{ skip: !debt }
-	)
 	const {
 		data: transactions,
 		error: transactionsError,
@@ -42,13 +35,12 @@ const Debt = ({}: {}) => {
 	)
 
 	const {
-		isOpen: isAddTransactionModalOpen,
-		onOpen: onAddTransactionModalOpen,
-		onClose: onAddTransactionModalClose
+		isOpen: isAddDebtTransactionModalOpen,
+		onOpen: onAddDebtTransactionModalOpen,
+		onClose: onAddDebtTransactionModalClose
 	} = useDisclosure()
 
 	useToastError(debtError, true)
-	useToastError(accountError, true)
 	useToastError(transactionsError, true)
 
 	return (
@@ -56,7 +48,6 @@ const Debt = ({}: {}) => {
 			<Container variant="page">
 				<DebtDetails
 					debt={debt}
-					account={account}
 					transactions={transactionsAreLoading ? undefined : transactions ?? []}
 				/>
 				<Flex sx={{ alignItems: "center" }}>
@@ -74,7 +65,7 @@ const Debt = ({}: {}) => {
 						variant="outline"
 						icon={<AddIcon />}
 						size="sm"
-						onClick={onAddTransactionModalOpen}
+						onClick={onAddDebtTransactionModalOpen}
 					/>
 				</Flex>
 
@@ -91,6 +82,13 @@ const Debt = ({}: {}) => {
 					</Center>
 				) : null}
 			</Container>
+			{debt ? (
+				<AddDebtTransactionModal
+					debt={debt}
+					isOpen={isAddDebtTransactionModalOpen}
+					onClose={onAddDebtTransactionModalClose}
+				/>
+			) : null}
 		</>
 	)
 }
