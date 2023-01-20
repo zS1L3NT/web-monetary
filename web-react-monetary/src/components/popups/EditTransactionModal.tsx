@@ -14,11 +14,11 @@ import Recurrence from "../../models/recurrence"
 import Transaction from "../../models/transaction"
 import DeleteModelAlertDialog from "./DeleteModelAlertDialog"
 import AccountsInput from "./inputs/AccountsInput"
+import AccountTypeInput from "./inputs/AccountTypeInput"
 import AmountInput from "./inputs/AmountInput"
 import CategoryInput from "./inputs/CategoryInput"
 import DateTimeInput from "./inputs/DateTimeInput"
 import DescriptionInput from "./inputs/DescriptionInput"
-import TypeInput from "./inputs/TypeInput"
 
 const EditTransactionModal = ({
 	transaction,
@@ -91,7 +91,7 @@ const EditTransactionModal = ({
 					<ModalBody>
 						{accounts && categories ? (
 							<Stack sx={{ gap: 2 }}>
-								<TypeInput
+								<AccountTypeInput
 									type={type}
 									setType={setType}
 									setToAccountId={setToAcccountId}

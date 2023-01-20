@@ -2,8 +2,8 @@ import { useEffect, useRef, useState } from "react"
 import { useLocation } from "react-router-dom"
 
 import {
-	Alert, AlertDescription, AlertIcon, Button, Modal, ModalBody, ModalCloseButton, ModalContent,
-	ModalFooter, ModalHeader, ModalOverlay, Stack
+	Alert, AlertDescription, AlertIcon, Button, Checkbox, Modal, ModalBody, ModalCloseButton,
+	ModalContent, ModalFooter, ModalHeader, ModalOverlay, Stack
 } from "@chakra-ui/react"
 
 import { useGetAccountsQuery } from "../../api/accounts"
@@ -12,18 +12,17 @@ import { useGetRecurrenceQuery, useUpdateRecurrenceMutation } from "../../api/re
 import useOnlyAuthenticated from "../../hooks/useOnlyAuthenticated"
 import useToastError from "../../hooks/useToastError"
 import AccountsInput from "./inputs/AccountsInput"
+import AccountTypeInput from "./inputs/AccountTypeInput"
 import AmountInput from "./inputs/AmountInput"
-import AutomaticInput from "./inputs/AutomaticInput"
 import CategoryInput from "./inputs/CategoryInput"
 import DescriptionInput from "./inputs/DescriptionInput"
 import NameInput from "./inputs/NameInput"
-import TypeInput from "./inputs/TypeInput"
 
 const EditRecurrenceModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
 	const { token } = useOnlyAuthenticated()
 
 	const location = useLocation()
-	const recurrenceId = location.pathname.slice(13)
+	const recurrenceId = location.pathname.slice("/recurrences/".length)
 
 	const [
 		updateRecurrence,
@@ -100,7 +99,7 @@ const EditRecurrenceModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
 				<ModalBody>
 					{accounts && categories ? (
 						<Stack sx={{ gap: 2 }}>
-							<TypeInput
+							<AccountTypeInput
 								type={type}
 								setType={setType}
 								setToAccountId={setToAccountId}
@@ -136,10 +135,11 @@ const EditRecurrenceModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
 								setDescription={setDescription}
 							/>
 
-							<AutomaticInput
-								automatic={automatic}
-								setAutomatic={setAutomatic}
-							/>
+							<Checkbox
+								isChecked={automatic}
+								onChange={e => setAutomatic(e.target.checked)}>
+								Automatically approve transactions
+							</Checkbox>
 
 							<Alert
 								sx={{ display: "flex" }}

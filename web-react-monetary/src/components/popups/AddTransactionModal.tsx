@@ -12,11 +12,11 @@ import { useCreateTransactionMutation } from "../../api/transactions"
 import useOnlyAuthenticated from "../../hooks/useOnlyAuthenticated"
 import useToastError from "../../hooks/useToastError"
 import AccountsInput from "./inputs/AccountsInput"
+import AccountTypeInput from "./inputs/AccountTypeInput"
 import AmountInput from "./inputs/AmountInput"
 import CategoryInput from "./inputs/CategoryInput"
 import DateTimeInput from "./inputs/DateTimeInput"
 import DescriptionInput from "./inputs/DescriptionInput"
-import TypeInput from "./inputs/TypeInput"
 
 const AddTransactionModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
 	const { token } = useOnlyAuthenticated()
@@ -36,7 +36,7 @@ const AddTransactionModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
 	const [description, setDescription] = useState("")
 	const [date, setDate] = useState(DateTime.now())
 	const finalFocusRef = useRef(null)
-	
+
 	useToastError(accountsError, true)
 	useToastError(categoriesError, true)
 	useToastError(createTransactionError, true)
@@ -72,7 +72,7 @@ const AddTransactionModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
 				<ModalBody>
 					{accounts && categories ? (
 						<Stack sx={{ gap: 2 }}>
-							<TypeInput
+							<AccountTypeInput
 								type={type}
 								setType={setType}
 								setToAccountId={setToAccountId}
