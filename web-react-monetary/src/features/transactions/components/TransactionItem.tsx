@@ -70,9 +70,7 @@ const TransactionItem = ({
 					) : (
 						<Flex sx={{ justifyContent: "space-between" }}>
 							<Box>
-								<Flex sx={{ alignItems: "center" }}>
-									{fromAccount!.renderAccount(toAccount)}
-								</Flex>
+								{fromAccount!.renderAccount(toAccount)}
 
 								{category?.renderCategory()}
 							</Box>
