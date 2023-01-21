@@ -4,6 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom"
 import { AddIcon, DeleteIcon, EditIcon, HamburgerIcon } from "@chakra-ui/icons"
 import { Button, Flex, IconButton, Show, Text, useDisclosure } from "@chakra-ui/react"
 
+import useOnlyAuthenticated from "../hooks/useOnlyAuthenticated"
 import AddCategoryModal from "./popups/AddCategoryModal"
 import AddDebtModal from "./popups/AddDebtModal"
 import AddRecurrenceModal from "./popups/AddRecurrenceModal"
@@ -15,6 +16,8 @@ import EditRecurrenceModal from "./popups/EditRecurrenceModal"
 import MainDrawer from "./popups/MainDrawer"
 
 const Navigator = () => {
+	const { token } = useOnlyAuthenticated()
+
 	const navigate = useNavigate()
 	const location = useLocation()
 
@@ -145,24 +148,28 @@ const Navigator = () => {
 					Monetary
 				</Text>
 
-				<Show above="md">
-					<Button
-						sx={{ mr: 2 }}
-						variant="outline"
-						leftIcon={action === "Edit" ? <EditIcon /> : <AddIcon />}
-						onClick={handleActionButtonClick}>
-						{action}
-					</Button>
-				</Show>
-				<Show below="md">
-					<IconButton
-						sx={{ mr: 2 }}
-						aria-label={`${action} ${model}`}
-						variant="outline"
-						icon={action === "Edit" ? <EditIcon /> : <AddIcon />}
-						onClick={handleActionButtonClick}
-					/>
-				</Show>
+				{token && location.pathname !== "/" ? (
+					<>
+						<Show above="md">
+							<Button
+								sx={{ mr: 2 }}
+								variant="outline"
+								leftIcon={action === "Edit" ? <EditIcon /> : <AddIcon />}
+								onClick={handleActionButtonClick}>
+								{action}
+							</Button>
+						</Show>
+						<Show below="md">
+							<IconButton
+								sx={{ mr: 2 }}
+								aria-label={`${action} ${model}`}
+								variant="outline"
+								icon={action === "Edit" ? <EditIcon /> : <AddIcon />}
+								onClick={handleActionButtonClick}
+							/>
+						</Show>
+					</>
+				) : null}
 
 				{action === "Edit" ? (
 					<>
