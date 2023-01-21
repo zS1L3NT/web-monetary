@@ -8,8 +8,8 @@ import {
 import { useCreateCategoryMutation, useUpdateCategoryMutation } from "../../api/categories"
 import useOnlyAuthenticated from "../../hooks/useOnlyAuthenticated"
 import useToastError from "../../hooks/useToastError"
-import NameInput from "./inputs/NameInput"
 import ColorInput from "./inputs/ColorInput"
+import NameInput from "./inputs/NameInput"
 
 const AddCategoryModal = ({
 	parentCategoryId,
@@ -21,18 +21,18 @@ const AddCategoryModal = ({
 	onClose: () => void
 }) => {
 	const { token } = useOnlyAuthenticated()
-	
+
 	const [createCategory, { error: createCategoryError, isLoading: createCategoryIsLoading }] =
-	useCreateCategoryMutation()
+		useCreateCategoryMutation()
 	const [updateCategory, { error: updateCategoryError, isLoading: updateCategoryIsLoading }] =
-	useUpdateCategoryMutation()
-	
+		useUpdateCategoryMutation()
+
 	const [name, setName] = useState("")
 	const [color, setColor] = useState("#FFFFFF")
 	const finalFocusRef = useRef(null)
-	
-	useToastError(createCategoryError, true)
-	useToastError(updateCategoryError, true)
+
+	useToastError(createCategoryError)
+	useToastError(updateCategoryError)
 
 	const handleCreate = async () => {
 		if (invalid) return
@@ -46,11 +46,12 @@ const AddCategoryModal = ({
 
 		if ("data" in response && parentCategoryId) {
 			await updateCategory({
-				token,	
+				token,
 				category_id: parentCategoryId,
 				category_ids: [response.data.id]
 			})
 		}
+
 		onClose()
 	}
 

@@ -35,7 +35,7 @@ const EditTransactionModal = ({
 
 	const [
 		updateTransaction,
-		{ isLoading: updateTransactionIsLoading, error: updateTransactionError }
+		{ error: updateTransactionError, isLoading: updateTransactionIsLoading }
 	] = useUpdateTransactionMutation()
 	const { data: accounts, error: accountsError } = useGetAccountsQuery({ token })
 	const { data: categories, error: categoriesError } = useGetCategoriesQuery({ token })
@@ -54,11 +54,11 @@ const EditTransactionModal = ({
 	const [date, setDate] = useState(transaction.date)
 	const finalFocusRef = useRef(null)
 
+	useToastError(updateTransactionError)
 	useToastError(accountsError, true)
 	useToastError(categoriesError, true)
-	useToastError(updateTransactionError)
 
-	const handleEdit = async () => {
+	const handleUpdate = async () => {
 		if (invalid) return
 
 		await updateTransaction({
@@ -72,6 +72,7 @@ const EditTransactionModal = ({
 			description,
 			date: date.toUTC().toISO()
 		})
+
 		onClose()
 	}
 
@@ -159,7 +160,7 @@ const EditTransactionModal = ({
 						<Button
 							isLoading={updateTransactionIsLoading}
 							disabled={invalid}
-							onClick={handleEdit}>
+							onClick={handleUpdate}>
 							Edit
 						</Button>
 					</ModalFooter>

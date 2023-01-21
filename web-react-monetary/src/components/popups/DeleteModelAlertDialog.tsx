@@ -50,8 +50,9 @@ const DeleteModelAlertDialog = ({
 	useToastError(deleteRecurrenceError)
 	useToastError(deleteCategoryError)
 
-	const handleDeleteButtonClick = async () => {
+	const handleDelete = async () => {
 		onClose()
+
 		switch (model) {
 			case "Transaction":
 				if (location.pathname.startsWith("/transactions/")) {
@@ -98,7 +99,7 @@ const DeleteModelAlertDialog = ({
 					</Button>
 					<Button
 						colorScheme="red"
-						onClick={handleDeleteButtonClick}
+						onClick={handleDelete}
 						ml={3}>
 						Delete
 					</Button>

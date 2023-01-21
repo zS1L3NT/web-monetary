@@ -32,7 +32,7 @@ const EditCategoryModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () =
 	const [color, setColor] = useState("#FFFFFF")
 	const finalFocusRef = useRef(null)
 
-	useToastError(updateCategoryError, true)
+	useToastError(updateCategoryError)
 	useToastError(categoryError, true)
 
 	useEffect(() => {
@@ -42,7 +42,7 @@ const EditCategoryModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () =
 		}
 	}, [category])
 
-	const handleEdit = async () => {
+	const handleUpdate = async () => {
 		if (invalid) return
 
 		await updateCategory({
@@ -51,6 +51,7 @@ const EditCategoryModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () =
 			name,
 			color
 		})
+
 		onClose()
 	}
 
@@ -88,7 +89,7 @@ const EditCategoryModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () =
 					<Button
 						isLoading={updateCategoryIsLoading}
 						disabled={invalid}
-						onClick={handleEdit}>
+						onClick={handleUpdate}>
 						Edit
 					</Button>
 				</ModalFooter>

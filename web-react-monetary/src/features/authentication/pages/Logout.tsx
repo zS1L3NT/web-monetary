@@ -14,9 +14,9 @@ const Logout = () => {
 	const navigate = useNavigate()
 	const toast = useToast()
 
-	const [logout, { error }] = useLogoutMutation()
+	const [logout, { error: logoutError }] = useLogoutMutation()
 
-	useToastError(error)
+	useToastError(logoutError)
 
 	useAsyncEffect(async () => {
 		if (!token) {

@@ -37,7 +37,7 @@ const EditDebtModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => vo
 	const [active, setActive] = useState(false)
 	const finalFocusRef = useRef(null)
 
-	useToastError(updateDebtError, true)
+	useToastError(updateDebtError)
 	useToastError(debtError, true)
 
 	useEffect(() => {
@@ -64,6 +64,8 @@ const EditDebtModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => vo
 			description,
 			active
 		})
+
+		onClose()
 	}
 
 	const invalid = !amount || dueDate <= DateTime.now() || !name

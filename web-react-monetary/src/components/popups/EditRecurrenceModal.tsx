@@ -49,9 +49,9 @@ const EditRecurrenceModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
 	const finalFocusRef = useRef(null)
 
 	useToastError(updateRecurrenceError)
-	useToastError(recurrenceError)
-	useToastError(accountsError)
-	useToastError(categoriesError)
+	useToastError(recurrenceError, true)
+	useToastError(accountsError, true)
+	useToastError(categoriesError, true)
 
 	useEffect(() => {
 		if (recurrence) {
@@ -66,7 +66,7 @@ const EditRecurrenceModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
 		}
 	}, [recurrence])
 
-	const handleEdit = async () => {
+	const handleUpdate = async () => {
 		if (invalid) return
 
 		await updateRecurrence({
@@ -81,6 +81,7 @@ const EditRecurrenceModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
 			from_account_id: fromAccountId,
 			to_account_id: toAccountId
 		})
+
 		onClose()
 	}
 
@@ -163,7 +164,7 @@ const EditRecurrenceModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
 					<Button
 						isLoading={updateRecurrenceIsLoading}
 						disabled={invalid}
-						onClick={handleEdit}>
+						onClick={handleUpdate}>
 						Edit
 					</Button>
 				</ModalFooter>

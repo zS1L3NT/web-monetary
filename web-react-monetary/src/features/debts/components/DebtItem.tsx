@@ -25,7 +25,7 @@ const DebtItem = ({ debt }: { debt: Debt }) => {
 		{ skip: !debt || !debt.transaction_ids.length }
 	)
 
-	useToastError(transactionsError)
+	useToastError(transactionsError, true)
 
 	return (
 		<Card

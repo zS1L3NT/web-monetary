@@ -46,8 +46,8 @@ const AddRecurrenceModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () 
 	const finalFocusRef = useRef(null)
 
 	useToastError(createRecurrenceError)
-	useToastError(accountsError)
-	useToastError(categoriesError)
+	useToastError(accountsError, true)
+	useToastError(categoriesError, true)
 
 	const handleCreate = async () => {
 		if (invalid) return
@@ -70,6 +70,7 @@ const AddRecurrenceModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () 
 			from_account_id: fromAccountId,
 			to_account_id: toAccountId
 		})
+
 		onClose()
 	}
 

@@ -47,8 +47,8 @@ const AddDebtTransactionModal = ({
 	const [fromAccountId, setFromAccountId] = useState<string | null>(null)
 	const finalFocusRef = useRef(null)
 
-	useToastError(createTransactionError, true)
-	useToastError(updateDebtError, true)
+	useToastError(createTransactionError)
+	useToastError(updateDebtError)
 	useToastError(accountsError, true)
 	useToastError(categoriesError, true)
 
@@ -79,6 +79,7 @@ const AddDebtTransactionModal = ({
 				debt_id: debt.id,
 				transaction_ids: [...debt.transaction_ids, response.data.id]
 			})
+
 			onClose()
 		}
 	}

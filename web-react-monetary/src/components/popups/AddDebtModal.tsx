@@ -28,7 +28,7 @@ const AddDebtModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
 	const [description, setDescription] = useState("")
 	const finalFocusRef = useRef(null)
 
-	useToastError(createDebtError, true)
+	useToastError(createDebtError)
 
 	const handleCreate = async () => {
 		if (invalid) return
@@ -43,6 +43,8 @@ const AddDebtModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
 			active: true,
 			transaction_ids: []
 		})
+
+		onClose()
 	}
 
 	const invalid = !amount || dueDate <= DateTime.now() || !name

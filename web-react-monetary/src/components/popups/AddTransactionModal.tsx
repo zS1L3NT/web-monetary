@@ -23,7 +23,7 @@ const AddTransactionModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
 
 	const [
 		createTransaction,
-		{ isLoading: createTransactionIsLoading, error: createTransactionError }
+		{ error: createTransactionError, isLoading: createTransactionIsLoading }
 	] = useCreateTransactionMutation()
 	const { data: accounts, error: accountsError } = useGetAccountsQuery({ token })
 	const { data: categories, error: categoriesError } = useGetCategoriesQuery({ token })
@@ -37,9 +37,9 @@ const AddTransactionModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
 	const [date, setDate] = useState(DateTime.now())
 	const finalFocusRef = useRef(null)
 
+	useToastError(createTransactionError)
 	useToastError(accountsError, true)
 	useToastError(categoriesError, true)
-	useToastError(createTransactionError, true)
 
 	const handleCreate = async () => {
 		if (invalid) return
