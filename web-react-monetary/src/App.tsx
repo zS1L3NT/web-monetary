@@ -8,6 +8,7 @@ import Navigator from "./components/Navigator"
 import Login from "./features/authentication/pages/Login"
 import Logout from "./features/authentication/pages/Logout"
 import Register from "./features/authentication/pages/Register"
+import Budget from "./features/budgets/pages/Budget"
 import Budgets from "./features/budgets/pages/Budgets"
 import Categories from "./features/categories/pages/Categories"
 import Category from "./features/categories/pages/Category"
@@ -96,6 +97,10 @@ const App = () => {
 						<Route
 							index
 							element={<Budgets />}
+						/>
+						<Route
+							path=":budget_id"
+							element={<Budget />}
 						/>
 					</Route>
 				</Routes>

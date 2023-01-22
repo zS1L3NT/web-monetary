@@ -1,4 +1,5 @@
 import { useMemo } from "react"
+import { useNavigate } from "react-router-dom"
 
 import { Badge, Box, Card, CardBody, Flex, Heading, Progress, Text } from "@chakra-ui/react"
 
@@ -18,6 +19,8 @@ const BudgetItem = ({
 	accounts: Account[] | null
 	categories: Category[] | null
 }) => {
+	const navigate = useNavigate()
+
 	const spent = useMemo(
 		() =>
 			(transactions ?? [])
@@ -27,7 +30,15 @@ const BudgetItem = ({
 	)
 
 	return (
-		<Card>
+		<Card
+			sx={{
+				transition: "transform 0.3s",
+				cursor: "pointer",
+				":hover": {
+					transform: "scale(1.01)"
+				}
+			}}
+			onClick={() => navigate(budget.id)}>
 			<CardBody>
 				<Flex sx={{ justifyContent: "space-between" }}>
 					<Heading size="md">
@@ -63,7 +74,7 @@ const BudgetItem = ({
 							fontSize: 14,
 							opacity: 0.75,
 							transform: "translateX(-50%)",
-							left: Math.max(5, Math.min(95, (spent / budget.amount) * 100)) + "%",
+							left: Math.max(5, Math.min(95, (spent / budget.amount) * 100)) + "%"
 						}}>
 						${spent}
 					</Text>
