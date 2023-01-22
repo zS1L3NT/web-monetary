@@ -8,6 +8,7 @@ import Navigator from "./components/Navigator"
 import Login from "./features/authentication/pages/Login"
 import Logout from "./features/authentication/pages/Logout"
 import Register from "./features/authentication/pages/Register"
+import Budgets from "./features/budgets/pages/Budgets"
 import Categories from "./features/categories/pages/Categories"
 import Category from "./features/categories/pages/Category"
 import Dashboard from "./features/dashboard/pages/Dashboard"
@@ -89,6 +90,12 @@ const App = () => {
 						<Route
 							path=":debt_id"
 							element={<Debt />}
+						/>
+					</Route>
+					<Route path="budgets">
+						<Route
+							index
+							element={<Budgets />}
 						/>
 					</Route>
 				</Routes>
