@@ -53,8 +53,8 @@ const Budgets = ({}: {}) => {
 													b.period_type.toLowerCase() as DateTimeUnit
 												)
 											) &&
-										(b.account_ids?.includes(t.from_account_id) ||
-											b.category_ids?.includes(t.category_id))
+										b.account_ids?.includes(t.from_account_id) &&
+										b.category_ids?.includes(t.category_id)
 								) ?? null
 							}
 							accounts={accounts?.filter(a => b.account_ids.includes(a.id)) ?? null}
