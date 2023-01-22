@@ -54,6 +54,7 @@ class RecurrenceController extends Controller
     public function store()
     {
         $recurrence = Recurrence::query()->create(request()->all());
+        $recurrence->transaction_ids = request('transaction_ids');
 
         return [
             "message" => "Recurrence created successfully!",

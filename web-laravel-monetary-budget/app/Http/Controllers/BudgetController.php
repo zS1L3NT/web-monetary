@@ -42,6 +42,8 @@ class BudgetController extends Controller
     public function store()
     {
         $budget = Budget::query()->create(request()->all());
+        $budget->account_ids = request('account_ids');
+        $budget->category_ids = request('category_ids');
 
         return [
             "message" => "Budget created successfully!",

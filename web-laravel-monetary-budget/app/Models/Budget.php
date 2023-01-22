@@ -39,12 +39,14 @@ class Budget extends Model
 
     public function setAccountIdsAttribute(array $accountIds)
     {
-        BudgetAccounts::query()->whereIn("account_id", $accountIds)->delete();
-        foreach ($accountIds as $accountId) {
-            BudgetAccounts::query()->create([
-                'budget_id' => $this->id,
-                'account_id' => $accountId
-            ]);
+        if (isset($this->id)) {
+            BudgetAccounts::query()->whereIn("account_id", $accountIds)->delete();
+            foreach ($accountIds as $accountId) {
+                BudgetAccounts::query()->create([
+                    'budget_id' => $this->id,
+                    'account_id' => $accountId
+                ]);
+            }
         }
     }
 
@@ -55,12 +57,14 @@ class Budget extends Model
 
     public function setCategoryIdsAttribute(array $categoryIds)
     {
-        BudgetCategories::query()->whereIn("category_id", $categoryIds)->delete();
-        foreach ($categoryIds as $categoryId) {
-            BudgetCategories::query()->create([
-                'budget_id' => $this->id,
-                'category_id' => $categoryId
-            ]);
+        if (isset($this->id)) {
+            BudgetCategories::query()->whereIn("category_id", $categoryIds)->delete();
+            foreach ($categoryIds as $categoryId) {
+                BudgetCategories::query()->create([
+                    'budget_id' => $this->id,
+                    'category_id' => $categoryId
+                ]);
+            }
         }
     }
 }
