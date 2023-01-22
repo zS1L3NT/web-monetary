@@ -11,6 +11,8 @@ import { useDeleteRecurrenceMutation } from "../../api/recurrences"
 import { useDeleteTransactionMutation } from "../../api/transactions"
 import useOnlyAuthenticated from "../../hooks/useOnlyAuthenticated"
 import useToastError from "../../hooks/useToastError"
+import { useDeleteBudgetMutation } from "../../api/budgets"
+import { useDeleteDebtMutation } from "../../api/debts"
 
 const DeleteModelAlertDialog = ({
 	model,
@@ -18,7 +20,7 @@ const DeleteModelAlertDialog = ({
 	isOpen,
 	onClose
 }: {
-	model: "Recurrence" | "Category" | "Transaction" | "Debt"
+	model: "Recurrence" | "Category" | "Transaction" | "Debt" | "Budget"
 	transactionId?: string
 	isOpen: boolean
 	onClose: () => void
@@ -31,6 +33,8 @@ const DeleteModelAlertDialog = ({
 	const [deleteTransaction, { error: deleteTransactionError }] = useDeleteTransactionMutation()
 	const [deleteRecurrence, { error: deleteRecurrenceError }] = useDeleteRecurrenceMutation()
 	const [deleteCategory, { error: deleteCategoryError }] = useDeleteCategoryMutation()
+	const [deleteDebt, { error: deleteDebtError }] = useDeleteDebtMutation()
+	const [deleteBudget, { error: deleteBudgetError }] = useDeleteBudgetMutation()
 
 	const message = useMemo(() => {
 		switch (model) {
@@ -42,6 +46,8 @@ const DeleteModelAlertDialog = ({
 				return "Are you sure you want to delete this Category? All Subcategories will be deleted too"
 			case "Debt":
 				return "Are you sure you want to delete this Debt?"
+			case "Budget":
+				return "Are you sure you want to delete this Budget?"
 		}
 	}, [model])
 	const cancelRef = useRef(null)
@@ -49,6 +55,8 @@ const DeleteModelAlertDialog = ({
 	useToastError(deleteTransactionError)
 	useToastError(deleteRecurrenceError)
 	useToastError(deleteCategoryError)
+	useToastError(deleteDebtError)
+	useToastError(deleteBudgetError)
 
 	const handleDelete = async () => {
 		onClose()
@@ -75,6 +83,20 @@ const DeleteModelAlertDialog = ({
 				await deleteCategory({
 					token,
 					category_id: location.pathname.slice("/categories/".length)
+				})
+				break
+			case "Debt":
+				navigate("/debts")
+				await deleteDebt({
+					token,
+					debt_id: location.pathname.slice("/debts/".length)
+				})
+				break
+			case "Budget":
+				navigate("/budgets")
+				await deleteBudget({
+					token,
+					budget_id: location.pathname.slice("/budgets/".length)
 				})
 				break
 		}

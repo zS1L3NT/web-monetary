@@ -13,6 +13,7 @@ const TransactionList = ({}: {}) => {
 			{transactions ? (
 				transactions.map(t => (
 					<TransactionItem
+						key={t.id}
 						transaction={t}
 						recurrence={null}
 						fullDate={true}

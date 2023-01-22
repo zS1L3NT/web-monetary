@@ -39,11 +39,11 @@ export default class Category extends Model {
 		}
 	}
 
-	renderCategory() {
+	renderCategory(margin = true) {
 		return (
 			<Tag
 				sx={{
-					mt: 2,
+					mt: margin ? 2 : 0,
 					color: textColorOnBackground(this.color),
 					bg: this.color
 				}}
