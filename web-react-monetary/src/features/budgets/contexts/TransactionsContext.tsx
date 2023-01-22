@@ -9,15 +9,21 @@ import { BudgetContext } from "./BudgetContext"
 
 export const TransactionsContext = createContext<{
 	transactions: Transaction[] | undefined
+	transactionsAreLoading: boolean
 }>({
-	transactions: undefined
+	transactions: undefined,
+	transactionsAreLoading: false
 })
 
 const TransactionsProvider = ({ children }: PropsWithChildren<{}>) => {
 	const { token } = useOnlyAuthenticated()
 	const { budget } = useContext(BudgetContext)
 
-	const { data: transactions, error: transactionsError } = useGetTransactionsQuery(
+	const {
+		data: transactions,
+		error: transactionsError,
+		isLoading: transactionsAreLoading
+	} = useGetTransactionsQuery(
 		{
 			token,
 			from_account_ids: budget?.account_ids,
@@ -42,7 +48,8 @@ const TransactionsProvider = ({ children }: PropsWithChildren<{}>) => {
 									)
 								)
 					  )
-					: undefined
+					: undefined,
+				transactionsAreLoading
 			}}>
 			{children}
 		</TransactionsContext.Provider>

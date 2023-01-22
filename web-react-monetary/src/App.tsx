@@ -1,5 +1,4 @@
 import { Chart, registerables } from "chart.js"
-import { useEffect } from "react"
 import { Route, Routes } from "react-router-dom"
 
 import { Flex } from "@chakra-ui/react"
@@ -20,11 +19,9 @@ import Recurrence from "./features/recurrences/pages/Recurrence"
 import Recurrences from "./features/recurrences/pages/Recurrences"
 import Transactions from "./features/transactions/pages/Transactions"
 
-const App = () => {
-	useEffect(() => {
-		Chart.register(...registerables)
-	}, [])
+Chart.register(...registerables)
 
+const App = () => {
 	return (
 		<Flex
 			sx={{
