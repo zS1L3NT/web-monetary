@@ -5,7 +5,7 @@ import BudgetGraph from "../components/BudgetGraph"
 import TransactionList from "../components/TransactionList"
 import AccountsProvider from "../contexts/AccountsContext"
 import BudgetProvider from "../contexts/BudgetContext"
-import CategoriesProvider from "../contexts/Categories"
+import CategoriesProvider from "../contexts/CategoriesContext"
 import TransactionsProvider from "../contexts/TransactionsContext"
 
 const Budget = ({}: {}) => {
