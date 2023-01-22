@@ -58,7 +58,7 @@ const BudgetGraph = ({}: {}) => {
 									}
 								},
 								y: {
-									max: budget?.amount ?? 0,
+									min: budget?.amount ?? 0,
 									grid: {
 										display: false
 									}
