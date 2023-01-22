@@ -54,6 +54,26 @@ const BudgetDetails = ({}: {}) => {
 							isIndeterminate={!transactions || !accounts || !categories}
 						/>
 
+						<Box
+							sx={{
+								h: 21,
+								mt: 1,
+								position: "relative"
+							}}>
+							<Text
+								sx={{
+									position: "absolute",
+									fontSize: 14,
+									opacity: 0.75,
+									transform: "translateX(-50%)",
+									left:
+										Math.max(5, Math.min(95, (spent / budget.amount) * 100)) +
+										"%"
+								}}>
+								${spent}
+							</Text>
+						</Box>
+
 						<Heading
 							sx={{ mt: 5, mb: 1 }}
 							size="sm">
