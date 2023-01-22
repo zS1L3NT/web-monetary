@@ -6,7 +6,7 @@ import {
 
 import { AccountsContext } from "../contexts/AccountsContext"
 import { BudgetContext } from "../contexts/BudgetContext"
-import { CategoriesContext } from "../contexts/Categories"
+import { CategoriesContext } from "../contexts/CategoriesContext"
 import { TransactionsContext } from "../contexts/TransactionsContext"
 
 const BudgetDetails = ({}: {}) => {

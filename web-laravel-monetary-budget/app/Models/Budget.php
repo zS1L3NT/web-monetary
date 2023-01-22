@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Traits\Uuid;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Symfony\Component\Console\Output\ConsoleOutput;
 
 class Budget extends Model
 {
@@ -40,7 +41,7 @@ class Budget extends Model
     public function setAccountIdsAttribute(array $accountIds)
     {
         if (isset($this->id)) {
-            BudgetAccounts::query()->whereIn("account_id", $accountIds)->delete();
+            BudgetAccounts::query()->where("budget_id", $this->id)->delete();
             foreach ($accountIds as $accountId) {
                 BudgetAccounts::query()->create([
                     'budget_id' => $this->id,
@@ -58,7 +59,7 @@ class Budget extends Model
     public function setCategoryIdsAttribute(array $categoryIds)
     {
         if (isset($this->id)) {
-            BudgetCategories::query()->whereIn("category_id", $categoryIds)->delete();
+            BudgetCategories::query()->where("budget_id", $this->id)->delete();
             foreach ($categoryIds as $categoryId) {
                 BudgetCategories::query()->create([
                     'budget_id' => $this->id,
