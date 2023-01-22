@@ -1,7 +1,7 @@
 import { DateTime } from "luxon"
 import { useNavigate } from "react-router-dom"
 
-import { Box, Card, CardBody, Flex, Skeleton, Text } from "@chakra-ui/react"
+import { Box, Card, CardBody, Flex, Heading, Skeleton, Text } from "@chakra-ui/react"
 
 import { useGetCategoryQuery } from "../../../api/categories"
 import useOnlyAuthenticated from "../../../hooks/useOnlyAuthenticated"
@@ -48,15 +48,11 @@ const RecurrenceItem = ({
 				) : (
 					<Flex sx={{ justifyContent: "space-between" }}>
 						<Box>
-							<Text
-								sx={{
-									fontSize: 18,
-									fontWeight: 500
-								}}>
+							<Heading size="md">
 								{recurrence.name}
 
 								{recurrence.renderAutomatic()}
-							</Text>
+							</Heading>
 
 							{category?.renderCategory()}
 						</Box>

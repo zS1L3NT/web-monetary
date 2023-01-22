@@ -71,6 +71,10 @@ class TransactionController extends Controller
             $query->whereIn('category_id', explode(",", $category_ids));
         }
 
+        if ($type = request('type')) {
+            $query->where('type', $type);
+        }
+
         if ($limit = request("limit")) {
             if (is_numeric($limit)) {
                 $query->limit($limit);

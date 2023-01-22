@@ -10,11 +10,12 @@ const transactions = api.injectEndpoints({
 				from_account_ids?: (string | null)[]
 				to_account_ids?: (string | null)[]
 				category_ids?: string[]
+				type?: "Outgoing" | "Incoming" | "Transfer"
 				limit?: number
 				offset?: number
 			} & RequireToken
 		>({
-			query: ({ token, transaction_ids, from_account_ids, to_account_ids, category_ids, limit, offset }) => {
+			query: ({ token, transaction_ids, from_account_ids, to_account_ids, category_ids, type, limit, offset }) => {
 				const searchParams = new URLSearchParams()
 
 				if (transaction_ids !== undefined)
@@ -25,6 +26,8 @@ const transactions = api.injectEndpoints({
 					searchParams.append("to_account_ids", to_account_ids.join(","))
 				if (category_ids !== undefined)
 					searchParams.append("category_ids", category_ids.join(","))
+				if (type !== undefined)
+					searchParams.append("type", type)
 				if (limit !== undefined) searchParams.append("limit", limit + "")
 				if (offset !== undefined) searchParams.append("offset", offset + "")
 

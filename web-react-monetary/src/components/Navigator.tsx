@@ -5,11 +5,13 @@ import { AddIcon, DeleteIcon, EditIcon, HamburgerIcon } from "@chakra-ui/icons"
 import { Button, Flex, IconButton, Show, Text, useDisclosure } from "@chakra-ui/react"
 
 import useOnlyAuthenticated from "../hooks/useOnlyAuthenticated"
+import AddBudgetModal from "./popups/AddBudgetModal"
 import AddCategoryModal from "./popups/AddCategoryModal"
 import AddDebtModal from "./popups/AddDebtModal"
 import AddRecurrenceModal from "./popups/AddRecurrenceModal"
 import AddTransactionModal from "./popups/AddTransactionModal"
 import DeleteModelAlertDialog from "./popups/DeleteModelAlertDialog"
+import EditBudgetModal from "./popups/EditBudgetModal"
 import EditCategoryModal from "./popups/EditCategoryModal"
 import EditDebtModal from "./popups/EditDebtModal"
 import EditRecurrenceModal from "./popups/EditRecurrenceModal"
@@ -66,6 +68,16 @@ const Navigator = () => {
 		onOpen: onEditDebtModalOpen,
 		onClose: onEditDebtModalClose
 	} = useDisclosure()
+	const {
+		isOpen: isAddBudgetModalOpen,
+		onOpen: onAddBudgetModalOpen,
+		onClose: onAddBudgetModalClose
+	} = useDisclosure()
+	const {
+		isOpen: isEditBudgetModalOpen,
+		onOpen: onEditBudgetModalOpen,
+		onClose: onEditBudgetModalClose
+	} = useDisclosure()
 
 	const action = useMemo(() => {
 		if (location.pathname.match(/\/\w+\//)) {
@@ -82,6 +94,8 @@ const Navigator = () => {
 			return "Category"
 		} else if (location.pathname.startsWith("/debts")) {
 			return "Debt"
+		} else if (location.pathname.startsWith("/budgets")) {
+			return "Budget"
 		} else {
 			return "Transaction"
 		}
@@ -105,6 +119,12 @@ const Navigator = () => {
 				onEditDebtModalOpen()
 			} else {
 				onAddDebtModalOpen()
+			}
+		} else if (location.pathname.startsWith("/budgets")) {
+			if (location.pathname.startsWith("/budgets/")) {
+				onEditBudgetModalOpen()
+			} else {
+				onAddBudgetModalOpen()
 			}
 		} else {
 			onAddTransactionModalOpen()
@@ -230,6 +250,14 @@ const Navigator = () => {
 				<EditDebtModal
 					isOpen={isEditDebtModalOpen}
 					onClose={onEditDebtModalClose}
+				/>
+				<AddBudgetModal
+					isOpen={isAddBudgetModalOpen}
+					onClose={onAddBudgetModalClose}
+				/>
+				<EditBudgetModal
+					isOpen={isEditBudgetModalOpen}
+					onClose={onEditBudgetModalClose}
 				/>
 			</Flex>
 		</>
