@@ -85,18 +85,6 @@ const AccountComponent = ({ account }: { account: Account }) => {
 					</Text>
 				</Box>
 			</Flex>
-			<IconButton
-				aria-label="More Account Options"
-				colorScheme="gray"
-				size="sm"
-				icon={
-					<Icon
-						as={HiDotsVertical}
-						color={textColor}
-					/>
-				}
-				onClick={e => e.stopPropagation()}
-			/>
 		</GridItem>
 	)
 }
