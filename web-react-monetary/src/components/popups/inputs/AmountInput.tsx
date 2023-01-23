@@ -6,15 +6,17 @@ import {
 } from "@chakra-ui/react"
 
 const AmountInput = ({
+	title = "Amount",
 	amount,
 	setAmount
 }: {
+	title?: string
 	amount: number
 	setAmount: Dispatch<SetStateAction<number>>
 }) => {
 	return (
 		<Box>
-			<Text>Amount</Text>
+			<Text>{title}</Text>
 			<NumberInput
 				defaultValue={amount}
 				onBlur={e => setAmount(+e.target.value.replace(/^\$/, ""))}

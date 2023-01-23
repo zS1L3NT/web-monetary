@@ -57,13 +57,18 @@ const MainDrawer = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void 
 			render: !!token
 		},
 		{
+			title: "Debts",
+			navigate: "/debts",
+			render: !!token
+		},
+		{
 			title: "Budgets",
 			navigate: "/budgets",
 			render: !!token
 		},
 		{
-			title: "Debts",
-			navigate: "/debts",
+			title: "Accounts",
+			navigate: "/accounts",
 			render: !!token
 		},
 		{
