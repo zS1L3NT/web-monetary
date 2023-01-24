@@ -83,7 +83,7 @@ const Category = ({}: {}) => {
 				)}
 			</Stack>
 			<AddCategoryModal
-				parentCategoryId={category?.id}
+				parentCategory={category}
 				isOpen={isAddCategoryModalOpen}
 				onClose={onAddCategoryModalClose}
 			/>

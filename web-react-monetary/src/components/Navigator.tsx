@@ -5,6 +5,7 @@ import { AddIcon, DeleteIcon, EditIcon, HamburgerIcon } from "@chakra-ui/icons"
 import { Button, Flex, IconButton, Show, Text, useDisclosure } from "@chakra-ui/react"
 
 import useOnlyAuthenticated from "../hooks/useOnlyAuthenticated"
+import AddAccountModal from "./popups/AddAccountModal"
 import AddBudgetModal from "./popups/AddBudgetModal"
 import AddCategoryModal from "./popups/AddCategoryModal"
 import AddDebtModal from "./popups/AddDebtModal"
@@ -78,6 +79,11 @@ const Navigator = () => {
 		onOpen: onEditBudgetModalOpen,
 		onClose: onEditBudgetModalClose
 	} = useDisclosure()
+	const {
+		isOpen: isAddAccountModalOpen,
+		onOpen: onAddAccountModalOpen,
+		onClose: onAddAccountModalClose
+	} = useDisclosure()
 
 	const action = useMemo(() => {
 		if (location.pathname.match(/\/\w+\//)) {
@@ -96,6 +102,8 @@ const Navigator = () => {
 			return "Debt"
 		} else if (location.pathname.startsWith("/budgets")) {
 			return "Budget"
+		} else if (location.pathname.startsWith("/accounts")) {
+			return "Account"
 		} else {
 			return "Transaction"
 		}
@@ -126,6 +134,8 @@ const Navigator = () => {
 			} else {
 				onAddBudgetModalOpen()
 			}
+		} else if (location.pathname.startsWith("/accounts")) {
+			onAddAccountModalOpen()
 		} else {
 			onAddTransactionModalOpen()
 		}
@@ -258,6 +268,10 @@ const Navigator = () => {
 				<EditBudgetModal
 					isOpen={isEditBudgetModalOpen}
 					onClose={onEditBudgetModalClose}
+				/>
+				<AddAccountModal
+					isOpen={isAddAccountModalOpen}
+					onClose={onAddAccountModalClose}
 				/>
 			</Flex>
 		</>

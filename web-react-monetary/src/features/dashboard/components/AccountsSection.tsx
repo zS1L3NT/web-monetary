@@ -4,7 +4,6 @@ import { Box, Center, Grid, Spinner } from "@chakra-ui/react"
 
 import AccountsContext from "../contexts/AccountsContext"
 import Account from "./Account"
-import AddAccount from "./AddAccount"
 
 const AccountSections = ({}: {}) => {
 	const { accounts } = useContext(AccountsContext)
@@ -29,16 +28,12 @@ const AccountSections = ({}: {}) => {
 						lg: 5,
 						xl: 6
 					}}>
-					{[...accounts, null].map(account =>
-						account ? (
-							<Account
-								key={account.id}
-								account={account}
-							/>
-						) : (
-							<AddAccount key={null} />
-						)
-					)}
+					{[...accounts].map(a => (
+						<Account
+							key={a.id}
+							account={a}
+						/>
+					))}
 				</Grid>
 			) : (
 				<Center>

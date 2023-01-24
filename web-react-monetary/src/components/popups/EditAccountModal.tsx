@@ -5,53 +5,43 @@ import {
 	ModalOverlay, Stack
 } from "@chakra-ui/react"
 
-import { useCreateCategoryMutation, useUpdateCategoryMutation } from "../../api/categories"
+import { useUpdateAccountMutation } from "../../api/accounts"
 import useOnlyAuthenticated from "../../hooks/useOnlyAuthenticated"
 import useToastError from "../../hooks/useToastError"
-import Category from "../../models/category"
+import Account from "../../models/account"
+import AmountInput from "./inputs/AmountInput"
 import ColorInput from "./inputs/ColorInput"
 import NameInput from "./inputs/NameInput"
 
-const AddCategoryModal = ({
-	parentCategory,
+const EditAccountModal = ({
+	account,
 	isOpen,
 	onClose
 }: {
-	parentCategory?: Category
+	account: Account
 	isOpen: boolean
 	onClose: () => void
 }) => {
 	const { token } = useOnlyAuthenticated()
 
-	const [createCategory, { error: createCategoryError, isLoading: createCategoryIsLoading }] =
-		useCreateCategoryMutation()
-	const [updateCategory, { error: updateCategoryError, isLoading: updateCategoryIsLoading }] =
-		useUpdateCategoryMutation()
+	const [updateAccount, { error: updateAccountError, isLoading: updateAccountIsLoading }] =
+		useUpdateAccountMutation()
 
-	const [name, setName] = useState("")
-	const [color, setColor] = useState("#FFFFFF")
+	const [name, setName] = useState(account.name)
+	const [color, setColor] = useState(account.color)
 	const finalFocusRef = useRef(null)
 
-	useToastError(createCategoryError)
-	useToastError(updateCategoryError)
+	useToastError(updateAccountError)
 
-	const handleCreate = async () => {
+	const handleUpdate = async () => {
 		if (invalid) return
 
-		const response = await createCategory({
+		await updateAccount({
 			token,
+			account_id: account.id,
 			name,
-			color,
-			category_ids: []
+			color
 		})
-
-		if ("data" in response && parentCategory) {
-			await updateCategory({
-				token,
-				category_id: parentCategory.id,
-				category_ids: [...parentCategory.category_ids, response.data.id]
-			})
-		}
 
 		onClose()
 	}
@@ -65,10 +55,10 @@ const AddCategoryModal = ({
 			onClose={onClose}>
 			<ModalOverlay />
 			<ModalContent>
-				<ModalHeader>Add {parentCategory ? "Subcategory" : "Category"}</ModalHeader>
+				<ModalHeader>Edit Account</ModalHeader>
 				<ModalCloseButton />
 				<ModalBody>
-					<Stack sx={{ gap: 2 }}>
+					<Stack spacing={4}>
 						<NameInput
 							name={name}
 							setName={setName}
@@ -88,10 +78,10 @@ const AddCategoryModal = ({
 						Close
 					</Button>
 					<Button
-						isLoading={createCategoryIsLoading || updateCategoryIsLoading}
+						isLoading={updateAccountIsLoading}
 						disabled={invalid}
-						onClick={handleCreate}>
-						Add
+						onClick={handleUpdate}>
+						Edit
 					</Button>
 				</ModalFooter>
 			</ModalContent>
@@ -99,4 +89,4 @@ const AddCategoryModal = ({
 	)
 }
 
-export default AddCategoryModal
+export default EditAccountModal

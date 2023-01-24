@@ -20,7 +20,7 @@ const DeleteModelAlertDialog = ({
 	isOpen,
 	onClose
 }: {
-	model: "Recurrence" | "Category" | "Transaction" | "Debt" | "Budget"
+	model: "Recurrence" | "Category" | "Transaction" | "Debt" | "Budget" | "Account"
 	transactionId?: string
 	isOpen: boolean
 	onClose: () => void
@@ -48,6 +48,8 @@ const DeleteModelAlertDialog = ({
 				return "Are you sure you want to delete this Debt?"
 			case "Budget":
 				return "Are you sure you want to delete this Budget?"
+			case "Account":
+				return "Are you sure you want to delete this Account? All transactions under this account will be deleted too"
 		}
 	}, [model])
 	const cancelRef = useRef(null)
