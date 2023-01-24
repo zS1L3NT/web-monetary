@@ -4,6 +4,7 @@ import { Route, Routes } from "react-router-dom"
 import { Flex } from "@chakra-ui/react"
 
 import Navigator from "./components/Navigator"
+import Accounts from "./features/accounts/pages/Accounts"
 import Login from "./features/authentication/pages/Login"
 import Logout from "./features/authentication/pages/Logout"
 import Register from "./features/authentication/pages/Register"
@@ -100,6 +101,10 @@ const App = () => {
 							element={<Budget />}
 						/>
 					</Route>
+					<Route
+						path="accounts"
+						element={<Accounts />}
+					/>
 				</Routes>
 			</Flex>
 		</Flex>
