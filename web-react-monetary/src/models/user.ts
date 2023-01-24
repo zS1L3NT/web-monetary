@@ -7,7 +7,6 @@ export default class User extends Model {
 	static fillable: Omit<typeof User.type, "id" | "created_at" | "updated_at">
 	static schema = z.object({
 		id: z.string(),
-		username: z.string(),
 		email: z.string(),
 		created_at: z.string(),
 		updated_at: z.string()
@@ -15,7 +14,6 @@ export default class User extends Model {
 
 	private constructor(
 		id: string,
-		public username: string,
 		public email: string,
 		created_at: string,
 		updated_at: string
@@ -28,7 +26,6 @@ export default class User extends Model {
 
 		return new User(
 			parsed.id,
-			parsed.username,
 			parsed.email,
 			parsed.created_at,
 			parsed.updated_at
@@ -38,7 +35,6 @@ export default class User extends Model {
 	toJSON(): typeof User.type {
 		return {
 			id: this.id,
-			username: this.username,
 			email: this.email,
 			created_at: this.$created_at,
 			updated_at: this.$updated_at
