@@ -7,6 +7,7 @@ import Navigator from "./components/Navigator"
 import Accounts from "./features/accounts/pages/Accounts"
 import Login from "./features/authentication/pages/Login"
 import Logout from "./features/authentication/pages/Logout"
+import Profile from "./features/authentication/pages/Profile"
 import Register from "./features/authentication/pages/Register"
 import Budget from "./features/budgets/pages/Budget"
 import Budgets from "./features/budgets/pages/Budgets"
@@ -104,6 +105,10 @@ const App = () => {
 					<Route
 						path="accounts"
 						element={<Accounts />}
+					/>
+					<Route
+						path="profile"
+						element={<Profile />}
 					/>
 				</Routes>
 			</Flex>
