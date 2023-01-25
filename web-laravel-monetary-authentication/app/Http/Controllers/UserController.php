@@ -25,7 +25,6 @@ class UserController extends Controller
         $this->validate(
             'register',
             [
-                'username' => 'required|string',
                 'email' => 'required|email|unique:users,email',
                 'password' => [
                     'required',
@@ -42,7 +41,6 @@ class UserController extends Controller
         $this->validate(
             'update',
             [
-                'username' => 'string',
                 'email' => 'email',
                 'password' => [
                     'string',

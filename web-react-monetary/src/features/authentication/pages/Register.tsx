@@ -24,18 +24,15 @@ const Register = () => {
 	const dispatch = useAppDispatch()
 
 	const [showPassword, setShowPassword] = useState(false)
-	const [username, setUsername] = useState("")
 	const [email, setEmail] = useState("")
 	const [password, setPassword] = useState("")
-	const [usernameError, setUsernameError] = useState<string | null>(null)
 	const [emailError, setEmailError] = useState<string | null>(null)
 	const [passwordError, setPasswordError] = useState<string | null>(null)
 
 	useEffect(() => {
-		setUsernameError(null)
 		setEmailError(null)
 		setPasswordError(null)
-	}, [username, email, password])
+	}, [email, password])
 
 	const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
 		if (e.key === "Enter") {
@@ -46,7 +43,6 @@ const Register = () => {
 
 	const handleRegister = async () => {
 		const result = await register({
-			username,
 			email,
 			password
 		})
@@ -63,9 +59,6 @@ const Register = () => {
 
 			if ("fields" in result.error && result.error.fields) {
 				const fields = result.error.fields
-				if ("username" in fields) {
-					setUsernameError(fields.username!.join("\n"))
-				}
 				if ("email" in fields) {
 					setEmailError(fields.email!.join("\n"))
 				}
@@ -98,23 +91,6 @@ const Register = () => {
 					base: 3,
 					md: 4
 				}}>
-				<FormControl isRequired>
-					<FormLabel>Username</FormLabel>
-					<Input
-						type="username"
-						value={username}
-						isInvalid={!!usernameError}
-						onChange={e => setUsername(e.target.value)}
-						onKeyDown={handleKeyDown}
-					/>
-					{usernameError ? (
-						<Text
-							variant="inputError"
-							mt={1}>
-							{usernameError}
-						</Text>
-					) : null}
-				</FormControl>
 				<FormControl isRequired>
 					<FormLabel>Email address</FormLabel>
 					<Input
