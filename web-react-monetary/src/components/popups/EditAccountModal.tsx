@@ -2,14 +2,14 @@ import { useRef, useState } from "react"
 
 import {
 	Button, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader,
-	ModalOverlay, Stack
+	ModalOverlay, Stack, useDisclosure
 } from "@chakra-ui/react"
 
 import { useUpdateAccountMutation } from "../../api/accounts"
 import useOnlyAuthenticated from "../../hooks/useOnlyAuthenticated"
 import useToastError from "../../hooks/useToastError"
 import Account from "../../models/account"
-import AmountInput from "./inputs/AmountInput"
+import DeleteModelAlertDialog from "./DeleteModelAlertDialog"
 import ColorInput from "./inputs/ColorInput"
 import NameInput from "./inputs/NameInput"
 
@@ -26,7 +26,11 @@ const EditAccountModal = ({
 
 	const [updateAccount, { error: updateAccountError, isLoading: updateAccountIsLoading }] =
 		useUpdateAccountMutation()
-
+	const {
+		isOpen: isDeleteAlertDialogOpen,
+		onOpen: onDeleteAlertDialogOpen,
+		onClose: onDeleteAlertDialogClose
+	} = useDisclosure()
 	const [name, setName] = useState(account.name)
 	const [color, setColor] = useState(account.color)
 	const finalFocusRef = useRef(null)
@@ -49,43 +53,57 @@ const EditAccountModal = ({
 	const invalid = !name
 
 	return (
-		<Modal
-			finalFocusRef={finalFocusRef}
-			isOpen={isOpen}
-			onClose={onClose}>
-			<ModalOverlay />
-			<ModalContent>
-				<ModalHeader>Edit Account</ModalHeader>
-				<ModalCloseButton />
-				<ModalBody>
-					<Stack spacing={4}>
-						<NameInput
-							name={name}
-							setName={setName}
-						/>
+		<>
+			<Modal
+				finalFocusRef={finalFocusRef}
+				isOpen={isOpen}
+				onClose={onClose}>
+				<ModalOverlay />
+				<ModalContent>
+					<ModalHeader>Edit Account</ModalHeader>
+					<ModalCloseButton />
+					<ModalBody>
+						<Stack spacing={4}>
+							<NameInput
+								name={name}
+								setName={setName}
+							/>
 
-						<ColorInput
-							color={color}
-							setColor={setColor}
-						/>
-					</Stack>
-				</ModalBody>
-				<ModalFooter>
-					<Button
-						sx={{ mr: 3 }}
-						variant="ghost"
-						onClick={onClose}>
-						Close
-					</Button>
-					<Button
-						isLoading={updateAccountIsLoading}
-						disabled={invalid}
-						onClick={handleUpdate}>
-						Edit
-					</Button>
-				</ModalFooter>
-			</ModalContent>
-		</Modal>
+							<ColorInput
+								color={color}
+								setColor={setColor}
+							/>
+						</Stack>
+					</ModalBody>
+					<ModalFooter>
+						<Button
+							sx={{ mr: "auto" }}
+							colorScheme="red"
+							onClick={onDeleteAlertDialogOpen}>
+							Delete
+						</Button>
+						<Button
+							sx={{ mr: 3 }}
+							variant="ghost"
+							onClick={onClose}>
+							Close
+						</Button>
+						<Button
+							isLoading={updateAccountIsLoading}
+							disabled={invalid}
+							onClick={handleUpdate}>
+							Edit
+						</Button>
+					</ModalFooter>
+				</ModalContent>
+			</Modal>
+			<DeleteModelAlertDialog
+				model="Account"
+				modelId={account.id}
+				isOpen={isDeleteAlertDialogOpen}
+				onClose={onDeleteAlertDialogClose}
+			/>
+		</>
 	)
 }
 

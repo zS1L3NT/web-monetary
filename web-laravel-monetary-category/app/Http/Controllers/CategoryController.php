@@ -62,7 +62,7 @@ class CategoryController extends Controller
         try {
             $category->delete();
         } catch (QueryException $e) {
-            if ($e->errorInfo[1] === 1451) {
+            if (str_contains($e->getMessage(), "Foreign key violation")) {
                 if (str_contains($e->getMessage(), "recurrence")) {
                     return response([
                         "type" => "Recurrences associated with this category exist",

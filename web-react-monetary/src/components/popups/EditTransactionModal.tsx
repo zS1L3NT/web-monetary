@@ -168,7 +168,7 @@ const EditTransactionModal = ({
 			</Modal>
 			<DeleteModelAlertDialog
 				model="Transaction"
-				transactionId={transaction.id}
+				modelId={transaction.id}
 				isOpen={isDeleteAlertDialogOpen}
 				onClose={() => {
 					onDeleteAlertDialogClose()

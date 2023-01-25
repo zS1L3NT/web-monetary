@@ -13,15 +13,16 @@ import useOnlyAuthenticated from "../../hooks/useOnlyAuthenticated"
 import useToastError from "../../hooks/useToastError"
 import { useDeleteBudgetMutation } from "../../api/budgets"
 import { useDeleteDebtMutation } from "../../api/debts"
+import { useDeleteAccountMutation } from "../../api/accounts"
 
 const DeleteModelAlertDialog = ({
 	model,
-	transactionId,
+	modelId,
 	isOpen,
 	onClose
 }: {
 	model: "Recurrence" | "Category" | "Transaction" | "Debt" | "Budget" | "Account"
-	transactionId?: string
+	modelId?: string
 	isOpen: boolean
 	onClose: () => void
 }) => {
@@ -35,6 +36,7 @@ const DeleteModelAlertDialog = ({
 	const [deleteCategory, { error: deleteCategoryError }] = useDeleteCategoryMutation()
 	const [deleteDebt, { error: deleteDebtError }] = useDeleteDebtMutation()
 	const [deleteBudget, { error: deleteBudgetError }] = useDeleteBudgetMutation()
+	const [deleteAccount, { error: deleteAccountError }] = useDeleteAccountMutation()
 
 	const message = useMemo(() => {
 		switch (model) {
@@ -59,6 +61,7 @@ const DeleteModelAlertDialog = ({
 	useToastError(deleteCategoryError)
 	useToastError(deleteDebtError)
 	useToastError(deleteBudgetError)
+	useToastError(deleteAccountError)
 
 	const handleDelete = async () => {
 		onClose()
@@ -70,7 +73,7 @@ const DeleteModelAlertDialog = ({
 				}
 				await deleteTransaction({
 					token,
-					transaction_id: transactionId!
+					transaction_id: modelId!
 				})
 				break
 			case "Recurrence":
@@ -101,6 +104,12 @@ const DeleteModelAlertDialog = ({
 					budget_id: location.pathname.slice("/budgets/".length)
 				})
 				break
+			case "Account":
+				navigate("/accounts")
+				await deleteAccount({
+					token,
+					account_id: modelId!
+				})
 		}
 	}
 
