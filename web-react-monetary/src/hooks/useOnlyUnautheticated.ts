@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom"
 
 import AuthContext from "../contexts/AuthContext"
 
-const useOnlyUnauthenticated = (redirect = "/forms") => {
+const useOnlyUnauthenticated = (redirect = "/dashboard") => {
 	const { token } = useContext(AuthContext)
 
 	const navigate = useNavigate()
