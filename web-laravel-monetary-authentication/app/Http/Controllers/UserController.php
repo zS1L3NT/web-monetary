@@ -9,7 +9,7 @@ class UserController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth.jwt')->only(['logout', 'current', 'update', 'destroy']);
+        $this->middleware('auth.jwt')->only(['logout', 'current', 'update', 'updatePassword', 'destroy']);
 
         $this->validate(
             'login',

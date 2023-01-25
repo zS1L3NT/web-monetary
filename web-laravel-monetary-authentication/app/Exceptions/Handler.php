@@ -2,7 +2,6 @@
 
 namespace App\Exceptions;
 
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
 
@@ -50,19 +49,11 @@ class Handler extends ExceptionHandler
     }
 
     public function render($request, Throwable $throwable)
-	{
-		if ($throwable instanceof ModelNotFoundException) {
-			$model = explode("\\", (string) $throwable->getModel())[2];
-			return response([
-				"type" => "$model not found",
-				"message" => "There was no " . strtolower($model) . " with the requested id: " . $throwable->getIds()[0],
-			], 400);
-		}
-
-		return response([
-			"type" => "Unhandled Exception",
-			"message" => $throwable->getMessage(),
-			"stack" => $throwable->getTrace(),
-		], 400);
-	}
+    {
+        return response([
+            "type" => "Unhandled Exception",
+            "message" => $throwable->getMessage(),
+            "stack" => $throwable->getTrace(),
+        ], 500);
+    }
 }
