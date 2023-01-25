@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Debt;
+use Illuminate\Validation\Rule;
 
 class DebtController extends Controller
 {
@@ -17,7 +18,11 @@ class DebtController extends Controller
             'description' => 'string',
             'active' => 'boolean',
             'transaction_ids' => 'array',
-            'transaction_ids.*' => 'uuid|exists:transactions,id|distinct'
+            'transaction_ids.*' => [
+                'uuid',
+                'distinct',
+                Rule::exists('transactions', 'id')->where(fn($query) => $query->where('user_id', request('user_id'))),
+            ]
         ]);
 
         $this->validate('update', [
@@ -28,7 +33,11 @@ class DebtController extends Controller
             'description' => 'string',
             'active' => 'boolean',
             'transaction_ids' => 'array',
-            'transaction_ids.*' => 'uuid|exists:transactions,id|distinct'
+            'transaction_ids.*' => [
+                'uuid',
+                'distinct',
+                Rule::exists('transactions', 'id')->where(fn($query) => $query->where('user_id', request('user_id'))),
+            ]
         ]);
     }
 
@@ -43,6 +52,7 @@ class DebtController extends Controller
     public function store()
     {
         $debt = Debt::query()->create(request()->all());
+        $debt->transaction_ids = request('transaction_ids');
 
         return [
             'message' => 'Debt created successfully!',
