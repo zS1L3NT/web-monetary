@@ -24,7 +24,7 @@ const MainDrawer = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void 
 		{
 			title: "Home",
 			navigate: "/",
-			render: true
+			render: !token
 		},
 		{
 			title: "Login",

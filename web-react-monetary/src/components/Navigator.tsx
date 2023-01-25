@@ -104,8 +104,10 @@ const Navigator = () => {
 			return "Budget"
 		} else if (location.pathname.startsWith("/accounts")) {
 			return "Account"
-		} else {
+		} else if (location.pathname === "/transactions" || location.pathname === "/dashboard") {
 			return "Transaction"
+		} else {
+			return
 		}
 	}, [location])
 
@@ -178,7 +180,7 @@ const Navigator = () => {
 					Monetary
 				</Text>
 
-				{token && location.pathname !== "/" ? (
+				{token && model ? (
 					<>
 						<Show above="md">
 							<Button
@@ -186,7 +188,7 @@ const Navigator = () => {
 								variant="outline"
 								leftIcon={action === "Edit" ? <EditIcon /> : <AddIcon />}
 								onClick={handleActionButtonClick}>
-								{action}
+								{action} {model}
 							</Button>
 						</Show>
 						<Show below="md">
@@ -209,7 +211,7 @@ const Navigator = () => {
 								colorScheme="red"
 								leftIcon={<DeleteIcon />}
 								onClick={onDeleteAlertDialogOpen}>
-								Delete
+								Delete {model}
 							</Button>
 						</Show>
 						<Show below="md">
@@ -228,11 +230,13 @@ const Navigator = () => {
 					isOpen={isMainDrawerOpen}
 					onClose={onMainDrawerClose}
 				/>
-				<DeleteModelAlertDialog
-					model={model}
-					isOpen={isDeleteAlertDialogOpen}
-					onClose={onDeleteAlertDialogClose}
-				/>
+				{model ? (
+					<DeleteModelAlertDialog
+						model={model}
+						isOpen={isDeleteAlertDialogOpen}
+						onClose={onDeleteAlertDialogClose}
+					/>
+				) : null}
 				<AddTransactionModal
 					isOpen={isAddTransactionModalOpen}
 					onClose={onAddTransactionModalClose}
