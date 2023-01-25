@@ -37,7 +37,7 @@
 			"**/.DS_Store": true,
 			"**/Thumbs.db": true,
 			"**/.vscode": true,
-			"**/app/Exceptions": true,
+			// "**/app/Exceptions": true,
 			"**/app/Http/Middleware/Authenticate.php": true,
 			"**/app/Http/Middleware/EncryptCookies.php": true,
 			"**/app/Http/Middleware/PreventRequestsDuringMaintenance.php": true,
@@ -46,7 +46,7 @@
 			"**/app/Http/Middleware/TrustHosts.php": true,
 			"**/app/Http/Middleware/TrustProxies.php": true,
 			"**/app/Http/Middleware/ValidateSignature.php": true,
-			"**/app/Http/Middleware/ValidJwt.php": true,
+			// "**/app/Http/Middleware/ValidJwt.php": true,
 			"**/app/Http/Middleware/VerifyCsrfToken.php": true,
 			"**/app/Providers": true,
 			"**/bootstrap": true,
@@ -59,7 +59,6 @@
 			"**/routes/console.php": true,
 			"**/routes/web.php": true,
 			"**/storage": true,
-			"**/tests": true,
 			"web-react-monetary": true
 		}
 	}

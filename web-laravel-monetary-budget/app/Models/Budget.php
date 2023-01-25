@@ -5,7 +5,6 @@ namespace App\Models;
 use App\Traits\Uuid;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Symfony\Component\Console\Output\ConsoleOutput;
 
 class Budget extends Model
 {

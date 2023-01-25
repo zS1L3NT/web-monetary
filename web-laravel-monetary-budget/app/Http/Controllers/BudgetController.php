@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Budget;
+use Illuminate\Validation\Rule;
 
 class BudgetController extends Controller
 {
@@ -15,9 +16,17 @@ class BudgetController extends Controller
             'amount' => 'required|numeric',
             'period_type' => 'required|in:Day,Week,Month,Year',
             'account_ids' => 'required|array',
-            'account_ids.*' => 'uuid|exists:accounts,id|distinct',
+            'account_ids.*' => [
+                'uuid',
+                'distinct',
+                Rule::exists('accounts', 'id')->where(fn($query) => $query->where('user_id', request('user_id'))),
+            ],
             'category_ids' => 'required|array',
-            'category_ids.*' => 'uuid|exists:categories,id|distinct',
+            'category_ids.*' => [
+                'uuid',
+                'distinct',
+                Rule::exists('categories', 'id')->where(fn($query) => $query->where('user_id', request('user_id'))),
+            ],
         ]);
 
         $this->validate('update', [
@@ -25,9 +34,17 @@ class BudgetController extends Controller
             'amount' => 'numeric',
             'period_type' => 'in:Day,Week,Month,Year',
             'account_ids' => 'array',
-            'account_ids.*' => 'uuid|exists:accounts,id|distinct',
+            'account_ids.*' => [
+                'uuid',
+                'distinct',
+                Rule::exists('accounts', 'id')->where(fn($query) => $query->where('user_id', request('user_id'))),
+            ],
             'category_ids' => 'array',
-            'category_ids.*' => 'uuid|exists:categories,id|distinct',
+            'category_ids.*' => [
+                'uuid',
+                'distinct',
+                Rule::exists('categories', 'id')->where(fn($query) => $query->where('user_id', request('user_id'))),
+            ],
         ]);
     }
 
