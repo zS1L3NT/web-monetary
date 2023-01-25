@@ -38,7 +38,7 @@ const AddAccountModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => 
 		onClose()
 	}
 
-	const invalid = !name || !initialBalance
+	const invalid = !name
 
 	return (
 		<Modal
