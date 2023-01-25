@@ -50,19 +50,25 @@ class Handler extends ExceptionHandler
     }
 
     public function render($request, Throwable $throwable)
-	{
-		if ($throwable instanceof ModelNotFoundException) {
-			$model = explode("\\", (string) $throwable->getModel())[2];
-			return response([
-				"type" => "$model not found",
-				"message" => "There was no " . strtolower($model) . " with the requested id: " . $throwable->getIds()[0],
-			], 400);
-		}
+    {
+        if ($throwable instanceof ModelNotFoundException) {
+            return response([
+                "type" => "Transaction not found",
+                "message" => "There was no transaction with the requested id: " . $throwable->getIds()[0],
+            ], 404);
+        }
 
-		return response([
-			"type" => "Unhandled Exception",
-			"message" => $throwable->getMessage(),
-			"stack" => $throwable->getTrace(),
-		], 400);
-	}
+        if ($throwable instanceof \PDOException && $throwable->getCode() === "22P02" && $throwable->errorInfo[1] === 7) {
+            return response([
+                "type" => "Transaction not found",
+                "message" => "There was no transaction with the requested id: " . substr($request->getPathInfo(), strlen("/api/transactions/")),
+            ], 404);
+        }
+
+        return response([
+            "type" => "Unhandled Exception",
+            "message" => $throwable->getMessage(),
+            "stack" => $throwable->getTrace(),
+        ], 500);
+    }
 }

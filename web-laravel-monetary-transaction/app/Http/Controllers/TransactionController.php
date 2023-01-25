@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Transaction;
+use Illuminate\Validation\Rule;
 
 class TransactionController extends Controller
 {
@@ -11,9 +12,21 @@ class TransactionController extends Controller
         $this->middleware('owns.transaction')->only(['show', 'update', 'destroy']);
 
         $this->validate('store', [
-            'category_id' => 'required|uuid|exists:categories,id',
-            'from_account_id' => 'required|uuid|exists:accounts,id',
-            'to_account_id' => 'nullable|uuid|exists:accounts,id',
+            'category_id' => [
+                'required',
+                'uuid',
+                Rule::exists('categories', 'id')->where(fn($query) => $query->where('user_id', request('user_id'))),
+            ],
+            'from_account_id' => [
+                'required',
+                'uuid',
+                Rule::exists('accounts', 'id')->where(fn($query) => $query->where('user_id', request('user_id'))),
+            ],
+            'to_account_id' => [
+                'nullable',
+                'uuid',
+                Rule::exists('accounts', 'id')->where(fn($query) => $query->where('user_id', request('user_id'))),
+            ],
             'type' => 'required|in:Incoming,Outgoing,Transfer',
             'amount' => 'required|numeric',
             'date' => 'required|date',
@@ -21,9 +34,19 @@ class TransactionController extends Controller
         ]);
 
         $this->validate('update', [
-            'category_id' => 'uuid|exists:categories,id',
-            'from_account_id' => 'uuid|exists:accounts,id',
-            'to_account_id' => 'nullable|uuid|exists:accounts,id',
+            'category_id' => [
+                'uuid',
+                Rule::exists('categories', 'id')->where(fn($query) => $query->where('user_id', request('user_id'))),
+            ],
+            'from_account_id' => [
+                'uuid',
+                Rule::exists('accounts', 'id')->where(fn($query) => $query->where('user_id', request('user_id'))),
+            ],
+            'to_account_id' => [
+                'nullable',
+                'uuid',
+                Rule::exists('accounts', 'id')->where(fn($query) => $query->where('user_id', request('user_id'))),
+            ],
             'type' => 'in:Incoming,Outgoing,Transfer',
             'amount' => 'numeric',
             'description' => 'string',
