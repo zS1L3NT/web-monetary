@@ -17,8 +17,6 @@ const useOnlyAuthenticated = () => {
 		if (token === null) {
 			if (location.pathname !== "/login") {
 				navigate("/login?continue=" + encodeURIComponent(location.pathname))
-			} else {
-				navigate("/login")
 			}
 			dispatch(
 				setError({

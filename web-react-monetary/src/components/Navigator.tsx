@@ -1,10 +1,10 @@
-import { useMemo } from "react"
+import { useContext, useMemo } from "react"
 import { useLocation, useNavigate } from "react-router-dom"
 
 import { AddIcon, DeleteIcon, EditIcon, HamburgerIcon } from "@chakra-ui/icons"
 import { Button, Flex, IconButton, Show, Text, useDisclosure } from "@chakra-ui/react"
 
-import useOnlyAuthenticated from "../hooks/useOnlyAuthenticated"
+import AuthContext from "../contexts/AuthContext"
 import AddAccountModal from "./popups/AddAccountModal"
 import AddBudgetModal from "./popups/AddBudgetModal"
 import AddCategoryModal from "./popups/AddCategoryModal"
@@ -19,7 +19,7 @@ import EditRecurrenceModal from "./popups/EditRecurrenceModal"
 import MainDrawer from "./popups/MainDrawer"
 
 const Navigator = () => {
-	const { token } = useOnlyAuthenticated()
+	const { token } = useContext(AuthContext)
 
 	const navigate = useNavigate()
 	const location = useLocation()
@@ -230,53 +230,57 @@ const Navigator = () => {
 					isOpen={isMainDrawerOpen}
 					onClose={onMainDrawerClose}
 				/>
-				{model ? (
-					<DeleteModelAlertDialog
-						model={model}
-						isOpen={isDeleteAlertDialogOpen}
-						onClose={onDeleteAlertDialogClose}
-					/>
+				{token ? (
+					<>
+						{model ? (
+							<DeleteModelAlertDialog
+								model={model}
+								isOpen={isDeleteAlertDialogOpen}
+								onClose={onDeleteAlertDialogClose}
+							/>
+						) : null}
+						<AddTransactionModal
+							isOpen={isAddTransactionModalOpen}
+							onClose={onAddTransactionModalClose}
+						/>
+						<AddRecurrenceModal
+							isOpen={isAddRecurrenceModalOpen}
+							onClose={onAddRecurrenceModalClose}
+						/>
+						<EditRecurrenceModal
+							isOpen={isEditRecurrenceModalOpen}
+							onClose={onEditRecurrenceModalClose}
+						/>
+						<AddCategoryModal
+							isOpen={isAddCategoryModalOpen}
+							onClose={onAddCategoryModalClose}
+						/>
+						<EditCategoryModal
+							isOpen={isEditCategoryModalOpen}
+							onClose={onEditCategoryModalClose}
+						/>
+						<AddDebtModal
+							isOpen={isAddDebtModalOpen}
+							onClose={onAddDebtModalClose}
+						/>
+						<EditDebtModal
+							isOpen={isEditDebtModalOpen}
+							onClose={onEditDebtModalClose}
+						/>
+						<AddBudgetModal
+							isOpen={isAddBudgetModalOpen}
+							onClose={onAddBudgetModalClose}
+						/>
+						<EditBudgetModal
+							isOpen={isEditBudgetModalOpen}
+							onClose={onEditBudgetModalClose}
+						/>
+						<AddAccountModal
+							isOpen={isAddAccountModalOpen}
+							onClose={onAddAccountModalClose}
+						/>
+					</>
 				) : null}
-				<AddTransactionModal
-					isOpen={isAddTransactionModalOpen}
-					onClose={onAddTransactionModalClose}
-				/>
-				<AddRecurrenceModal
-					isOpen={isAddRecurrenceModalOpen}
-					onClose={onAddRecurrenceModalClose}
-				/>
-				<EditRecurrenceModal
-					isOpen={isEditRecurrenceModalOpen}
-					onClose={onEditRecurrenceModalClose}
-				/>
-				<AddCategoryModal
-					isOpen={isAddCategoryModalOpen}
-					onClose={onAddCategoryModalClose}
-				/>
-				<EditCategoryModal
-					isOpen={isEditCategoryModalOpen}
-					onClose={onEditCategoryModalClose}
-				/>
-				<AddDebtModal
-					isOpen={isAddDebtModalOpen}
-					onClose={onAddDebtModalClose}
-				/>
-				<EditDebtModal
-					isOpen={isEditDebtModalOpen}
-					onClose={onEditDebtModalClose}
-				/>
-				<AddBudgetModal
-					isOpen={isAddBudgetModalOpen}
-					onClose={onAddBudgetModalClose}
-				/>
-				<EditBudgetModal
-					isOpen={isEditBudgetModalOpen}
-					onClose={onEditBudgetModalClose}
-				/>
-				<AddAccountModal
-					isOpen={isAddAccountModalOpen}
-					onClose={onAddAccountModalClose}
-				/>
 			</Flex>
 		</>
 	)

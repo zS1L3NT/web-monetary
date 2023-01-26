@@ -1,3 +1,4 @@
+import { useContext } from "react"
 import { useNavigate } from "react-router-dom"
 
 import { MoonIcon, SunIcon } from "@chakra-ui/icons"
@@ -6,7 +7,7 @@ import {
 	DrawerHeader, DrawerOverlay, useColorMode, useColorModeValue
 } from "@chakra-ui/react"
 
-import useOnlyAuthenticated from "../../hooks/useOnlyAuthenticated"
+import AuthContext from "../../contexts/AuthContext"
 
 interface iNavItem {
 	title: string
@@ -15,7 +16,7 @@ interface iNavItem {
 }
 
 const MainDrawer = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
-	const { token } = useOnlyAuthenticated()
+	const { token } = useContext(AuthContext)
 
 	const navigate = useNavigate()
 	const { toggleColorMode } = useColorMode()

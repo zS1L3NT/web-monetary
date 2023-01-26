@@ -15,9 +15,11 @@ const AuthContext = createContext<{
 
 export const AuthProvider = ({ children }: PropsWithChildren<{}>) => {
 	const [token, setToken] = useState<string | null>(localStorage.getItem("token"))
-	
-	// token
-	const { data: user, error: userError } = useGetUserQuery({ token: token ?? "-" })
+
+	const { data: user, error: userError } = useGetUserQuery(
+		{ token: token ?? "-" },
+		{ skip: !token }
+	)
 
 	useEffect(() => {
 		if (token && userError) {
