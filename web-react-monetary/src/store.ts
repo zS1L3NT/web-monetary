@@ -12,6 +12,8 @@ const store = configureStore({
 		getDefaultMiddleware({ serializableCheck: false }).concat(api.middleware)
 })
 
+window.$store = store
+
 export default store
 export type RootState = ReturnType<typeof store.getState>
 export type AppDispatch = typeof store.dispatch

@@ -1,5 +1,5 @@
 import { Chart, registerables } from "chart.js"
-import { Route, Routes } from "react-router-dom"
+import { Route, Routes, useNavigate } from "react-router-dom"
 
 import { Flex } from "@chakra-ui/react"
 
@@ -24,6 +24,8 @@ import Transactions from "./features/transaction/pages/Transactions"
 Chart.register(...registerables)
 
 const App = () => {
+	window.$navigate = useNavigate()
+
 	return (
 		<Flex
 			sx={{

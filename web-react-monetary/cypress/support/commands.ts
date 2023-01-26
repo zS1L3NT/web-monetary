@@ -1,37 +1,32 @@
 /// <reference types="cypress" />
-// ***********************************************
-// This example commands.ts shows you how to
-// create various custom commands and overwrite
-// existing commands.
-//
-// For more comprehensive examples of custom
-// commands please read more here:
-// https://on.cypress.io/custom-commands
-// ***********************************************
-//
-//
-// -- This is a parent command --
-// Cypress.Commands.add('login', (email, password) => { ... })
-//
-//
-// -- This is a child command --
-// Cypress.Commands.add('drag', { prevSubject: 'element'}, (subject, options) => { ... })
-//
-//
-// -- This is a dual command --
-// Cypress.Commands.add('dismiss', { prevSubject: 'optional'}, (subject, options) => { ... })
-//
-//
-// -- This will overwrite an existing command --
-// Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
-//
-// declare global {
-//   namespace Cypress {
-//     interface Chainable {
-//       login(email: string, password: string): Chainable<void>
-//       drag(subject: string, options?: Partial<TypeOptions>): Chainable<Element>
-//       dismiss(subject: string, options?: Partial<TypeOptions>): Chainable<Element>
-//       visit(originalFn: CommandOriginalFn, url: string, options: Partial<VisitOptions>): Chainable<Element>
-//     }
-//   }
-// }
+Cypress.Commands.add("login", (pathname = "/dashboard") => {
+	cy.visit("http://localhost:8000/login?continue=" + encodeURIComponent(pathname))
+
+	cy.get("[data-cy=email-input]").type("zechariahtan144@gmail.com")
+	cy.get("[data-cy=password-input]").type("P@ssw0rd")
+	cy.get("[data-cy=login-button]").click()
+
+	cy.wait(500)
+
+	cy.closeToasts()
+	cy.location("pathname").should("eq", pathname)
+})
+
+Cypress.Commands.add("push", (path: string) => {
+	return cy.window().then(win => {
+		win.$navigate(path)
+		cy.wait(500)
+	})
+})
+
+Cypress.Commands.add("closeToasts", () => {
+	cy.get("button[aria-label=Close]").click({ multiple: true })
+})
+
+declare namespace Cypress {
+	interface Chainable {
+		login(path?: string): Chainable<AUTWindow>
+		push(path: string): Chainable<AUTWindow>
+		closeToasts(): Chainable<AUTWindow>
+	}
+}
