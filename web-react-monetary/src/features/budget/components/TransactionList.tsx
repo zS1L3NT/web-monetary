@@ -2,7 +2,7 @@ import { useContext } from "react"
 
 import { Center, Spinner } from "@chakra-ui/react"
 
-import TransactionItem from "../../transactions/components/TransactionItem"
+import TransactionItem from "../../transaction/components/TransactionItem"
 import { TransactionsContext } from "../contexts/TransactionsContext"
 
 const TransactionList = ({}: {}) => {

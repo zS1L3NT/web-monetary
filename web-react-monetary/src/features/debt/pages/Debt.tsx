@@ -10,7 +10,7 @@ import { useGetTransactionsQuery } from "../../../api/transactions"
 import AddDebtTransactionModal from "../../../components/popups/AddDebtTransactionModal"
 import useOnlyAuthenticated from "../../../hooks/useOnlyAuthenticated"
 import useToastError from "../../../hooks/useToastError"
-import TransactionItem from "../../transactions/components/TransactionItem"
+import TransactionItem from "../../transaction/components/TransactionItem"
 import DebtDetails from "../components/DebtDetails"
 
 const Debt = ({}: {}) => {
