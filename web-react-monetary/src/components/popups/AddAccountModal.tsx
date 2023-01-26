@@ -78,7 +78,8 @@ const AddAccountModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => 
 					<Button
 						isLoading={createAccountIsLoading}
 						disabled={invalid}
-						onClick={handleCreate}>
+						onClick={handleCreate}
+						data-cy="add-button">
 						Add
 					</Button>
 				</ModalFooter>

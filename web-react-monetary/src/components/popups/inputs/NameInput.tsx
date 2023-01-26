@@ -16,6 +16,7 @@ const NameInput = ({
 				value={name}
 				onChange={e => setName(e.target.value)}
 				placeholder="Enter a name"
+				data-cy="name-input"
 			/>
 		</Box>
 	)

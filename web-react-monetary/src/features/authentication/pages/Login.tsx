@@ -99,6 +99,7 @@ const Login = ({}: {}) => {
 						isInvalid={!!emailError}
 						onChange={e => setEmail(e.target.value)}
 						onKeyDown={handleKeyDown}
+						data-cy="email-input"
 					/>
 					{emailError ? (
 						<Text
@@ -117,6 +118,7 @@ const Login = ({}: {}) => {
 							isInvalid={!!passwordError}
 							onChange={e => setPassword(e.target.value)}
 							onKeyDown={handleKeyDown}
+							data-cy="password-input"
 						/>
 						<InputRightElement h="full">
 							<Button
@@ -143,7 +145,8 @@ const Login = ({}: {}) => {
 						size="lg"
 						isLoading={loginIsLoading}
 						loadingText="Logging in..."
-						onClick={handleLogin}>
+						onClick={handleLogin}
+						data-cy="login-button">
 						Login
 					</Button>
 				</Stack>

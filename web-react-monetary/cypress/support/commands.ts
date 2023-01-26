@@ -8,7 +8,6 @@ Cypress.Commands.add("login", (pathname = "/dashboard") => {
 
 	cy.wait(500)
 
-	cy.closeToasts()
 	cy.location("pathname").should("eq", pathname)
 })
 
@@ -19,14 +18,9 @@ Cypress.Commands.add("push", (path: string) => {
 	})
 })
 
-Cypress.Commands.add("closeToasts", () => {
-	cy.get("button[aria-label=Close]").click({ multiple: true })
-})
-
 declare namespace Cypress {
 	interface Chainable {
 		login(path?: string): Chainable<AUTWindow>
 		push(path: string): Chainable<AUTWindow>
-		closeToasts(): Chainable<AUTWindow>
 	}
 }

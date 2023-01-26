@@ -6,14 +6,14 @@ import {
 	AlertDialogOverlay, Button
 } from "@chakra-ui/react"
 
+import { useDeleteAccountMutation } from "../../api/accounts"
+import { useDeleteBudgetMutation } from "../../api/budgets"
 import { useDeleteCategoryMutation } from "../../api/categories"
+import { useDeleteDebtMutation } from "../../api/debts"
 import { useDeleteRecurrenceMutation } from "../../api/recurrences"
 import { useDeleteTransactionMutation } from "../../api/transactions"
 import useOnlyAuthenticated from "../../hooks/useOnlyAuthenticated"
 import useToastError from "../../hooks/useToastError"
-import { useDeleteBudgetMutation } from "../../api/budgets"
-import { useDeleteDebtMutation } from "../../api/debts"
-import { useDeleteAccountMutation } from "../../api/accounts"
 
 const DeleteModelAlertDialog = ({
 	model,
@@ -131,9 +131,10 @@ const DeleteModelAlertDialog = ({
 						Cancel
 					</Button>
 					<Button
+						sx={{ ml: 3 }}
 						colorScheme="red"
 						onClick={handleDelete}
-						ml={3}>
+						data-cy="delete-confirm-button">
 						Delete
 					</Button>
 				</AlertDialogFooter>

@@ -187,7 +187,8 @@ const Navigator = () => {
 								sx={{ mr: 2 }}
 								variant="outline"
 								leftIcon={action === "Edit" ? <EditIcon /> : <AddIcon />}
-								onClick={handleActionButtonClick}>
+								onClick={handleActionButtonClick}
+								data-cy={`${action}-${model}-button`.toLowerCase()}>
 								{action} {model}
 							</Button>
 						</Show>
@@ -198,6 +199,7 @@ const Navigator = () => {
 								variant="outline"
 								icon={action === "Edit" ? <EditIcon /> : <AddIcon />}
 								onClick={handleActionButtonClick}
+								data-cy={`${action}-${model}-button`.toLowerCase()}
 							/>
 						</Show>
 					</>
@@ -210,7 +212,8 @@ const Navigator = () => {
 								variant="outline"
 								colorScheme="red"
 								leftIcon={<DeleteIcon />}
-								onClick={onDeleteAlertDialogOpen}>
+								onClick={onDeleteAlertDialogOpen}
+								data-cy={`delete-${model}-button`.toLowerCase()}>
 								Delete {model}
 							</Button>
 						</Show>
@@ -221,6 +224,7 @@ const Navigator = () => {
 								colorScheme="red"
 								icon={<DeleteIcon />}
 								onClick={onDeleteAlertDialogOpen}
+								data-cy={`delete-${model}-button`.toLowerCase()}
 							/>
 						</Show>
 					</>
