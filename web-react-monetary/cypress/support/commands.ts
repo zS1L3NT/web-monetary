@@ -17,6 +17,8 @@ Cypress.Commands.add("login", (pathname = "/dashboard") => {
 		cy.get("[data-cy=email-input]").type("zechariahtan144@gmail.com")
 		cy.get("[data-cy=password-input]").type("P@ssw0rd")
 		cy.get("[data-cy=login-button]").click()
+
+		cy.toasts(["Logged in successfully!"])
 	}
 
 	cy.location("pathname").should("eq", pathname)
@@ -24,6 +26,18 @@ Cypress.Commands.add("login", (pathname = "/dashboard") => {
 	cy.window().then(win => {
 		token = win.localStorage.getItem("token") as string
 	})
+})
+
+Cypress.Commands.add("toasts", messages => {
+	if (messages.length) {
+		cy.get(".chakra-toast .chakra-alert__title").then(toasts => {
+			expect([...toasts.map(i => toasts[i].innerText)]).to.deep.eq(messages)
+
+			cy.wait(500).get("[aria-label=Close]").click({ multiple: true })
+		})
+	} else {
+		cy.get(".chakra-toast .chakra-alert__title").should("not.exist")
+	}
 })
 
 Cypress.Commands.add("push", (path: string) => {
@@ -41,5 +55,6 @@ declare namespace Cypress {
 	interface Chainable {
 		login(path?: string): Chainable<AUTWindow>
 		push(path: string): Chainable<AUTWindow>
+		toasts(toasts: string[]): Chainable<AUTWindow>
 	}
 }

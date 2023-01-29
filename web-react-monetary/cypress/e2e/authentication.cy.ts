@@ -3,6 +3,7 @@ describe("Appropriate authentication redirects", () => {
         cy.visit("http://localhost:8000/login")
 
         cy.location("pathname").should("eq", "/login")
+        cy.toasts([])
     })
 
     it("Redirects /login to /dashboard when authenticated", () => {
@@ -17,30 +18,35 @@ describe("Appropriate authentication redirects", () => {
         cy.visit("http://localhost:8000/register")
 
         cy.location("pathname").should("eq", "/register")
+        cy.toasts([])
     })
 
     it("Redirects /register to /dashboard when authenticated", () => {
         cy.login().push("/register")
 
         cy.location("pathname").should("eq", "/dashboard")
+        cy.toasts([])
     })
 
     it("Redirects /logout to /login when unauthenticated", () => {
         cy.visit("http://localhost:8000/logout")
 
         cy.location("pathname").should("eq", "/login")
+        cy.toasts([])
     })
 
-    it("Redirets /logout to /login when authenticated", () => {
+    it("Redirects /logout to / when authenticated", () => {
         cy.login().push("/logout")
 
-        cy.location("pathname").should("eq", "/login")
+        cy.location("pathname").should("eq", "/")
+        cy.toasts(["Logged out successfully!"])
     })
 
     it("Redirects /profile to /login when unauthenticated", () => {
         cy.visit("http://localhost:8000/profile")
 
         cy.location("pathname").should("eq", "/login")
+        cy.toasts(["Unauthorized"])
     })
 
     it("Loads /profile when authenticated", () => {
@@ -58,8 +64,21 @@ describe("Login", () => {
         cy.wait("@login").its("response.statusCode").should("eq", 400)
         cy.contains("The email field is required.")
         cy.contains("The password field is required.")
+        cy.toasts(["Invalid data"])
+
+        cy.get("[data-cy=email-input]").type("test")
+        cy.get("[data-cy=password-input]").type("test")
+        cy.get("[data-cy=login-button]").click()
+
+        cy.wait("@login").its("response.statusCode").should("eq", 400)
+        cy.contains("The email must be a valid email address.")
+        cy.toasts(["Invalid data"])
+
+        cy.get("[data-cy=email-input]").clear().type("zechariahtan144@gmail.com")
+        cy.get("[data-cy=login-button]").click()
 
         cy.location("pathname").should("eq", "/login")
+        cy.toasts(["Login Error"])
     })
 
     it("Can hide and unhide password", () => {
@@ -86,6 +105,7 @@ describe("Login", () => {
         cy.wait("@login").its("response.statusCode").should("eq", 200)
 
         cy.location("pathname").should("eq", "/dashboard")
+        cy.toasts(["Logged in successfully!"])
     })
 
     it("Can redirect to /register when clicking register", () => {
@@ -108,20 +128,21 @@ describe("Register", () => {
         cy.contains("The email field is required.")
         cy.contains("The password field is required.")
 
-        cy.location("pathname").should("eq", "/register")
-    })
-
-    it("Cannot register with taken email", () => {
-        cy.intercept("POST", "/api/register").as("register")
-        cy.visit("http://localhost:8000/register")
-
-        cy.get("[data-cy=email-input]").type("zechariahtan144@gmail.com")
-        cy.get("[data-cy=password-input]").type("P@ssw0rd")
+        cy.get("[data-cy=email-input]").type("test")
+        cy.get("[data-cy=password-input]").type("test")
         cy.get("[data-cy=register-button]").click()
 
         cy.wait("@register").its("response.statusCode").should("eq", 400)
+        cy.contains("The email must be a valid email address.")
+        cy.contains("The password must be at least 8 characters. The password must contain at least one uppercase and one lowercase letter. The password must contain at least one symbol. The password must contain at least one number.")
+        cy.toasts(["Invalid data"])
 
-        cy.location("pathname").should("eq", "/register")
+        cy.get("[data-cy=email-input]").clear().type("zechariahtan144@gmail.com")
+        cy.get("[data-cy=register-button]").click()
+
+        cy.wait("@register").its("response.statusCode").should("eq", 400)
+        cy.contains("The email has already been taken.")
+        cy.toasts(["Invalid data"])
     })
 
     it("Can hide and unhide password", () => {
@@ -148,6 +169,15 @@ describe("Register", () => {
         cy.wait("@register").its("response.statusCode").should("eq", 200)
 
         cy.location("pathname").should("eq", "/dashboard")
+        cy.toasts(["Registered successfully!"])
+    })
+
+    it("Can redirect to /login when clicking login", () => {
+        cy.visit("http://localhost:8000/register")
+
+        cy.get("[data-cy=login-link]").click()
+
+        cy.location("pathname").should("eq", "/login")
     })
 })
 
@@ -158,9 +188,10 @@ describe("Logout", () => {
 
         cy.wait("@logout").its("response.statusCode").should("eq", 200)
 
-        cy.location("pathname").should("eq", "/login")
+        cy.location("pathname").should("eq", "/")
         cy.window().then(win => {
             expect(win.localStorage.getItem("token")).to.be.null
+            cy.toasts(["Logged out successfully!"])
         })
     })
 })
@@ -184,6 +215,8 @@ describe("Profile", () => {
 			cy.get("[data-cy=email-input]").type("test@gmail.com")
 			cy.get("[data-cy=password-input]").type("test_P@ssw0rd")
 			cy.get("[data-cy=login-button]").click()
+
+            cy.toasts(["Logged in successfully!"])
 		}
 
 		cy.location("pathname").should("eq", "/profile")
@@ -194,10 +227,18 @@ describe("Profile", () => {
 	})
 
 	it("Cannot update email with invalid data", () => {
-		cy.intercept("PUT", "/api/uer").as("updateUser")
+		cy.intercept("PUT", "/api/user").as("updateUser")
 
 		cy.get("[data-cy=email-input]").clear()
+
 		cy.get("[data-cy=email-save-button]").should("be.disabled")
+
+        cy.get("[data-cy=email-input]").clear().type("test")
+        cy.get("[data-cy=email-save-button]").click()
+
+        cy.wait("@updateUser").its("response.statusCode").should("eq", 400)
+        cy.contains("The email must be a valid email address.")
+        cy.toasts(["Invalid data"])
 	})
 
 	it("Can update email", () => {
@@ -207,10 +248,31 @@ describe("Profile", () => {
 		cy.get("[data-cy=email-save-button]").click()
 
 		cy.wait("@updateUser").its("response.statusCode").should("eq", 200)
+        cy.toasts(["User updated successfully!"])
 	})
 
 	it("Cannot update password with invalid data", () => {
+		cy.intercept("PUT", "/api/user/password").as("updateUserPassword")
+        
 		cy.get("[data-cy=password-save-button]").should("be.disabled")
+
+        cy.get("[data-cy=password-old-input]").type("P@ssw0rd")
+  
+		cy.get("[data-cy=password-save-button]").should("be.disabled")
+
+        cy.get("[data-cy=password-new-input]").type("test_P@ssw0rd")
+		cy.get("[data-cy=password-save-button]").click()
+
+        cy.wait("@updateUserPassword").its("response.statusCode").should("eq", 400)
+        cy.toasts(["Password Update Error"])
+
+        cy.get("[data-cy=password-old-input]").clear().type("test_P@ssw0rd")
+        cy.get("[data-cy=password-new-input]").clear().type("P@ssw0rd")
+		cy.get("[data-cy=password-save-button]").click()
+
+        cy.wait("@updateUserPassword").its("response.statusCode").should("eq", 400)
+        cy.contains("The given new password has appeared in a data leak. Please choose a different new password.")
+        cy.toasts(["Invalid data"])
 	})
 
 	it("Can update password", () => {
@@ -221,6 +283,7 @@ describe("Profile", () => {
 		cy.get("[data-cy=password-save-button]").click()
 
 		cy.wait("@updateUserPassword").its("response.statusCode").should("eq", 200)
+        cy.toasts(["Password updated successfully!"])
 	})
 
     it("Can delete user", () => {
@@ -231,6 +294,7 @@ describe("Profile", () => {
 
         cy.wait("@deleteUser").its("response.statusCode").should("eq", 200)
 
-        cy.location("pathname").should("eq", "/login")
+        cy.location("pathname").should("eq", "/")
+        cy.toasts([])
     })
 })

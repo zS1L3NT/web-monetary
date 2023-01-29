@@ -117,7 +117,7 @@ const DeleteModelAlertDialog = ({
 				})
 				break
 			case "User":
-				navigate("/login")
+				navigate("/")
 				await deleteUser({
 					token
 				})

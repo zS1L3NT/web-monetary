@@ -1,8 +1,9 @@
-describe("Requires authentication", () => {
+describe("Appropriate authentication redirects", () => {
 	it("Redirects to /login when unauthenticated", () => {
 		cy.visit("http://localhost:8000/accounts")
 
 		cy.location("pathname").should("eq", "/login")
+		cy.toasts(["Unauthorized"])
 	})
 
 	it("Can load when authenticated", () => {
@@ -17,11 +18,14 @@ describe("Creating accounts", () => {
 		cy.get("[data-cy=add-account-button]").click()
 
 		cy.get("[data-cy=add-button]").should("be.disabled")
+		
+		cy.get("[data-cy=amount-input]").type("-1")
+
+		cy.get("[data-cy=add-button]").should("be.disabled")
 	})
 
 	it("Can create an account", () => {
 		cy.intercept("POST", "/api/accounts").as("createAccount")
-		cy.intercept("GET", "/api/accounts").as("getAccounts")
 		cy.login("/accounts")
 
 		cy.get("[data-cy=add-account-button]").click()
@@ -33,7 +37,6 @@ describe("Creating accounts", () => {
 		cy.get("[data-cy=add-button]").focus().click()
 
 		cy.wait("@createAccount").its("response.statusCode").should("eq", 200)
-		cy.wait("@getAccounts").its("response.statusCode").should("eq", 200)
 
 		cy.contains("Test Account 1")
 		cy.contains("$1000.00")
@@ -99,7 +102,6 @@ describe("Updating accounts", () => {
 
 	it("Can update an account", () => {
 		cy.intercept("PUT", "/api/accounts/*").as("updateAccount")
-		cy.intercept("GET", "/api/accounts").as("getAccounts")
 		cy.login("/accounts")
 
 		cy.contains("Test Account").first().click()
@@ -107,7 +109,6 @@ describe("Updating accounts", () => {
 		cy.get("[data-cy=edit-button]").click()
 
 		cy.wait("@updateAccount").its("response.statusCode").should("eq", 200)
-		cy.wait("@getAccounts").its("response.statusCode").should("eq", 200)
 
 		cy.contains("Test Account 2")
 	})
@@ -116,7 +117,6 @@ describe("Updating accounts", () => {
 describe("Deleting accounts", () => {
 	it("Can delete an account", () => {
 		cy.intercept("DELETE", "/api/accounts/*").as("deleteAccount")
-		cy.intercept("GET", "/api/accounts").as("getAccounts")
 		cy.login("/accounts")
 
 		cy.contains("Test Account 2").first().click()
@@ -124,6 +124,5 @@ describe("Deleting accounts", () => {
 		cy.get("[data-cy=delete-confirm-button]").click()
 
 		cy.wait("@deleteAccount").its("response.statusCode").should("eq", 200)
-		cy.wait("@getAccounts").its("response.statusCode").should("eq", 200)
 	})
 })

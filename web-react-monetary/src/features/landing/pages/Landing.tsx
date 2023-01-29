@@ -4,11 +4,7 @@ import { useNavigate } from "react-router-dom"
 import { ArrowForwardIcon } from "@chakra-ui/icons"
 import { Box, Button, chakra, Container, Heading, HStack, Text } from "@chakra-ui/react"
 
-import useOnlyUnauthenticated from "../../../hooks/useOnlyUnautheticated"
-
 const Landing = ({}: {}) => {
-	useOnlyUnauthenticated("/dashboard")
-
 	const navigate = useNavigate()
 
 	return (
