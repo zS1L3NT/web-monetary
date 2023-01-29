@@ -14,6 +14,7 @@ import { useDeleteRecurrenceMutation } from "../../api/recurrences"
 import { useDeleteTransactionMutation } from "../../api/transactions"
 import useOnlyAuthenticated from "../../hooks/useOnlyAuthenticated"
 import useToastError from "../../hooks/useToastError"
+import { useDeleteUserMutation } from "../../api/authentication"
 
 const DeleteModelAlertDialog = ({
 	model,
@@ -21,7 +22,7 @@ const DeleteModelAlertDialog = ({
 	isOpen,
 	onClose
 }: {
-	model: "Recurrence" | "Category" | "Transaction" | "Debt" | "Budget" | "Account"
+	model: "Recurrence" | "Category" | "Transaction" | "Debt" | "Budget" | "Account" | "User"
 	modelId?: string
 	isOpen: boolean
 	onClose: () => void
@@ -37,6 +38,7 @@ const DeleteModelAlertDialog = ({
 	const [deleteDebt, { error: deleteDebtError }] = useDeleteDebtMutation()
 	const [deleteBudget, { error: deleteBudgetError }] = useDeleteBudgetMutation()
 	const [deleteAccount, { error: deleteAccountError }] = useDeleteAccountMutation()
+	const [deleteUser, { error: deleteUserError }] = useDeleteUserMutation()
 
 	const message = useMemo(() => {
 		switch (model) {
@@ -52,6 +54,8 @@ const DeleteModelAlertDialog = ({
 				return "Are you sure you want to delete this Budget?"
 			case "Account":
 				return "Are you sure you want to delete this Account? All transactions under this account will be deleted too"
+			case "User":
+				return "Are you sure you want to delete your Account? All your data will be deleted too"
 		}
 	}, [model])
 	const cancelRef = useRef(null)
@@ -62,6 +66,7 @@ const DeleteModelAlertDialog = ({
 	useToastError(deleteDebtError)
 	useToastError(deleteBudgetError)
 	useToastError(deleteAccountError)
+	useToastError(deleteUserError)
 
 	const handleDelete = async () => {
 		onClose()
@@ -110,6 +115,13 @@ const DeleteModelAlertDialog = ({
 					token,
 					account_id: modelId!
 				})
+				break
+			case "User":
+				navigate("/login")
+				await deleteUser({
+					token
+				})
+				break
 		}
 	}
 

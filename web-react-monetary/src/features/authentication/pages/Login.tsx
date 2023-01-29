@@ -123,7 +123,8 @@ const Login = ({}: {}) => {
 						<InputRightElement h="full">
 							<Button
 								variant="ghost"
-								onClick={() => setShowPassword(showPassword => !showPassword)}>
+								onClick={() => setShowPassword(showPassword => !showPassword)}
+								data-cy="password-view-button">
 								{showPassword ? <ViewIcon /> : <ViewOffIcon />}
 							</Button>
 						</InputRightElement>
@@ -161,7 +162,8 @@ const Login = ({}: {}) => {
 						Don't have an account yet?{" "}
 						<Link
 							color="primary.300"
-							onClick={() => navigate("/register")}>
+							onClick={() => navigate("/register")}
+							data-cy="register-link">
 							Register
 						</Link>
 					</Text>

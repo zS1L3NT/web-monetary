@@ -114,6 +114,7 @@ const Profile = ({}: {}) => {
 								<Input
 									value={email}
 									onChange={e => setEmail(e.target.value)}
+									data-cy="email-input"
 								/>
 								{emailError ? (
 									<Text
@@ -128,7 +129,8 @@ const Profile = ({}: {}) => {
 								onClick={handleSaveEmail}
 								isDisabled={!email || email === user?.email}
 								isLoading={updateUserIsLoading}
-								loadingText="Saving">
+								loadingText="Saving"
+								data-cy="email-save-button">
 								Save
 							</Button>
 						</Stack>
@@ -143,6 +145,7 @@ const Profile = ({}: {}) => {
 									type="password"
 									value={oldPassword}
 									onChange={e => setOldPassword(e.target.value)}
+									data-cy="password-old-input"
 								/>
 								{oldPasswordError ? (
 									<Text
@@ -158,6 +161,7 @@ const Profile = ({}: {}) => {
 									type="password"
 									value={newPassword}
 									onChange={e => setNewPassword(e.target.value)}
+									data-cy="password-new-input"
 								/>
 								{newPasswordError ? (
 									<Text
@@ -172,7 +176,8 @@ const Profile = ({}: {}) => {
 								onClick={handleSavePassword}
 								isDisabled={!oldPassword || !newPassword}
 								isLoading={updateUserPasswordIsLoading}
-								loadingText="Saving">
+								loadingText="Saving"
+								data-cy="password-save-button">
 								Save
 							</Button>
 						</Stack>

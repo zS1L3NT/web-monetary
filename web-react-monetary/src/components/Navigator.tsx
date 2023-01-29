@@ -86,7 +86,7 @@ const Navigator = () => {
 	} = useDisclosure()
 
 	const action = useMemo(() => {
-		if (location.pathname.match(/\/\w+\//)) {
+		if (location.pathname.match(/\/\w+\//) || location.pathname === "/profile") {
 			return "Edit"
 		} else {
 			return "Add"
@@ -104,6 +104,8 @@ const Navigator = () => {
 			return "Budget"
 		} else if (location.pathname.startsWith("/accounts")) {
 			return "Account"
+		} else if (location.pathname === "/profile") {
+			return "User" 
 		} else if (location.pathname === "/transactions" || location.pathname === "/dashboard") {
 			return "Transaction"
 		} else {
@@ -180,7 +182,7 @@ const Navigator = () => {
 					Monetary
 				</Text>
 
-				{token && model ? (
+				{token && model && location.pathname !== "/profile" ? (
 					<>
 						<Show above="md">
 							<Button

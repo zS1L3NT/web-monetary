@@ -99,6 +99,7 @@ const Register = () => {
 						isInvalid={!!emailError}
 						onChange={e => setEmail(e.target.value)}
 						onKeyDown={handleKeyDown}
+						data-cy="email-input"
 					/>
 					{emailError ? (
 						<Text
@@ -117,11 +118,13 @@ const Register = () => {
 							isInvalid={!!passwordError}
 							onChange={e => setPassword(e.target.value)}
 							onKeyDown={handleKeyDown}
+							data-cy="password-input"
 						/>
 						<InputRightElement h="full">
 							<Button
 								variant="ghost"
-								onClick={() => setShowPassword(showPassword => !showPassword)}>
+								onClick={() => setShowPassword(showPassword => !showPassword)}
+								data-cy="password-view-button">
 								{showPassword ? <ViewIcon /> : <ViewOffIcon />}
 							</Button>
 						</InputRightElement>
@@ -143,7 +146,8 @@ const Register = () => {
 						size="lg"
 						isLoading={isLoading}
 						loadingText="Registering..."
-						onClick={handleRegister}>
+						onClick={handleRegister}
+						data-cy="register-button">
 						Register
 					</Button>
 				</Stack>
@@ -158,7 +162,8 @@ const Register = () => {
 						Already have an account?{" "}
 						<Link
 							color="primary.300"
-							onClick={() => navigate("/login")}>
+							onClick={() => navigate("/login")}
+							data-cy="login-link">
 							Login
 						</Link>
 					</Text>

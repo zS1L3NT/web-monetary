@@ -19,7 +19,7 @@ describe("Creating accounts", () => {
 		cy.get("[data-cy=add-button]").should("be.disabled")
 	})
 
-	it("Can create an account with valid data", () => {
+	it("Can create an account", () => {
 		cy.intercept("POST", "/api/accounts").as("createAccount")
 		cy.intercept("GET", "/api/accounts").as("getAccounts")
 		cy.login("/accounts")
