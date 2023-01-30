@@ -8,8 +8,10 @@ import Budget from "../../../models/budget"
 
 export const BudgetContext = createContext<{
 	budget: Budget | undefined
+	budgetIsLoading: boolean
 }>({
-	budget: undefined
+	budget: undefined,
+	budgetIsLoading: false
 })
 
 const BudgetProvider = ({ children }: PropsWithChildren<{}>) => {
@@ -17,14 +19,26 @@ const BudgetProvider = ({ children }: PropsWithChildren<{}>) => {
 
 	const { budget_id } = useParams()
 
-	const { data: budget, error: budgetError } = useGetBudgetQuery({
+	const {
+		data: budget,
+		error: budgetError,
+		isLoading: budgetIsLoading
+	} = useGetBudgetQuery({
 		token,
 		budget_id: budget_id!
 	})
 
-    useToastError(budgetError, true)
+	useToastError(budgetError)
 
-	return <BudgetContext.Provider value={{ budget }}>{children}</BudgetContext.Provider>
+	return (
+		<BudgetContext.Provider
+			value={{
+				budget,
+				budgetIsLoading
+			}}>
+			{children}
+		</BudgetContext.Provider>
+	)
 }
 
 export default BudgetProvider

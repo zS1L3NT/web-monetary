@@ -62,8 +62,8 @@ describe("Login", () => {
         cy.get("[data-cy=login-button]").click()
 
         cy.wait("@login").its("response.statusCode").should("eq", 400)
-        cy.contains("The email field is required.")
-        cy.contains("The password field is required.")
+        cy.contains("The email field is required.").should("exist")
+        cy.contains("The password field is required.").should("exist")
         cy.toasts(["Invalid data"])
 
         cy.get("[data-cy=email-input]").type("test")
@@ -71,7 +71,7 @@ describe("Login", () => {
         cy.get("[data-cy=login-button]").click()
 
         cy.wait("@login").its("response.statusCode").should("eq", 400)
-        cy.contains("The email must be a valid email address.")
+        cy.contains("The email must be a valid email address.").should("exist")
         cy.toasts(["Invalid data"])
 
         cy.get("[data-cy=email-input]").clear().type("zechariahtan144@gmail.com")
@@ -125,23 +125,23 @@ describe("Register", () => {
         cy.get("[data-cy=register-button]").click()
 
         cy.wait("@register").its("response.statusCode").should("eq", 400)
-        cy.contains("The email field is required.")
-        cy.contains("The password field is required.")
+        cy.contains("The email field is required.").should("exist")
+        cy.contains("The password field is required.").should("exist")
 
         cy.get("[data-cy=email-input]").type("test")
         cy.get("[data-cy=password-input]").type("test")
         cy.get("[data-cy=register-button]").click()
 
         cy.wait("@register").its("response.statusCode").should("eq", 400)
-        cy.contains("The email must be a valid email address.")
-        cy.contains("The password must be at least 8 characters. The password must contain at least one uppercase and one lowercase letter. The password must contain at least one symbol. The password must contain at least one number.")
+        cy.contains("The email must be a valid email address.").should("exist")
+        cy.contains("The password must be at least 8 characters. The password must contain at least one uppercase and one lowercase letter. The password must contain at least one symbol. The password must contain at least one number.").should("exist")
         cy.toasts(["Invalid data"])
 
         cy.get("[data-cy=email-input]").clear().type("zechariahtan144@gmail.com")
         cy.get("[data-cy=register-button]").click()
 
         cy.wait("@register").its("response.statusCode").should("eq", 400)
-        cy.contains("The email has already been taken.")
+        cy.contains("The email has already been taken.").should("exist")
         cy.toasts(["Invalid data"])
     })
 
@@ -237,7 +237,7 @@ describe("Profile", () => {
         cy.get("[data-cy=email-save-button]").click()
 
         cy.wait("@updateUser").its("response.statusCode").should("eq", 400)
-        cy.contains("The email must be a valid email address.")
+        cy.contains("The email must be a valid email address.").should("exist")
         cy.toasts(["Invalid data"])
 	})
 
@@ -271,7 +271,7 @@ describe("Profile", () => {
 		cy.get("[data-cy=password-save-button]").click()
 
         cy.wait("@updateUserPassword").its("response.statusCode").should("eq", 400)
-        cy.contains("The given new password has appeared in a data leak. Please choose a different new password.")
+        cy.contains("The given new password has appeared in a data leak. Please choose a different new password.").should("exist")
         cy.toasts(["Invalid data"])
 	})
 

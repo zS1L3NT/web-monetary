@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction, useState } from "react"
-import Select, { components, OptionProps } from "react-select"
+import Select, { components } from "react-select"
 
 import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons"
 import { Box, Flex, Text, useColorModeValue } from "@chakra-ui/react"
@@ -63,11 +63,18 @@ const CategoryInput = ({
 				isSearchable={false}
 				placeholder="Select a category"
 				components={{
-					Option: (props: OptionProps<{ value: string; label: string }>) => {
-						return (
+					Control: props => (
+						<div data-cy="category-select">
+							<components.Control {...props}>{props.children}</components.Control>
+						</div>
+					),
+					Option: props => (
+						<div data-cy={props.data.value + "-option"}>
 							<components.Option {...props}>
 								{props.data.value === "back" ? (
-									<Flex sx={{ alignItems: "center" }}>
+									<Flex
+										sx={{ alignItems: "center" }}
+										data-cy="option-back">
 										<ChevronLeftIcon mr={2} />
 										{props.data.label}
 									</Flex>
@@ -77,7 +84,8 @@ const CategoryInput = ({
 										sx={{
 											justifyContent: "space-between",
 											alignItems: "center"
-										}}>
+										}}
+										data-cy={props.data.value + "-option"}>
 										{props.data.label}
 										<ChevronRightIcon />
 									</Flex>
@@ -85,8 +93,8 @@ const CategoryInput = ({
 									props.data.label
 								)}
 							</components.Option>
-						)
-					}
+						</div>
+					)
 				}}
 				styles={{
 					indicatorSeparator: provided => ({

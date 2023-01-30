@@ -1,12 +1,12 @@
 describe("Appropriate authentication redirects", () => {
-	it("Redirects to /login when unauthenticated", () => {
+	it("Redirects /accounts to /login when unauthenticated", () => {
 		cy.visit("http://localhost:8000/accounts")
 
 		cy.location("pathname").should("eq", "/login")
 		cy.toasts(["Unauthorized"])
 	})
 
-	it("Can load when authenticated", () => {
+	it("Loads /accounts when authenticated", () => {
 		cy.login("/accounts")
 	})
 })
@@ -19,7 +19,7 @@ describe("Creating accounts", () => {
 
 		cy.get("[data-cy=add-button]").should("be.disabled")
 		
-		cy.get("[data-cy=amount-input]").type("-1")
+		cy.get("[data-cy=amount-input]").clear().type("-1")
 
 		cy.get("[data-cy=add-button]").should("be.disabled")
 	})
@@ -37,25 +37,24 @@ describe("Creating accounts", () => {
 		cy.get("[data-cy=add-button]").focus().click()
 
 		cy.wait("@createAccount").its("response.statusCode").should("eq", 200)
-
-		cy.contains("Test Account 1")
-		cy.contains("$1000.00")
+		cy.contains("Test Account 1").should("exist")
+		cy.contains("$1000.00").should("exist")
 	})
 })
 
 describe("Reading accounts", () => {
-	it("Can view accounts", () => {
+	it("Can read accounts", () => {
 		cy.intercept("GET", "/api/accounts").as("getAccounts")
 		cy.login("/accounts")
 
 		cy.wait("@getAccounts").its("response.statusCode").should("eq", 200)
 
-		cy.get(".chakra-stack .chakra-card").its("length").should("eq", 6)
-		cy.contains("Test Account 1")
-		cy.contains("$1000.00")
+		cy.get(".chakra-stack .chakra-card").should("have.length", 6)
+		cy.contains("Test Account 1").should("exist")
+		cy.contains("$1000.00").should("exist")
 	})
 
-	it("Can view accounts sorted in all ways", () => {
+	it("Can read accounts sorted in all ways", () => {
 		cy.intercept("GET", "/api/accounts").as("getAccounts")
 		cy.login("/accounts")
 
@@ -115,8 +114,7 @@ describe("Updating accounts", () => {
 		cy.get("[data-cy=edit-button]").click()
 
 		cy.wait("@updateAccount").its("response.statusCode").should("eq", 200)
-
-		cy.contains("Test Account 2")
+		cy.contains("Test Account 2").should("exist")
 	})
 })
 

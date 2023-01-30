@@ -1,7 +1,8 @@
 import { Fragment, useContext, useMemo } from "react"
 
 import {
-	Badge, Box, Card, CardBody, Flex, Heading, Progress, Skeleton, Text
+	Alert, AlertIcon, AlertTitle, Badge, Box, Card, CardBody, Flex, Heading, Progress, Skeleton,
+	Text
 } from "@chakra-ui/react"
 
 import { AccountsContext } from "../contexts/AccountsContext"
@@ -10,7 +11,7 @@ import { CategoriesContext } from "../contexts/CategoriesContext"
 import { TransactionsContext } from "../contexts/TransactionsContext"
 
 const BudgetDetails = ({}: {}) => {
-	const { budget } = useContext(BudgetContext)
+	const { budget, budgetIsLoading } = useContext(BudgetContext)
 	const { accounts } = useContext(AccountsContext)
 	const { categories } = useContext(CategoriesContext)
 	const { transactions } = useContext(TransactionsContext)
@@ -26,7 +27,7 @@ const BudgetDetails = ({}: {}) => {
 	return (
 		<Card>
 			<CardBody>
-				{budget && accounts && categories ? (
+				{!budgetIsLoading && budget && accounts && categories ? (
 					<>
 						<Flex sx={{ justifyContent: "space-between" }}>
 							<Heading size="md">
@@ -43,7 +44,7 @@ const BudgetDetails = ({}: {}) => {
 									display: "flex",
 									mt: 1
 								}}>
-								${budget.amount}
+								${budget.amount.toFixed(2)}
 							</Text>
 						</Flex>
 
@@ -70,7 +71,7 @@ const BudgetDetails = ({}: {}) => {
 										Math.max(5, Math.min(95, (spent / budget.amount) * 100)) +
 										"%"
 								}}>
-								${spent}
+								${spent.toFixed(2)}
 							</Text>
 						</Box>
 
@@ -108,8 +109,15 @@ const BudgetDetails = ({}: {}) => {
 							))}
 						</Flex>
 					</>
-				) : (
+				) : budgetIsLoading ? (
 					<Skeleton sx={{ h: "193.391px" }} />
+				) : (
+					<Alert
+						variant="left-accent"
+						status="error">
+						<AlertIcon />
+						<AlertTitle>Budget not found</AlertTitle>
+					</Alert>
 				)}
 			</CardBody>
 		</Card>

@@ -22,6 +22,7 @@ const PeriodTypeInput = ({
 				selectedChoiceId={periodType}
 				setSelectedChoiceId={c => setPeriodType(c as "Day" | "Week" | "Month" | "Year")}
 				placeholder="Select period type"
+				data-cy="period-type-select"
 			/>
 		</Box>
 	)

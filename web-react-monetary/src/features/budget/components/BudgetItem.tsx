@@ -53,7 +53,7 @@ const BudgetItem = ({
 							display: "flex",
 							mt: 1
 						}}>
-						${budget.amount}
+						${budget.amount.toFixed(2)}
 					</Text>
 				</Flex>
 				<Progress
@@ -76,7 +76,7 @@ const BudgetItem = ({
 							transform: "translateX(-50%)",
 							left: Math.max(5, Math.min(95, (spent / budget.amount) * 100)) + "%"
 						}}>
-						${spent}
+						${spent.toFixed(2)}
 					</Text>
 				</Box>
 			</CardBody>

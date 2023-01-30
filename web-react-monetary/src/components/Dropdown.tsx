@@ -1,4 +1,4 @@
-import Select from "react-select"
+import Select, { components } from "react-select"
 
 import { useColorModeValue } from "@chakra-ui/react"
 
@@ -7,13 +7,15 @@ const Dropdown = ({
 	selectedChoiceId,
 	setSelectedChoiceId,
 	placeholder = "Select a choice",
-	isDisabled
+	isDisabled,
+	"data-cy": dataCy
 }: {
 	choices: { id: string; text: string }[]
 	selectedChoiceId: string | null
 	setSelectedChoiceId: (choiceId: string | null) => void
 	placeholder: string
 	isDisabled?: boolean
+	"data-cy"?: string
 }) => {
 	return (
 		<Select
@@ -31,6 +33,18 @@ const Dropdown = ({
 			isSearchable={false}
 			isDisabled={isDisabled}
 			placeholder={placeholder}
+			components={{
+				Control: props => (
+					<div data-cy={dataCy}>
+						<components.Control {...props}>{props.children}</components.Control>
+					</div>
+				),
+				Option: props => (
+					<div data-cy={props.data.value + "-option"}>
+						<components.Option {...props}>{props.data.label}</components.Option>
+					</div>
+				)
+			}}
 			styles={{
 				indicatorSeparator: provided => ({
 					...provided,

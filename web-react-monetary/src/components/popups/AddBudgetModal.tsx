@@ -103,7 +103,8 @@ const AddBudgetModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => v
 					<Button
 						isLoading={createBudgetIsLoading}
 						disabled={invalid}
-						onClick={handleCreate}>
+						onClick={handleCreate}
+						data-cy="add-button">
 						Add
 					</Button>
 				</ModalFooter>

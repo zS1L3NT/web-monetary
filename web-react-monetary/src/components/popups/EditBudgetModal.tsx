@@ -11,11 +11,11 @@ import { useGetBudgetQuery, useUpdateBudgetMutation } from "../../api/budgets"
 import { useGetCategoriesQuery } from "../../api/categories"
 import useOnlyAuthenticated from "../../hooks/useOnlyAuthenticated"
 import useToastError from "../../hooks/useToastError"
+import AccountsMultiInput from "./inputs/AccountsMultiInput"
 import AmountInput from "./inputs/AmountInput"
+import CategoriesMultiInput from "./inputs/CategoriesMultiInput"
 import NameInput from "./inputs/NameInput"
 import PeriodTypeInput from "./inputs/PeriodTypeInput"
-import AccountsMultiInput from "./inputs/AccountsMultiInput"
-import CategoriesMultiInput from "./inputs/CategoriesMultiInput"
 
 const EditBudgetModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
 	const { token } = useOnlyAuthenticated()
@@ -40,7 +40,7 @@ const EditBudgetModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => 
 	const finalFocusRef = useRef(null)
 
 	useToastError(updateBudgetError)
-	useToastError(budgetError, true)
+	useToastError(budgetError)
 	useToastError(accountsError, true)
 	useToastError(categoriesError, true)
 
@@ -123,7 +123,8 @@ const EditBudgetModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => 
 					<Button
 						isLoading={updateBudgetIsLoading}
 						disabled={invalid}
-						onClick={handleUpdate}>
+						onClick={handleUpdate}
+						data-cy="edit-button">
 						Edit
 					</Button>
 				</ModalFooter>
