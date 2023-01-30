@@ -90,7 +90,8 @@ const AddCategoryModal = ({
 					<Button
 						isLoading={createCategoryIsLoading || updateCategoryIsLoading}
 						disabled={invalid}
-						onClick={handleCreate}>
+						onClick={handleCreate}
+						data-cy="add-button">
 						Add
 					</Button>
 				</ModalFooter>

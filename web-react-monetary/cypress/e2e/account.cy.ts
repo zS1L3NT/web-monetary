@@ -18,7 +18,7 @@ describe("Creating accounts", () => {
 		cy.get("[data-cy=add-account-button]").click()
 
 		cy.get("[data-cy=add-button]").should("be.disabled")
-		
+
 		cy.get("[data-cy=amount-input]").clear().type("-1")
 
 		cy.get("[data-cy=add-button]").should("be.disabled")
@@ -119,6 +119,18 @@ describe("Updating accounts", () => {
 })
 
 describe("Deleting accounts", () => {
+	it("Cannot delete an account with transactions", () => {
+		cy.intercept("DELETE", "/api/accounts/*").as("deleteAccount")
+		cy.login("/accounts")
+
+		cy.get(".chakra-stack .chakra-card").should("not.contain.text", "Test Account 2").first().click()
+		cy.get("[data-cy=delete-button]").click()
+		cy.get("[data-cy=delete-confirm-button]").click()
+
+		cy.wait("@deleteAccount").its("response.statusCode").should("eq", 400)
+		cy.toasts(["Transactions associated with this account exist"])
+	})
+
 	it("Can delete an account", () => {
 		cy.intercept("DELETE", "/api/accounts/*").as("deleteAccount")
 		cy.login("/accounts")

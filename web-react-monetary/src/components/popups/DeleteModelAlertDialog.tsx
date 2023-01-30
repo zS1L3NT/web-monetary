@@ -7,6 +7,7 @@ import {
 } from "@chakra-ui/react"
 
 import { useDeleteAccountMutation } from "../../api/accounts"
+import { useDeleteUserMutation } from "../../api/authentication"
 import { useDeleteBudgetMutation } from "../../api/budgets"
 import { useDeleteCategoryMutation } from "../../api/categories"
 import { useDeleteDebtMutation } from "../../api/debts"
@@ -14,7 +15,6 @@ import { useDeleteRecurrenceMutation } from "../../api/recurrences"
 import { useDeleteTransactionMutation } from "../../api/transactions"
 import useOnlyAuthenticated from "../../hooks/useOnlyAuthenticated"
 import useToastError from "../../hooks/useToastError"
-import { useDeleteUserMutation } from "../../api/authentication"
 
 const DeleteModelAlertDialog = ({
 	model,

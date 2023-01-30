@@ -43,7 +43,10 @@ const CategoryItem = ({
 						</Flex>
 
 						{category.category_ids.length ? (
-							<Text sx={{ mt: 2 }}>{category.category_ids.length} subcategories</Text>
+							<Text sx={{ mt: 2 }}>
+								{category.category_ids.length}{" "}
+								{category.category_ids.length > 1 ? "subcategories" : "subcategory"}
+							</Text>
 						) : null}
 					</>
 				) : (
