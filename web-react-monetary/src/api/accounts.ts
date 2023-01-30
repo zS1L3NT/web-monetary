@@ -1,5 +1,5 @@
 import Account from "../models/account"
-import api, { ApiResponse, optimistic, RequireToken } from "./api"
+import api, { ApiResponse, RequireToken } from "./api"
 
 const accounts = api.injectEndpoints({
 	endpoints: builder => ({
@@ -45,26 +45,6 @@ const accounts = api.injectEndpoints({
 				body: account,
 				token
 			}),
-			onQueryStarted: async ({ token, account_id, ...account }, mutators) => {
-				await optimistic(
-					mutators,
-					accounts.util.updateQueryData("getAccounts", { token }, _accounts => {
-						const index = _accounts.findIndex(a => a.id === account_id)
-						if (index === -1) return
-
-						_accounts[index] = Account.fromJSON({
-							..._accounts[index]!.toJSON(),
-							...account
-						})
-					}),
-					accounts.util.updateQueryData("getAccount", { token, account_id }, _account =>
-						Account.fromJSON({
-							..._account.toJSON(),
-							...account
-						})
-					)
-				)
-			},
 			invalidatesTags: ["Account"]
 		}),
 		deleteAccount: builder.mutation<ApiResponse, { account_id: string } & RequireToken>({
@@ -73,17 +53,6 @@ const accounts = api.injectEndpoints({
 				method: "DELETE",
 				token
 			}),
-			onQueryStarted: async ({ token, account_id }, mutators) => {
-				await optimistic(
-					mutators,
-					accounts.util.updateQueryData("getAccounts", { token }, _accounts => {
-						const index = _accounts.findIndex(a => a.id === account_id)
-						if (index === -1) return
-
-						_accounts.splice(index, 1)
-					})
-				)
-			},
 			invalidatesTags: ["Account"]
 		})
 	})

@@ -1,5 +1,5 @@
 import Recurrence from "../models/recurrence"
-import api, { ApiResponse, optimistic, RequireToken } from "./api"
+import api, { ApiResponse, RequireToken } from "./api"
 
 const recurrences = api.injectEndpoints({
 	endpoints: builder => ({
@@ -43,29 +43,6 @@ const recurrences = api.injectEndpoints({
 				body: recurrence,
 				token
 			}),
-			onQueryStarted: async ({ token, recurrence_id, ...recurrence }, mutators) => {
-				await optimistic(
-					mutators,
-					recurrences.util.updateQueryData("getRecurrences", { token }, _recurrences => {
-						const index = _recurrences.findIndex(a => a.id === recurrence_id)
-						if (index === -1) return
-
-						_recurrences[index] = Recurrence.fromJSON({
-							..._recurrences[index]!.toJSON(),
-							...recurrence
-						})
-					}),
-					recurrences.util.updateQueryData(
-						"getRecurrence",
-						{ token, recurrence_id },
-						_recurrence =>
-							Recurrence.fromJSON({
-								..._recurrence.toJSON(),
-								...recurrence
-							})
-					)
-				)
-			},
 			invalidatesTags: ["Recurrence"]
 		}),
 		deleteRecurrence: builder.mutation<ApiResponse, { recurrence_id: string } & RequireToken>({
@@ -74,17 +51,6 @@ const recurrences = api.injectEndpoints({
 				method: "DELETE",
 				token
 			}),
-			onQueryStarted: async ({ token, recurrence_id }, mutators) => {
-				await optimistic(
-					mutators,
-					recurrences.util.updateQueryData("getRecurrences", { token }, _recurrences => {
-						const index = _recurrences.findIndex(a => a.id === recurrence_id)
-						if (index === -1) return
-
-						_recurrences.splice(index, 1)
-					})
-				)
-			},
 			invalidatesTags: ["Recurrence"]
 		})
 	})
