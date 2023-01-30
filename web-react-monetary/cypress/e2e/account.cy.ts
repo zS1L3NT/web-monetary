@@ -45,7 +45,10 @@ describe("Creating accounts", () => {
 
 describe("Reading accounts", () => {
 	it("Can view accounts", () => {
+		cy.intercept("GET", "/api/accounts").as("getAccounts")
 		cy.login("/accounts")
+
+		cy.wait("@getAccounts").its("response.statusCode").should("eq", 200)
 
 		cy.get(".chakra-stack .chakra-card").its("length").should("eq", 6)
 		cy.contains("Test Account 1")
@@ -53,7 +56,10 @@ describe("Reading accounts", () => {
 	})
 
 	it("Can view accounts sorted in all ways", () => {
+		cy.intercept("GET", "/api/accounts").as("getAccounts")
 		cy.login("/accounts")
+
+		cy.wait("@getAccounts").its("response.statusCode").should("eq", 200)
 
 		const getTexts = () =>
 			cy.document().then(doc =>
