@@ -123,7 +123,7 @@ describe("Deleting accounts", () => {
 		cy.intercept("DELETE", "/api/accounts/*").as("deleteAccount")
 		cy.login("/accounts")
 
-		cy.get(".chakra-stack .chakra-card").should("not.contain.text", "Test Account 2").first().click()
+		cy.get(".chakra-stack .chakra-card").not(':contains("Test Account 2")').first().click()
 		cy.get("[data-cy=delete-button]").click()
 		cy.get("[data-cy=delete-confirm-button]").click()
 
