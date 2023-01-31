@@ -20,7 +20,7 @@ describe("Accounts toggling", () => {
 	it("Can only select account if name is clicked", () => {
 		cy.login()
 
-		cy.get("[data-cy=account-name]").first().click()
+		cy.el("account-name").first().click()
 
 		getChecked().should("deep.equal", [true, false, false, false, false])
 	})
@@ -28,8 +28,8 @@ describe("Accounts toggling", () => {
 	it("Can select multiple accounts", () => {
 		cy.login()
 
-		cy.get("[data-cy=account-name]").first().click()
-		cy.get("[data-cy=account-checkbox]").eq(1).click()
+		cy.el("account-name").first().click()
+		cy.el("account-checkbox").eq(1).click()
 
 		getChecked().should("deep.equal", [true, true, false, false, false])
 	})
@@ -37,12 +37,12 @@ describe("Accounts toggling", () => {
 	it("Can only be toggled when clicking the checkbox", () => {
 		cy.login()
 
-		cy.get("[data-cy=account-name]").first().click()
-		cy.get("[data-cy=account-name]").first().click()
+		cy.el("account-name").first().click()
+		cy.el("account-name").first().click()
 
 		getChecked().should("deep.equal", [true, false, false, false, false])
 
-		cy.get("[data-cy=account-checkbox]").first().click()
+		cy.el("account-checkbox").first().click()
 
 		getChecked().should("deep.equal", [false, false, false, false, false])
 	})
@@ -52,10 +52,10 @@ describe("Balance trend settings", () => {
 	it("Can change settings", () => {
 		cy.login()
 
-		cy.get("[data-cy=balance-trend-option]").click()
+		cy.el("balance-trend-option").click()
 
-		cy.get("[data-cy=period-button]").eq(1).click()
-		cy.get("[data-cy=save-button]").click()
+		cy.el("period-button").eq(1).click()
+		cy.el("save-button").click()
 
 		cy.wait(500).contains("Past 7 days").should("exist")
 	})
@@ -65,10 +65,10 @@ describe("Spendings by Categories settings", () => {
 	it("Can change settings", () => {
 		cy.login()
 
-		cy.get("[data-cy=spendings-categories-option]").click()
+		cy.el("spendings-categories-option").click()
 
-		cy.get("[data-cy=period-button]").eq(4).click()
-		cy.get("[data-cy=save-button]").click()
+		cy.el("period-button").eq(4).click()
+		cy.el("save-button").click()
 
 		cy.wait(500).contains("This Week").should("exist")
 	})

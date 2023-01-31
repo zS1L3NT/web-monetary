@@ -26,20 +26,20 @@ describe("Creating categories", () => {
 	it("Cannot create a category with invalid data", () => {
 		cy.login("/categories")
 
-		cy.get("[data-cy=add-category-button]").click()
+		cy.el("add-category-button").click()
 
-		cy.get("[data-cy=add-button]").should("be.disabled")
+		cy.el("add-button").should("be.disabled")
 	})
 
 	it("Can create a category", () => {
 		cy.intercept("POST", "/api/categories").as("createCategory")
 		cy.login("/categories")
 
-		cy.get("[data-cy=add-category-button]").click()
+		cy.el("add-category-button").click()
 
-		cy.get("[data-cy=name-input]").type("Test Category 1")
+		cy.el("name-input").type("Test Category 1")
 
-		cy.get("[data-cy=add-button]").click()
+		cy.el("add-button").click()
 
 		cy.wait("@createCategory").its("response.statusCode").should("eq", 200)
 		cy.contains("Test Category 1").should("exist")
@@ -50,9 +50,9 @@ describe("Creating categories", () => {
 		cy.login("/categories")
 
 		cy.contains("Test Category 1").click()
-		cy.get("[data-cy=add-subcategory-button]").click()
-		cy.get("[data-cy=name-input]").type("Test Category 2")
-		cy.get("[data-cy=add-button]").click()
+		cy.el("add-subcategory-button").click()
+		cy.el("name-input").type("Test Category 2")
+		cy.el("add-button").click()
 
 		cy.wait("@createCategory").its("response.statusCode").should("eq", 200)
 		cy.contains("Test Category 2").should("exist")
@@ -109,10 +109,10 @@ describe("Updating categories", () => {
 		cy.login("/categories")
 
 		cy.contains("Test Category 1").first().click()
-		cy.get("[data-cy=edit-category-button]").click()
-		cy.get("[data-cy=name-input]").clear()
+		cy.el("edit-category-button").click()
+		cy.el("name-input").clear()
 
-		cy.get("[data-cy=edit-button]").should("be.disabled")
+		cy.el("edit-button").should("be.disabled")
 	})
 
 	it("Can update a category", () => {
@@ -120,10 +120,10 @@ describe("Updating categories", () => {
 		cy.login("/categories")
 
 		cy.contains("Test Category 1").first().click()
-		cy.get("[data-cy=edit-category-button]").click()
-		cy.get("[data-cy=name-input]").clear().type("Test Category 3")
+		cy.el("edit-category-button").click()
+		cy.el("name-input").clear().type("Test Category 3")
 
-		cy.get("[data-cy=edit-button]").click()
+		cy.el("edit-button").click()
 
 		cy.wait("@updateCategory").its("response.statusCode").should("eq", 200)
 		cy.contains("Test Category 3").should("exist")
@@ -136,8 +136,8 @@ describe("Deleting categories", () => {
 		cy.login("/categories")
 
 		cy.get(".chakra-stack .chakra-card").not(':contains("Test Category 2")').first().click()
-		cy.get("[data-cy=delete-category-button]").click()
-		cy.get("[data-cy=delete-confirm-button]").click()
+		cy.el("delete-category-button").click()
+		cy.el("delete-confirm-button").click()
 
 		cy.wait("@deleteCategory").its("response.statusCode").should("eq", 400)
 		cy.toasts(["Transactions associated with this category exist"])
@@ -149,8 +149,8 @@ describe("Deleting categories", () => {
 
 		cy.contains("Test Category 3").first().click()
         cy.contains("Test Category 2").first().click()
-		cy.get("[data-cy=delete-category-button]").click()
-		cy.get("[data-cy=delete-confirm-button]").click()
+		cy.el("delete-category-button").click()
+		cy.el("delete-confirm-button").click()
 
 		cy.wait("@deleteCategory").its("response.statusCode").should("eq", 200)
 		cy.location("pathname").should("eq", "/categories")
@@ -161,8 +161,8 @@ describe("Deleting categories", () => {
 		cy.login("/categories")
 
 		cy.contains("Test Category 3").first().click()
-		cy.get("[data-cy=delete-category-button]").click()
-		cy.get("[data-cy=delete-confirm-button]").click()
+		cy.el("delete-category-button").click()
+		cy.el("delete-confirm-button").click()
 
 		cy.wait("@deleteCategory").its("response.statusCode").should("eq", 200)
 		cy.location("pathname").should("eq", "/categories")

@@ -26,45 +26,45 @@ describe("Creating budgets", () => {
 	it("Cannot create a budget with invalid data", () => {
 		cy.login("/budgets")
 
-		cy.get("[data-cy=add-budget-button]").click()
+		cy.el("add-budget-button").click()
 
-		cy.get("[data-cy=add-button]").should("be.disabled")
+		cy.el("add-button").should("be.disabled")
 
-		cy.get("[data-cy=name-input]").type("Test Budget")
+		cy.el("name-input").type("Test Budget")
 
-		cy.get("[data-cy=add-button]").should("be.disabled")
+		cy.el("add-button").should("be.disabled")
 
-		cy.get("[data-cy=amount-input]").clear().type("1000")
+		cy.el("amount-input").clear().type("1000")
 
-		cy.get("[data-cy=period-type-select]").click()
-		cy.get("[data-cy=period-type-select-option]").first().click()
+		cy.el("period-type-select").click()
+		cy.el("period-type-select-option").first().click()
 
-		cy.get("[data-cy=add-button]").should("be.disabled")
+		cy.el("add-button").should("be.disabled")
 
-		cy.get("[data-cy=account-checkbox]").first().click()
+		cy.el("account-checkbox").first().click()
 
-		cy.get("[data-cy=add-button]").should("be.disabled")
+		cy.el("add-button").should("be.disabled")
 
-		cy.get("[data-cy=account-checkbox]").first().click()
-		cy.get("[data-cy=category-checkbox]").first().click()
+		cy.el("account-checkbox").first().click()
+		cy.el("category-checkbox").first().click()
 
-		cy.get("[data-cy=add-button]").should("be.disabled")
+		cy.el("add-button").should("be.disabled")
 	})
 
 	it("Can create a budget", () => {
 		cy.intercept("POST", "/api/budgets").as("createBudget")
 		cy.login("/budgets")
 
-		cy.get("[data-cy=add-budget-button]").click()
+		cy.el("add-budget-button").click()
 
-		cy.get("[data-cy=name-input]").type("Test Budget 1")
-		cy.get("[data-cy=amount-input]").clear().type("1000")
-		cy.get("[data-cy=period-type-select]").click()
-		cy.get("[data-cy=period-type-select-option]").first().click()
-		cy.get("[data-cy=account-checkbox]").first().click()
-		cy.get("[data-cy=category-checkbox]").first().click()
+		cy.el("name-input").type("Test Budget 1")
+		cy.el("amount-input").clear().type("1000")
+		cy.el("period-type-select").click()
+		cy.el("period-type-select-option").first().click()
+		cy.el("account-checkbox").first().click()
+		cy.el("category-checkbox").first().click()
 
-		cy.get("[data-cy=add-button]").click()
+		cy.el("add-button").click()
 
 		cy.wait("@createBudget").its("response.statusCode").should("eq", 200)
 		cy.contains("Test Budget 1").should("exist")
@@ -111,25 +111,25 @@ describe("Updating budgets", () => {
 		cy.login("/budgets")
 
 		cy.contains("Test Budget 1").first().click()
-		cy.get("[data-cy=edit-budget-button]").click()
-		cy.get("[data-cy=name-input]").clear()
+		cy.el("edit-budget-button").click()
+		cy.el("name-input").clear()
 
-		cy.get("[data-cy=edit-button]").should("be.disabled")
+		cy.el("edit-button").should("be.disabled")
 
-		cy.get("[data-cy=name-input]").type("Test Budget 1")
-		cy.get("[data-cy=amount-input]").clear()
+		cy.el("name-input").type("Test Budget 1")
+		cy.el("amount-input").clear()
 
-		cy.get("[data-cy=edit-button]").focus().should("be.disabled")
+		cy.el("edit-button").focus().should("be.disabled")
 
-		cy.get("[data-cy=amount-input]").type("1000")
-		cy.get("[data-cy=account-checkbox]").first().click()
+		cy.el("amount-input").type("1000")
+		cy.el("account-checkbox").first().click()
 
-		cy.get("[data-cy=edit-button]").should("be.disabled")
+		cy.el("edit-button").should("be.disabled")
 
-		cy.get("[data-cy=account-checkbox]").first().click()
-		cy.get("[data-cy=category-checkbox]").first().click()
+		cy.el("account-checkbox").first().click()
+		cy.el("category-checkbox").first().click()
 
-		cy.get("[data-cy=edit-button]").should("be.disabled")
+		cy.el("edit-button").should("be.disabled")
 	})
 
 	it("Can update a budget", () => {
@@ -137,15 +137,15 @@ describe("Updating budgets", () => {
 		cy.login("/budgets")
 
 		cy.contains("Test Budget 1").first().click()
-		cy.get("[data-cy=edit-budget-button]").click()
-		cy.get("[data-cy=name-input]").clear().type("Test Budget 2")
-		cy.get("[data-cy=amount-input]").clear().type("2000")
-		cy.get("[data-cy=account-checkbox]").first().click()
-		cy.get("[data-cy=account-checkbox]").eq(1).click()
-		cy.get("[data-cy=category-checkbox]").first().click()
-		cy.get("[data-cy=category-checkbox]").eq(1).click()
+		cy.el("edit-budget-button").click()
+		cy.el("name-input").clear().type("Test Budget 2")
+		cy.el("amount-input").clear().type("2000")
+		cy.el("account-checkbox").first().click()
+		cy.el("account-checkbox").eq(1).click()
+		cy.el("category-checkbox").first().click()
+		cy.el("category-checkbox").eq(1).click()
 
-		cy.get("[data-cy=edit-button]").click()
+		cy.el("edit-button").click()
 
 		cy.wait("@updateBudget").its("response.statusCode").should("eq", 200)
 		cy.contains("Test Budget 2").should("exist")
@@ -159,8 +159,8 @@ describe("Deleting budgets", () => {
 		cy.login("/budgets")
 
 		cy.contains("Test Budget 2").first().click()
-		cy.get("[data-cy=delete-budget-button]").click()
-		cy.get("[data-cy=delete-confirm-button]").click()
+		cy.el("delete-budget-button").click()
+		cy.el("delete-confirm-button").click()
 
 		cy.wait("@deleteBudget").its("response.statusCode").should("eq", 200)
         cy.location("pathname").should("eq", "/budgets")

@@ -1,6 +1,8 @@
 /// <reference types="cypress" />
 let token
 
+Cypress.Commands.add("el", name => cy.get(`[data-cy=${name}]`))
+
 Cypress.Commands.add("login", (pathname = "/dashboard") => {
 	if (token) {
 		cy.intercept("GET", "/api/user").as("getUser")
@@ -14,9 +16,9 @@ Cypress.Commands.add("login", (pathname = "/dashboard") => {
 	if (token) {
 		cy.wait("@getUser").its("response.statusCode").should("eq", 200)
 	} else {
-		cy.get("[data-cy=email-input]").type("zechariahtan144@gmail.com")
-		cy.get("[data-cy=password-input]").type("P@ssw0rd")
-		cy.get("[data-cy=login-button]").click()
+		cy.el("email-input").type("zechariahtan144@gmail.com")
+		cy.el("password-input").type("P@ssw0rd")
+		cy.el("login-button").click()
 
 		cy.toasts(["Logged in successfully!"])
 	}
@@ -53,8 +55,9 @@ Cypress.Commands.add("push", (path: string) => {
 
 declare namespace Cypress {
 	interface Chainable {
+		el(name: string): Chainable<JQuery<HTMLElement>>
 		login(path?: string): Chainable<AUTWindow>
-		push(path: string): Chainable<AUTWindow>
 		toasts(toasts: string[]): Chainable<AUTWindow>
+		push(path: string): Chainable<AUTWindow>
 	}
 }
