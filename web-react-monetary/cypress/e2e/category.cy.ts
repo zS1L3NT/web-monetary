@@ -29,6 +29,10 @@ describe("Creating categories", () => {
 		cy.el("add-category-button").click()
 
 		cy.el("add-button").should("be.disabled")
+
+		cy.el("name-input").type("Test Category 1")
+
+		cy.el("add-button").should("be.enabled")
 	})
 
 	it("Can create a category", () => {
@@ -113,6 +117,10 @@ describe("Updating categories", () => {
 		cy.el("name-input").clear()
 
 		cy.el("edit-button").should("be.disabled")
+
+		cy.el("name-input").type("Test Category 3")
+
+		cy.el("edit-button").should("be.enabled")
 	})
 
 	it("Can update a category", () => {

@@ -33,6 +33,16 @@ describe("Creating debts", () => {
 		cy.el("amount-input").clear().type("1000")
 
 		cy.el("add-button").should("be.disabled")
+
+		cy.get("[data-cy=date-time-input]").type(
+			new Date(Date.now() + 60 * 60 * 1000).toLocaleString("sv").replace(" ", "T")
+		)
+
+		cy.el("add-button").should("be.disabled")
+
+		cy.el("name-input").type("Test Debt 1")
+
+		cy.el("add-button").should("be.enabled")
 	})
 
 	it("Can create a debt", () => {
@@ -42,18 +52,9 @@ describe("Creating debts", () => {
 		cy.el("add-debt-button").click()
 
 		cy.el("amount-input").clear().type("1000")
-		cy.window()
-			.then(win =>
-				cy
-					.get("[data-cy=date-time-input]")
-					.type(
-						new win.Date(win.Date.now() + 60 * 60 * 1000)
-							.toLocaleString("sv")
-							.replace(" ", "T")
-							.slice(0, -3)
-					)
-			)
-			.trigger("change")
+		cy.get("[data-cy=date-time-input]").type(
+			new Date(Date.now() + 60 * 60 * 1000).toLocaleString("sv").replace(" ", "T")
+		)
 		cy.el("name-input").type("Test Debt 1")
 
 		cy.el("add-button").click()
@@ -85,8 +86,14 @@ describe("Create debt transactions", () => {
 
 		cy.el("category-select").click()
 		cy.el("category-select-option").first().click()
+		cy.el("category-select").click()
 
 		cy.el("add-button").should("be.disabled")
+
+		cy.el("amount-input").clear().type("500")
+		cy.el("date-time-input").focus()
+
+		cy.el("add-button").should("be.enabled")
 	})
 
 	it("Can create a debt transaction", () => {
@@ -224,13 +231,17 @@ describe("Updating debts", () => {
 		cy.el("edit-button").should("be.disabled")
 
 		cy.el("date-time-input").type(
-			new Date(Date.now() - 60 * 60 * 1000)
-				.toLocaleString("sv")
-				.replace(" ", "T")
-				.slice(0, -3)
+			new Date(Date.now() - 60 * 60 * 1000).toLocaleString("sv").replace(" ", "T")
 		)
 
 		cy.el("edit-button").should("be.disabled")
+
+		cy.el("date-time-input").type(
+			new Date(Date.now() + 60 * 60 * 1000).toLocaleString("sv").replace(" ", "T")
+		)
+		cy.el("name-input").type("Test Debt 2")
+
+		cy.el("edit-button").should("be.enabled")
 	})
 
 	it("Can update a debt", () => {
@@ -242,10 +253,7 @@ describe("Updating debts", () => {
 		cy.el("borrow-button").click()
 		cy.el("amount-input").clear().type("2000")
 		cy.el("date-time-input").type(
-			new Date(Date.now() + 60 * 60 * 1000)
-				.toLocaleString("sv")
-				.replace(" ", "T")
-				.slice(0, -3)
+			new Date(Date.now() + 60 * 60 * 1000).toLocaleString("sv").replace(" ", "T")
 		)
 		cy.el("name-input").clear().type("Test Debt 2")
 		cy.el("active-checkbox").click()

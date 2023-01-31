@@ -49,6 +49,10 @@ describe("Creating budgets", () => {
 		cy.el("category-checkbox").first().click()
 
 		cy.el("add-button").should("be.disabled")
+
+		cy.el("account-checkbox").first().click()
+
+		cy.el("add-button").should("be.enabled")
 	})
 
 	it("Can create a budget", () => {
@@ -130,6 +134,10 @@ describe("Updating budgets", () => {
 		cy.el("category-checkbox").first().click()
 
 		cy.el("edit-button").should("be.disabled")
+
+		cy.el("category-checkbox").first().click()
+
+		cy.el("edit-button").should("be.enabled")
 	})
 
 	it("Can update a budget", () => {

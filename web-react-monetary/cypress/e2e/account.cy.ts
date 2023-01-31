@@ -19,9 +19,9 @@ describe("Creating accounts", () => {
 
 		cy.el("add-button").should("be.disabled")
 
-		cy.el("amount-input").clear().type("-1")
+		cy.el("amount-input").clear().type("1000")
 
-		cy.el("add-button").should("be.disabled")
+		cy.el("add-button").should("be.enabled")
 	})
 
 	it("Can create an account", () => {
@@ -100,6 +100,10 @@ describe("Updating accounts", () => {
 		cy.el("name-input").clear()
 
 		cy.el("edit-button").should("be.disabled")
+
+		cy.el("name-input").type("Test Account 2")
+
+		cy.el("edit-button").should("be.enabled")
 	})
 
 	it("Can update an account", () => {
