@@ -52,7 +52,7 @@ const CategoriesMultiInput = ({
 								onChange={e =>
 									e.target.checked ? selectCategory(c) : deselectCategory(c)
 								}
-								data-cy={c.id + "-checkbox"}>
+								data-cy="category-checkbox">
 								{c.name}
 							</Checkbox>
 							{c.category_ids.length

@@ -37,16 +37,16 @@ describe("Creating budgets", () => {
 		cy.get("[data-cy=amount-input]").clear().type("1000")
 
 		cy.get("[data-cy=period-type-select]").click()
-		cy.get("[data-cy=Day-option]").click()
+		cy.get("[data-cy=period-type-select-option]").first().click()
 
 		cy.get("[data-cy=add-button]").should("be.disabled")
 
-		cy.get("[data-cy$=checkbox]").first().click()
+		cy.get("[data-cy=account-checkbox]").first().click()
 
 		cy.get("[data-cy=add-button]").should("be.disabled")
 
-		cy.get("[data-cy$=checkbox]").first().click()
-		cy.get("[data-cy$=checkbox]").last().click()
+		cy.get("[data-cy=account-checkbox]").first().click()
+		cy.get("[data-cy=category-checkbox]").first().click()
 
 		cy.get("[data-cy=add-button]").should("be.disabled")
 	})
@@ -60,9 +60,9 @@ describe("Creating budgets", () => {
 		cy.get("[data-cy=name-input]").type("Test Budget 1")
 		cy.get("[data-cy=amount-input]").clear().type("1000")
 		cy.get("[data-cy=period-type-select]").click()
-		cy.get("[data-cy=Day-option]").click()
-		cy.get("[data-cy$=checkbox]").first().click()
-		cy.get("[data-cy$=checkbox]").last().click()
+		cy.get("[data-cy=period-type-select-option]").first().click()
+		cy.get("[data-cy=account-checkbox]").first().click()
+		cy.get("[data-cy=category-checkbox]").first().click()
 
 		cy.get("[data-cy=add-button]").click()
 
@@ -122,12 +122,12 @@ describe("Updating budgets", () => {
 		cy.get("[data-cy=edit-button]").focus().should("be.disabled")
 
 		cy.get("[data-cy=amount-input]").type("1000")
-		cy.get("[data-cy$=checkbox]").first().click()
+		cy.get("[data-cy=account-checkbox]").first().click()
 
 		cy.get("[data-cy=edit-button]").should("be.disabled")
 
-		cy.get("[data-cy$=checkbox]").first().click()
-		cy.get("[data-cy$=checkbox]").last().click()
+		cy.get("[data-cy=account-checkbox]").first().click()
+		cy.get("[data-cy=category-checkbox]").first().click()
 
 		cy.get("[data-cy=edit-button]").should("be.disabled")
 	})
@@ -140,10 +140,10 @@ describe("Updating budgets", () => {
 		cy.get("[data-cy=edit-budget-button]").click()
 		cy.get("[data-cy=name-input]").clear().type("Test Budget 2")
 		cy.get("[data-cy=amount-input]").clear().type("2000")
-		cy.get("[data-cy$=checkbox]").first().click()
-		cy.get("[data-cy$=checkbox]").eq(1).click()
-		cy.get("[data-cy$=checkbox]").eq(-2).click()
-		cy.get("[data-cy$=checkbox]").last().click()
+		cy.get("[data-cy=account-checkbox]").first().click()
+		cy.get("[data-cy=account-checkbox]").eq(1).click()
+		cy.get("[data-cy=category-checkbox]").first().click()
+		cy.get("[data-cy=category-checkbox]").eq(1).click()
 
 		cy.get("[data-cy=edit-button]").click()
 

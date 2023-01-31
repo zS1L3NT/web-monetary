@@ -69,12 +69,10 @@ const CategoryInput = ({
 						</div>
 					),
 					Option: props => (
-						<div data-cy={props.data.value + "-option"}>
+						<div data-cy="category-select-option">
 							<components.Option {...props}>
 								{props.data.value === "back" ? (
-									<Flex
-										sx={{ alignItems: "center" }}
-										data-cy="option-back">
+									<Flex sx={{ alignItems: "center" }}>
 										<ChevronLeftIcon mr={2} />
 										{props.data.label}
 									</Flex>
@@ -84,8 +82,7 @@ const CategoryInput = ({
 										sx={{
 											justifyContent: "space-between",
 											alignItems: "center"
-										}}
-										data-cy={props.data.value + "-option"}>
+										}}>
 										{props.data.label}
 										<ChevronRightIcon />
 									</Flex>

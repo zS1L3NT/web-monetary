@@ -27,7 +27,7 @@ const AccountsMultiInput = ({
 									? setAccountIds([...accountIds, a.id])
 									: setAccountIds(accountIds.filter(i => i !== a.id))
 							}
-							data-cy={a.id + "-checkbox"}>
+							data-cy="account-checkbox">
 							{a.name}
 						</Checkbox>
 					))}

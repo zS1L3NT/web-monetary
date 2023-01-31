@@ -40,7 +40,7 @@ const Dropdown = ({
 					</div>
 				),
 				Option: props => (
-					<div data-cy={props.data.value + "-option"}>
+					<div data-cy={dataCy + "-option"}>
 						<components.Option {...props}>{props.data.label}</components.Option>
 					</div>
 				)
