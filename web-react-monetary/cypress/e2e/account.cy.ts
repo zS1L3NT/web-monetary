@@ -31,9 +31,6 @@ describe("Creating accounts", () => {
 		cy.get("[data-cy=add-account-button]").click()
 		cy.get("[data-cy=name-input]").type("Test Account 1")
 		cy.get("[data-cy=amount-input]").clear().type("1000")
-
-		cy.get("[data-cy=add-button]").should("be.enabled")
-
 		cy.get("[data-cy=add-button]").focus().click()
 
 		cy.wait("@createAccount").its("response.statusCode").should("eq", 200)

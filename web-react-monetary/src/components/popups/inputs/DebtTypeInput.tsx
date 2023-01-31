@@ -21,7 +21,8 @@ const DebtTypeInput = ({
 				<Button
 					key={t}
 					variant={type === t ? "solid" : "outline"}
-					onClick={() => setType(t)}>
+					onClick={() => setType(t)}
+					data-cy={t.toLowerCase() + "-button"}>
 					{t}
 				</Button>
 			))}

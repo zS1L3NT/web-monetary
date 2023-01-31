@@ -84,7 +84,7 @@ describe("Reading categories", () => {
 
 	it("Cannot read a category with invalid id", () => {
 		cy.intercept("GET", "/api/categories/*").as("getCategory")
-		cy.login("/categories").push("/categories/1")
+		cy.login("/categories/1")
 
 		cy.wait("@getCategory").its("response.statusCode").should("eq", 404)
 		cy.get("[role=alert]").should("have.text", "Category not found")
@@ -93,7 +93,7 @@ describe("Reading categories", () => {
 
 	it("Can read a category", () => {
 		cy.intercept("GET", "/api/categories/*").as("getCategory")
-		cy.login("/categories").push("/categories")
+		cy.login("/categories")
 
 		cy.contains("Test Category 1").click()
 
@@ -135,7 +135,7 @@ describe("Deleting categories", () => {
 		cy.intercept("DELETE", "/api/categories/*").as("deleteCategory")
 		cy.login("/categories")
 
-		cy.get(".chakra-stack .chakra-card").not(':contains("Test Account 2")').first().click()
+		cy.get(".chakra-stack .chakra-card").not(':contains("Test Category 2")').first().click()
 		cy.get("[data-cy=delete-category-button]").click()
 		cy.get("[data-cy=delete-confirm-button]").click()
 

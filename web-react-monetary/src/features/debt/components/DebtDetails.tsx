@@ -1,15 +1,19 @@
 import { DateTime } from "luxon"
 
-import { Box, Card, CardBody, Flex, Heading, Skeleton, Text } from "@chakra-ui/react"
+import {
+	Alert, AlertIcon, AlertTitle, Box, Card, CardBody, Flex, Heading, Skeleton, Text
+} from "@chakra-ui/react"
 
 import Debt from "../../../models/debt"
 import Transaction from "../../../models/transaction"
 
 const DebtDetails = ({
 	debt,
+	debtIsLoading,
 	transactions
 }: {
 	debt: Debt | undefined
+	debtIsLoading: boolean
 	transactions: Transaction[] | undefined
 }) => {
 	return (
@@ -24,7 +28,7 @@ const DebtDetails = ({
 			</Heading>
 			<Card sx={{ w: "full" }}>
 				<CardBody>
-					{debt ? (
+					{!debtIsLoading && debt ? (
 						<Flex sx={{ justifyContent: "space-between" }}>
 							<Box>
 								<Heading size="lg">
@@ -77,8 +81,15 @@ const DebtDetails = ({
 								</Text>
 							</Box>
 						</Flex>
-					) : (
+					) : debtIsLoading ? (
 						<Skeleton sx={{ h: "100px" }} />
+					) : (
+						<Alert
+							variant="left-accent"
+							status="error">
+							<AlertIcon />
+							<AlertTitle>Debt not found</AlertTitle>
+						</Alert>
 					)}
 				</CardBody>
 			</Card>

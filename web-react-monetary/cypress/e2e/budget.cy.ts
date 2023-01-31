@@ -87,7 +87,7 @@ describe("Reading budgets", () => {
 
 	it("Cannot read a budget with invalid id", () => {
 		cy.intercept("GET", "/api/budgets/*").as("getBudget")
-		cy.login("/budgets").push("/budgets/1")
+		cy.login("/budgets/1")
 
 		cy.wait("@getBudget").its("response.statusCode").should("eq", 404)
 		cy.get("[role=alert]").should("have.text", "Budget not found")
@@ -96,7 +96,7 @@ describe("Reading budgets", () => {
 
 	it("Can read a budget", () => {
 		cy.intercept("GET", "/api/budgets/*").as("getBudget")
-		cy.login("/budgets").push("/budgets")
+		cy.login("/budgets")
 
 		cy.contains("Test Budget 1").click()
 

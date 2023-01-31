@@ -97,7 +97,8 @@ const AddDebtModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
 					<Button
 						isLoading={createDebtIsLoading}
 						disabled={invalid}
-						onClick={handleCreate}>
+						onClick={handleCreate}
+						data-cy="add-button">
 						Add
 					</Button>
 				</ModalFooter>

@@ -62,7 +62,7 @@ export default class Debt extends Model {
 		return left > 0
 			? `$${left.toFixed(2)} left`
 			: left < 0
-			? `$${-left.toFixed(2)} excess`
+			? `$${(-left).toFixed(2)} excess`
 			: `Paid in exact`
 	}
 
