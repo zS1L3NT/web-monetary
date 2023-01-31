@@ -34,8 +34,16 @@ const FiltersSidebar = ({}: {}) => {
 							)
 						}>
 						<Stack>
-							<Radio value="name-asc">Name Asc</Radio>
-							<Radio value="name-desc">Name Desc</Radio>
+							<Radio
+								value="name-asc"
+								data-cy="name-asc-radio">
+								Name Asc
+							</Radio>
+							<Radio
+								value="name-desc"
+								data-cy="name-desc-radio">
+								Name Desc
+							</Radio>
 							<Radio value="due-date-asc">Due Date Asc</Radio>
 							<Radio value="due-date-desc">Due Date Desc</Radio>
 						</Stack>

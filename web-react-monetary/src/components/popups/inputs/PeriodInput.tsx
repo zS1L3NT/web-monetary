@@ -41,6 +41,7 @@ const PeriodInput = ({
 					value={periodStartDate.toFormat("yyyy-MM-dd")}
 					onChange={e => setPeriodStartDate(DateTime.fromISO(e.target.value))}
 					placeholder="Enter the period start date and time"
+					data-cy="period-start-date-input"
 				/>
 			</Box>
 			<Flex
@@ -70,6 +71,7 @@ const PeriodInput = ({
 					onChange={e =>
 						setPeriodInterval(Math.min(Math.max(e.target.valueAsNumber, 0), 99))
 					}
+					data-cy="period-interval-input"
 				/>
 				<Dropdown
 					choices={["Day", "Week", "Month", "Year"].map(t => ({
@@ -81,6 +83,7 @@ const PeriodInput = ({
 						setPeriodType(ci as "Day" | "Week" | "Month" | "Year")
 					}
 					placeholder="Select the period type"
+					data-cy="period-type-select"
 				/>
 				<Dropdown
 					choices={[
@@ -96,6 +99,7 @@ const PeriodInput = ({
 					selectedChoiceId={periodEndType}
 					setSelectedChoiceId={ci => setPeriodEndType(ci as "Never" | "Date" | "Count")}
 					placeholder="Select the period end type"
+					data-cy="period-end-type-select"
 				/>
 			</Flex>
 			{periodEndType === "Date" ? (
@@ -110,6 +114,7 @@ const PeriodInput = ({
 						)
 					}
 					placeholder="Enter the period end date and time"
+					data-cy="period-end-date-input"
 				/>
 			) : null}
 			{periodEndType === "Count" ? (
@@ -120,6 +125,7 @@ const PeriodInput = ({
 						setPeriodEndCount(Math.min(Math.max(e.target.valueAsNumber, 0), 999))
 					}
 					placeholder="Enter the period end count"
+					data-cy="period-end-count-input"
 				/>
 			) : null}
 		</Stack>

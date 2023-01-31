@@ -28,7 +28,7 @@ export const RecurrenceProvider = ({ children }: PropsWithChildren<{}>) => {
 		recurrence_id: recurrence_id!
 	})
 
-	useToastError(recurrenceError, true)
+	useToastError(recurrenceError)
 
 	return (
 		<RecurrenceContext.Provider

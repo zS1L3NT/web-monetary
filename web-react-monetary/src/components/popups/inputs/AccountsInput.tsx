@@ -31,7 +31,7 @@ const AccountsInput = ({
 					selectedChoiceId={fromAccountId}
 					setSelectedChoiceId={setFromAccountId}
 					placeholder="Select an account"
-					data-cy="account-select"
+					data-cy="from-account-select"
 				/>
 			</Box>
 			{type === "Transfer" ? (
@@ -44,6 +44,7 @@ const AccountsInput = ({
 						selectedChoiceId={toAccountId}
 						setSelectedChoiceId={setToAccountId}
 						placeholder="Select an account"
+						data-cy="to-account-select"
 					/>
 				</Box>
 			) : null}

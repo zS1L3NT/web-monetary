@@ -148,7 +148,8 @@ const AddRecurrenceModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () 
 
 							<Checkbox
 								isChecked={automatic}
-								onChange={e => setAutomatic(e.target.checked)}>
+								onChange={e => setAutomatic(e.target.checked)}
+								data-cy="automatic-checkbox">
 								Automatically approve transactions
 							</Checkbox>
 						</Stack>
@@ -164,7 +165,8 @@ const AddRecurrenceModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () 
 					<Button
 						isLoading={createRecurrenceIsLoading}
 						disabled={invalid}
-						onClick={handleCreate}>
+						onClick={handleCreate}
+						data-cy="add-button">
 						Add
 					</Button>
 				</ModalFooter>

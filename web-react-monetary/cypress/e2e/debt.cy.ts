@@ -64,7 +64,7 @@ describe("Creating debts", () => {
 	})
 })
 
-describe("Create debt transactions", () => {
+describe("Creating debt transactions", () => {
 	beforeEach(() => {
 		cy.intercept("GET", "/api/debts/*").as("getDebt")
 		cy.login("/debts")
@@ -79,8 +79,8 @@ describe("Create debt transactions", () => {
 
 		cy.el("add-button").should("be.disabled")
 
-		cy.el("account-select").click()
-		cy.el("account-select-option").first().click()
+		cy.el("from-account-select").click()
+		cy.el("from-account-select-option").first().click()
 
 		cy.el("add-button").should("be.disabled")
 
@@ -100,8 +100,8 @@ describe("Create debt transactions", () => {
 		cy.intercept("POST", "/api/transactions").as("createTransaction")
 		cy.el("add-debt-transaction-button").click()
 
-		cy.el("account-select").click()
-		cy.el("account-select-option").first().click()
+		cy.el("from-account-select").click()
+		cy.el("from-account-select-option").first().click()
 		cy.el("category-select").click()
 		cy.el("category-select-option").first().click()
 		cy.el("category-select").click()
@@ -181,7 +181,7 @@ describe("Reading debts", () => {
 	})
 })
 
-describe("Read debt transactions", () => {
+describe("Reading debt transactions", () => {
 	it("Can read debt transactions", () => {
 		cy.login("/debts")
 
@@ -191,7 +191,7 @@ describe("Read debt transactions", () => {
 	})
 })
 
-describe("Update debt transactions", () => {
+describe("Updating debt transactions", () => {
 	it("Can update a debt transaction", () => {
 		cy.intercept("PUT", "/api/transactions/*").as("updateTransaction")
 		cy.login("/debts")

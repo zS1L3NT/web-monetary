@@ -112,7 +112,8 @@ const TransactionItem = ({ date, transaction }: { date: DateTime; transaction?: 
 							variant="outline"
 							colorScheme="primary"
 							isDisabled={!!transaction}
-							onClick={onOpen}>
+							onClick={onOpen}
+							data-cy={transaction ? undefined : "confirm-button"}>
 							{transaction ? "Paid" : "Confirm"}
 						</Button>
 					</Flex>
@@ -158,11 +159,12 @@ const TransactionItem = ({ date, transaction }: { date: DateTime; transaction?: 
 								Cancel
 							</Button>
 							<Button
+								sx={{ ml: 3 }}
 								colorScheme="primary"
 								loadingText="Confirming"
 								isLoading={createTransactionIsLoading || updateRecurrenceIsLoading}
 								onClick={handleConfirm}
-								ml={3}>
+								data-cy="confirm-confirm-button">
 								Confirm
 							</Button>
 						</AlertDialogFooter>

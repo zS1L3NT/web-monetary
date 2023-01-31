@@ -90,7 +90,7 @@ const transactions = api.injectEndpoints({
 					method: "DELETE",
 					token
 				}),
-				invalidatesTags: ["Transaction"]
+				invalidatesTags: ["Debt", "Recurrence", "Transaction"]
 			}
 		)
 	})
