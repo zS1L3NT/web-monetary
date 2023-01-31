@@ -65,6 +65,7 @@ const AccountComponent = ({ account }: { account: Account }) => {
 						borderColor={textColor}
 						colorScheme={account.color}
 						onClick={console.log}
+						data-cy="account-checkbox"
 					/>
 				</Box>
 
@@ -73,7 +74,8 @@ const AccountComponent = ({ account }: { account: Account }) => {
 						sx={{
 							color: textColor,
 							fontSize: 17
-						}}>
+						}}
+						data-cy="account-name">
 						{account.name}
 					</Text>
 					<Text

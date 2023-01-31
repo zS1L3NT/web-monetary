@@ -33,7 +33,8 @@ const PeriodSelectModal = ({
 				<ModalBody>
 					<Button
 						variant={period === Period.Today ? "solid" : "outline"}
-						onClick={() => setPeriod(Period.Today)}>
+						onClick={() => setPeriod(Period.Today)}
+						data-cy="period-button">
 						Today
 					</Button>
 					<ButtonGroup
@@ -43,7 +44,8 @@ const PeriodSelectModal = ({
 							<Button
 								key={p}
 								variant={period === p ? "solid" : "outline"}
-								onClick={() => setPeriod(p)}>
+								onClick={() => setPeriod(p)}
+								data-cy="period-button">
 								{p}
 							</Button>
 						))}
@@ -55,7 +57,8 @@ const PeriodSelectModal = ({
 							<Button
 								key={p}
 								variant={period === p ? "solid" : "outline"}
-								onClick={() => setPeriod(p)}>
+								onClick={() => setPeriod(p)}
+								data-cy="period-button">
 								{p}
 							</Button>
 						))}
@@ -73,7 +76,8 @@ const PeriodSelectModal = ({
 						onClick={() => {
 							setParentPeriod(period)
 							onClose()
-						}}>
+						}}
+						data-cy="save-button">
 						Save
 					</Button>
 				</ModalFooter>
