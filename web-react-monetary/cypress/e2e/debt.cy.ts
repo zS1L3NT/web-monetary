@@ -132,28 +132,32 @@ describe("Reading debts", () => {
 
 		cy.wait("@getDebts").its("response.statusCode").should("eq", 200)
 
-		const getNames = () =>
+		const getNames = (active: boolean) =>
 			cy
 				.document()
 				.then(doc =>
-					Array.from(doc.querySelectorAll(".chakra-stack .chakra-card")).map(
-						card => card.querySelector("h2").innerText
-					)
+					Array.from(
+						doc.querySelectorAll(
+							`[data-cy=${active ? "active" : "inactive"}-debt] h2`
+						)
+					).map(el => el.textContent)
 				)
 
-		getNames().then(names => {
-			cy.el("name-asc-radio").click().wait(500)
-			getNames().should(
-				"deep.equal",
-				[...names].sort((a, b) => a.localeCompare(b))
-			)
+		for (const bool of [true, false]) {
+			getNames(bool).then(names => {
+				cy.el("name-asc-radio").click().wait(500)
+				getNames(bool).should(
+					"deep.equal",
+					[...names].sort((a, b) => a.localeCompare(b))
+				)
 
-			cy.el("name-desc-radio").click().wait(500)
-			getNames().should(
-				"deep.equal",
-				[...names].sort((a, b) => b.localeCompare(a))
-			)
-		})
+				cy.el("name-desc-radio").click().wait(500)
+				getNames(bool).should(
+					"deep.equal",
+					[...names].sort((a, b) => b.localeCompare(a))
+				)
+			})
+		}
 	})
 
 	it("Cannot read a debt with invalid id", () => {

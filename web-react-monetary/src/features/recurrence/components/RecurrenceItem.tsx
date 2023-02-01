@@ -41,7 +41,8 @@ const RecurrenceItem = ({
 					transform: "scale(1.01)"
 				}
 			}}
-			onClick={() => navigate(recurrence.id)}>
+			onClick={() => navigate(recurrence.id)}
+			data-cy={nextDate ? "active-recurrence" : "inactive-recurrence"}>
 			<CardBody>
 				{categoryLoading ? (
 					<Skeleton sx={{ height: nextDate ? 81 : 59 }} />

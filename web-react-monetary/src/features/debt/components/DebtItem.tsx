@@ -38,7 +38,8 @@ const DebtItem = ({ debt }: { debt: Debt }) => {
 					transform: "scale(1.01)"
 				}
 			}}
-			onClick={() => navigate(debt.id)}>
+			onClick={() => navigate(debt.id)}
+			data-cy={debt.active ? "active-debt" : "inactive-debt"}>
 			<CardBody>
 				<Flex sx={{ justifyContent: "space-between" }}>
 					<Box>
