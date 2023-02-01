@@ -20,6 +20,8 @@ return new class extends Migration
             $table->decimal('initial_balance', 8, 2);
             $table->string('color');
             $table->timestamps();
+
+            $table->unique(['user_id', 'name']);
         });
     }
 

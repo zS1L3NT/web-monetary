@@ -50,7 +50,7 @@ const RecurrenceItem = ({
 					<Flex sx={{ justifyContent: "space-between" }}>
 						<Box>
 							<Heading size="md">
-								{recurrence.name}
+								<span data-cy="recurrence-name">{recurrence.name}</span>
 
 								{recurrence.renderAutomatic()}
 							</Heading>

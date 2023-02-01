@@ -39,7 +39,11 @@ const CategoryItem = ({
 									bg: category.color
 								}}
 							/>
-							<Heading size="md">{category.name}</Heading>
+							<Heading
+								size="md"
+								data-cy="category-name">
+								{category.name}
+							</Heading>
 						</Flex>
 
 						{category.category_ids.length ? (

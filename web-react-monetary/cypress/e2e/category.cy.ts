@@ -24,15 +24,24 @@ describe("Appropriate category authentication redirects", () => {
 
 describe("Creating categories", () => {
 	it("Cannot create a category with invalid data", () => {
+		cy.intercept("POST", "/api/categories").as("createCategory")
 		cy.login("/categories")
 
 		cy.el("add-category-button").click()
 
 		cy.el("add-button").should("be.disabled")
 
-		cy.el("name-input").type("Test Category 1")
+		cy.el("category-name")
+			.first()
+			.invoke("text")
+			.then(name => cy.el("name-input").type(name))
 
 		cy.el("add-button").should("be.enabled")
+
+		cy.el("add-button").click()
+
+		cy.wait("@createCategory").its("response.statusCode").should("eq", 409)
+		cy.toasts(["Category with that name already exists"])
 	})
 
 	it("Can create a category", () => {
@@ -110,17 +119,27 @@ describe("Reading categories", () => {
 
 describe("Updating categories", () => {
 	it("Cannot update a category with invalid data", () => {
+		cy.intercept("PUT", "/api/categories/*").as("updateCategory")
 		cy.login("/categories")
 
+		cy.el("category-name")
+			.not(':contains("Test Category 1")')
+			.first()
+			.then(name => cy.wrap(name).as("name"))
 		cy.contains("Test Category 1").first().click()
 		cy.el("edit-category-button").click()
 		cy.el("name-input").clear()
 
 		cy.el("edit-button").should("be.disabled")
 
-		cy.el("name-input").type("Test Category 3")
+		cy.get("@name").then(name => cy.el("name-input").type(name.text()))
 
 		cy.el("edit-button").should("be.enabled")
+
+		cy.el("edit-button").click()
+
+		cy.wait("@updateCategory").its("response.statusCode").should("eq", 409)
+		cy.toasts(["Category with that name already exists"])
 	})
 
 	it("Can update a category", () => {

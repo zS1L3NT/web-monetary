@@ -23,6 +23,8 @@ return new class extends Migration
             $table->string('description')->default('');
             $table->boolean('active')->default(true);
             $table->timestamps();
+
+            $table->unique(['user_id', 'name']);
         });
     }
 

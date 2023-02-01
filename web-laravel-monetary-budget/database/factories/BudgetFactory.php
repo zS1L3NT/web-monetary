@@ -21,7 +21,7 @@ class BudgetFactory extends Factory
 
         return [
             'user_id' => $userId,
-            'name' => $this->faker->word,
+            'name' => $this->faker->unique()->word,
             'amount' => $this->faker->numberBetween(100, 1000),
             'period_type' => $this->faker->randomElement(['Day', 'Week', 'Month', 'Year']),
             'account_ids' => [],

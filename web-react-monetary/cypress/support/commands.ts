@@ -35,7 +35,7 @@ Cypress.Commands.add("toasts", messages => {
 		cy.get(".chakra-toast .chakra-alert__title").then(toasts => {
 			expect([...toasts.map(i => toasts[i].innerText)]).to.deep.eq(messages)
 
-			cy.wait(500).get("[aria-label=Close]").click({ multiple: true })
+			cy.wait(500).get(".chakra-alert [aria-label=Close]").click({ multiple: true })
 		})
 	} else {
 		cy.get(".chakra-toast .chakra-alert__title").should("not.exist")

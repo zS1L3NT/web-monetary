@@ -24,6 +24,7 @@ describe("Appropriate debt authentication redirects", () => {
 
 describe("Creating debts", () => {
 	it("Cannot create a debt with invalid data", () => {
+		cy.intercept("POST", "/api/debts").as("createDebt")
 		cy.login("/debts")
 
 		cy.el("add-debt-button").click()
@@ -40,9 +41,17 @@ describe("Creating debts", () => {
 
 		cy.el("add-button").should("be.disabled")
 
-		cy.el("name-input").type("Test Debt 1")
+		cy.el("debt-name")
+			.first()
+			.invoke("text")
+			.then(name => cy.el("name-input").type(name))
 
 		cy.el("add-button").should("be.enabled")
+
+		cy.el("add-button").click()
+
+		cy.wait("@createDebt").its("response.statusCode").should("eq", 409)
+		cy.toasts(["Debt with that name already exists"])
 	})
 
 	it("Can create a debt", () => {
@@ -221,8 +230,13 @@ describe("Updating debt transactions", () => {
 
 describe("Updating debts", () => {
 	it("Cannot update a debt with invalid data", () => {
+		cy.intercept("PUT", "/api/debts/*").as("updateDebt")	
 		cy.login("/debts")
 
+		cy.el("debt-name")
+			.not(':contains("Test Debt 1")')
+			.first()
+			.then(name => cy.wrap(name).as("name"))
 		cy.contains("Test Debt 1").first().click()
 		cy.el("edit-debt-button").click()
 		cy.el("amount-input").clear()
@@ -243,9 +257,14 @@ describe("Updating debts", () => {
 		cy.el("date-time-input").type(
 			new Date(Date.now() + 60 * 60 * 1000).toLocaleString("sv").replace(" ", "T")
 		)
-		cy.el("name-input").type("Test Debt 2")
+		cy.get("@name").then(name => cy.el("name-input").type(name.text()))
 
 		cy.el("edit-button").should("be.enabled")
+
+		cy.el("edit-button").click()
+
+		cy.wait("@updateDebt").its("response.statusCode").should("eq", 409)
+		cy.toasts(["Debt with that name already exists"])
 	})
 
 	it("Can update a debt", () => {

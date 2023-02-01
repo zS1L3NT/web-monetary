@@ -24,6 +24,7 @@ describe("Appropriate recurrence authentication redirects", () => {
 
 describe("Creating recurrences", () => {
 	it("Cannot create a recurrence with invalid data", () => {
+		cy.intercept("POST", "/api/recurrences").as("createRecurrence")
 		cy.login("/recurrences")
 
 		cy.el("add-recurrence-button").click()
@@ -80,9 +81,17 @@ describe("Creating recurrences", () => {
 		cy.el("add-button").should("be.disabled")
 		cy.el("period-end-count-input").should("have.value", 999)
 
-		cy.el("name-input").type("Test Recurrence 1")
+		cy.el("recurrence-name")
+			.first()
+			.invoke("text")
+			.then(name => cy.el("name-input").type(name))
 
 		cy.el("add-button").should("be.enabled")
+
+		cy.el("add-button").click()
+
+		cy.wait("@createRecurrence").its("response.statusCode").should("eq", 409)
+		cy.toasts(["Recurrence with that name already exists"])
 	})
 
 	it("Can create a recurrence", () => {
@@ -204,8 +213,13 @@ describe("Reading recurrence transactions", () => {
 
 describe("Updating recurrences", () => {
 	it("Cannot update a recurrence with invalid data", () => {
+		cy.intercept("PUT", "/api/recurrences/*").as("updateRecurrence")
 		cy.login("/recurrences")
 
+		cy.el("recurrence-name")
+			.not(':contains("Test Recurrence 1")')
+			.first()
+			.then(name => cy.wrap(name).as("name"))
 		cy.contains("Test Recurrence 1").first().click()
 		cy.el("edit-recurrence-button").click()
 		cy.el("transfer-button").click()
@@ -226,9 +240,14 @@ describe("Updating recurrences", () => {
 
 		cy.el("edit-button").should("be.disabled")
 
-		cy.el("name-input").type("Test Recurrence 1")
+		cy.get("@name").then(name => cy.el("name-input").type(name.text()))
 
 		cy.el("edit-button").should("be.enabled")
+
+		cy.el("edit-button").click()
+
+		cy.wait("@updateRecurrence").its("response.statusCode").should("eq", 409)
+		cy.toasts(["Recurrence with that name already exists"])
 	})
 
 	it("Can update a recurrence", () => {
@@ -268,7 +287,7 @@ describe("Deleting recurrences", () => {
 
 		cy.wait("@deleteRecurrence").its("response.statusCode").should("eq", 200)
 		cy.location("pathname").should("eq", "/recurrences")
-	
+
 		cy.push("/transactions")
 
 		cy.contains("-$1000.00").first().click()

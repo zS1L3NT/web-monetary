@@ -44,7 +44,7 @@ const DebtItem = ({ debt }: { debt: Debt }) => {
 				<Flex sx={{ justifyContent: "space-between" }}>
 					<Box>
 						<Heading size="md">
-							{debt.name}
+							<span data-cy="debt-name">{debt.name}</span>
 
 							{debt.renderType()}
 						</Heading>

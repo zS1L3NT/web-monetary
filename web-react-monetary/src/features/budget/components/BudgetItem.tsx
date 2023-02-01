@@ -42,7 +42,7 @@ const BudgetItem = ({
 			<CardBody>
 				<Flex sx={{ justifyContent: "space-between" }}>
 					<Heading size="md">
-						{budget.name}
+						<span data-cy="budget-name">{budget.name}</span>
 
 						<Badge sx={{ ml: 2 }}>
 							{budget.period_type === "Day" ? "Daily" : budget.period_type + "ly"}

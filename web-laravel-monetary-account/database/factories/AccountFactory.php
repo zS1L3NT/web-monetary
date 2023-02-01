@@ -19,7 +19,7 @@ class AccountFactory extends Factory
     {
         return [
             'user_id' => DB::table('users')->first()->id,
-            'name' => $this->faker->word,
+            'name' => $this->faker->unique()->word,
             'initial_balance' => $this->faker->randomFloat(2, 1000, 10000),
             'color' => $this->faker->hexColor,
         ];
