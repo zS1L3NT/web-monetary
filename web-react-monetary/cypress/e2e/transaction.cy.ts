@@ -66,7 +66,7 @@ describe("Reading transactions", () => {
 	it("Can read transactions", () => {
 		cy.login("/transactions")
 
-		cy.get(".chakra-card").should("have.length", 152)
+		cy.el("transaction").should("have.length", 151)
 		cy.contains("-$1000.00").should("exist")
 	})
 

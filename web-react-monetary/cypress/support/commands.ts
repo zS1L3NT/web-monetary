@@ -1,7 +1,7 @@
 /// <reference types="cypress" />
 let token
 
-Cypress.Commands.add("el", name => cy.get(`[data-cy=${name}]`))
+Cypress.Commands.add("el", (name, prefix = "") => cy.get(`[data-cy${prefix}=${name}]`))
 
 Cypress.Commands.add("login", (pathname = "/dashboard") => {
 	if (token) {
@@ -55,7 +55,7 @@ Cypress.Commands.add("push", (path: string) => {
 
 declare namespace Cypress {
 	interface Chainable {
-		el(name: string): Chainable<JQuery<HTMLElement>>
+		el(name: string, prefix?: string): Chainable<JQuery<HTMLElement>>
 		login(path?: string): Chainable<AUTWindow>
 		toasts(toasts: string[]): Chainable<AUTWindow>
 		push(path: string): Chainable<AUTWindow>

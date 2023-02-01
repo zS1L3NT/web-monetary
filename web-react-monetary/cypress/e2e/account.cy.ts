@@ -54,7 +54,7 @@ describe("Reading accounts", () => {
 		cy.login("/accounts")
 
 		cy.wait("@getAccounts").its("response.statusCode").should("eq", 200)
-		cy.get(".chakra-stack .chakra-card").should("have.length", 6)
+		cy.el("account").should("have.length", 6)
 		cy.contains("Test Account 1").should("exist")
 		cy.contains("$1000.00").should("exist")
 	})
@@ -142,7 +142,7 @@ describe("Deleting accounts", () => {
 		cy.intercept("DELETE", "/api/accounts/*").as("deleteAccount")
 		cy.login("/accounts")
 
-		cy.get(".chakra-stack .chakra-card").not(':contains("Test Account 2")').first().click()
+		cy.el("account").not(':contains("Test Account 2")').first().click()
 		cy.el("delete-account-button").click()
 		cy.el("delete-confirm-button").click()
 

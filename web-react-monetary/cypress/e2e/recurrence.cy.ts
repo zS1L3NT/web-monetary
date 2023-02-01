@@ -137,7 +137,7 @@ describe("Reading recurrences", () => {
 		cy.login("/recurrences")
 
 		cy.wait("@getRecurrences").its("response.statusCode").should("eq", 200)
-		cy.get(".chakra-card").should("have.length", 12)
+		cy.el("recurrence", "$").should("have.length", 11)
 		cy.contains("Test Recurrence 1").should("exist")
 	})
 

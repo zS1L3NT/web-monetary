@@ -38,7 +38,8 @@ const BudgetItem = ({
 					transform: "scale(1.01)"
 				}
 			}}
-			onClick={() => navigate(budget.id)}>
+			onClick={() => navigate(budget.id)}
+			data-cy="budget">
 			<CardBody>
 				<Flex sx={{ justifyContent: "space-between" }}>
 					<Heading size="md">

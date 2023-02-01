@@ -35,7 +35,7 @@ describe("Creating debts", () => {
 
 		cy.el("add-button").should("be.disabled")
 
-		cy.get("[data-cy=date-time-input]").type(
+		cy.el("date-time-input").type(
 			new Date(Date.now() + 60 * 60 * 1000).toLocaleString("sv").replace(" ", "T")
 		)
 
@@ -61,7 +61,7 @@ describe("Creating debts", () => {
 		cy.el("add-debt-button").click()
 
 		cy.el("amount-input").clear().type("1000")
-		cy.get("[data-cy=date-time-input]").type(
+		cy.el("date-time-input").type(
 			new Date(Date.now() + 60 * 60 * 1000).toLocaleString("sv").replace(" ", "T")
 		)
 		cy.el("name-input").type("Test Debt 1")
@@ -130,7 +130,7 @@ describe("Reading debts", () => {
 		cy.login("/debts")
 
 		cy.wait("@getDebts").its("response.statusCode").should("eq", 200)
-		cy.get(".chakra-card").should("have.length", 7)
+		cy.el("debt", "$").should("have.length", 6)
 		cy.contains("Test Debt 1").should("exist")
 		cy.contains("$500.00 left").should("exist")
 	})
@@ -146,9 +146,7 @@ describe("Reading debts", () => {
 				.document()
 				.then(doc =>
 					Array.from(
-						doc.querySelectorAll(
-							`[data-cy=${active ? "active" : "inactive"}-debt] h2`
-						)
+						doc.querySelectorAll(`[data-cy=${active ? "active" : "inactive"}-debt] h2`)
 					).map(el => el.textContent)
 				)
 
@@ -230,7 +228,7 @@ describe("Updating debt transactions", () => {
 
 describe("Updating debts", () => {
 	it("Cannot update a debt with invalid data", () => {
-		cy.intercept("PUT", "/api/debts/*").as("updateDebt")	
+		cy.intercept("PUT", "/api/debts/*").as("updateDebt")
 		cy.login("/debts")
 
 		cy.el("debt-name")

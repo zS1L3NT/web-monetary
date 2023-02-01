@@ -79,7 +79,7 @@ describe("Reading categories", () => {
 
 		cy.wait("@getCategories").its("response.statusCode").should("eq", 200)
 
-		cy.get(".chakra-stack .chakra-card").should("have.length", 3)
+		cy.el("category").should("have.length", 3)
 		cy.contains("Test Category 1").should("exist")
         cy.contains("1 subcategory")
 	})
@@ -91,7 +91,7 @@ describe("Reading categories", () => {
         cy.contains("Test Category 1").click()
 
         cy.wait("@getCategories").its("response.statusCode").should("eq", 200)
-        cy.get(".chakra-stack > .chakra-stack .chakra-card").should("have.length", 1)
+        cy.el("category").should("have.length", 2)
         cy.contains("Test Category 2").should("exist")
     })
 
@@ -111,7 +111,7 @@ describe("Reading categories", () => {
 		cy.contains("Test Category 1").click()
 
 		cy.wait("@getCategory").its("response.statusCode").should("eq", 200)
-        cy.get(".chakra-stack > .chakra-stack .chakra-card").should("have.length", 1)
+        cy.el("category").should("have.length", 2)
 		cy.contains("Test Category 1").should("exist")
 		cy.contains("Test Category 2").should("exist")
 	})
@@ -162,7 +162,7 @@ describe("Deleting categories", () => {
 		cy.intercept("DELETE", "/api/categories/*").as("deleteCategory")
 		cy.login("/categories")
 
-		cy.get(".chakra-stack .chakra-card").not(':contains("Test Category 2")').first().click()
+		cy.el("category").not(':contains("Test Category 2")').first().click()
 		cy.el("delete-category-button").click()
 		cy.el("delete-confirm-button").click()
 

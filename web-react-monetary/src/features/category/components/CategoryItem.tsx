@@ -22,7 +22,8 @@ const CategoryItem = ({
 				cursor: "pointer",
 				":hover": clickable ? { transform: "scale(1.01)" } : {}
 			}}
-			onClick={() => (clickable && category ? navigate("/categories/" + category.id) : null)}>
+			onClick={() => (clickable && category ? navigate("/categories/" + category.id) : null)}
+			data-cy="category">
 			<CardBody>
 				{category ? (
 					<>
