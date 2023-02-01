@@ -40,12 +40,14 @@ const EditAccountModal = ({
 	const handleUpdate = async () => {
 		if (invalid) return
 
-		await updateAccount({
+		const updateAccountResponse = await updateAccount({
 			token,
 			account_id: account.id,
 			name,
 			color
 		})
+
+		if ("error" in updateAccountResponse) return
 
 		onClose()
 	}

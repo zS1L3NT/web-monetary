@@ -54,7 +54,7 @@ const EditDebtModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => vo
 	const handleUpdate = async () => {
 		if (invalid) return
 
-		await updateDebt({
+		const updateDebtResponse = await updateDebt({
 			token,
 			debt_id: debtId,
 			type,
@@ -64,6 +64,8 @@ const EditDebtModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => vo
 			description,
 			active
 		})
+
+		if ("error" in updateDebtResponse) return
 
 		onClose()
 	}

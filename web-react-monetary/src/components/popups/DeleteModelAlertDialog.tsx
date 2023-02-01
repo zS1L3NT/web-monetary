@@ -69,60 +69,64 @@ const DeleteModelAlertDialog = ({
 	useToastError(deleteUserError)
 
 	const handleDelete = async () => {
-		onClose()
+		let response
 
 		switch (model) {
 			case "Transaction":
 				if (location.pathname.startsWith("/transactions/")) {
 					navigate("/transactions")
 				}
-				await deleteTransaction({
+				response = await deleteTransaction({
 					token,
 					transaction_id: modelId!
 				})
 				break
 			case "Recurrence":
 				navigate("/recurrences")
-				await deleteRecurrence({
+				response = await deleteRecurrence({
 					token,
 					recurrence_id: location.pathname.slice("/recurrences/".length)
 				})
 				break
 			case "Category":
 				navigate("/categories")
-				await deleteCategory({
+				response = await deleteCategory({
 					token,
 					category_id: location.pathname.slice("/categories/".length)
 				})
 				break
 			case "Debt":
 				navigate("/debts")
-				await deleteDebt({
+				response = await deleteDebt({
 					token,
 					debt_id: location.pathname.slice("/debts/".length)
 				})
 				break
 			case "Budget":
 				navigate("/budgets")
-				await deleteBudget({
+				response = await deleteBudget({
 					token,
 					budget_id: location.pathname.slice("/budgets/".length)
 				})
 				break
 			case "Account":
 				navigate("/accounts")
-				await deleteAccount({
+				response = await deleteAccount({
 					token,
 					account_id: modelId!
 				})
 				break
 			case "User":
 				navigate("/")
-				await deleteUser({
+				response = await deleteUser({
 					token
 				})
 				break
 		}
+
+		if ("error" in response) return
+
+		onClose()
 	}
 
 	return (

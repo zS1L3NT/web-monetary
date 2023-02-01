@@ -61,7 +61,7 @@ const EditTransactionModal = ({
 	const handleUpdate = async () => {
 		if (invalid) return
 
-		await updateTransaction({
+		const updateTransactionResponse = await updateTransaction({
 			token,
 			transaction_id: transaction.id,
 			category_id: categoryId,
@@ -72,6 +72,8 @@ const EditTransactionModal = ({
 			description,
 			date: date.toUTC().toISO()
 		})
+
+		if ("error" in updateTransactionResponse) return
 
 		onClose()
 	}

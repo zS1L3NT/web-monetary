@@ -45,12 +45,14 @@ const EditCategoryModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () =
 	const handleUpdate = async () => {
 		if (invalid) return
 
-		await updateCategory({
+		const updateCategoryResponse = await updateCategory({
 			token,
 			category_id: categoryId,
 			name,
 			color
 		})
+
+		if ("error" in updateCategoryResponse) return
 
 		onClose()
 	}

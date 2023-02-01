@@ -28,12 +28,14 @@ const AddAccountModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => 
 	const handleCreate = async () => {
 		if (invalid) return
 
-		await createAccount({
+		const createAccountResponse = await createAccount({
 			token,
 			name,
 			initial_balance: initialBalance,
 			color
 		})
+
+		if ("error" in createAccountResponse) return
 
 		onClose()
 	}

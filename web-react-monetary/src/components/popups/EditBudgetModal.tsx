@@ -57,7 +57,7 @@ const EditBudgetModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => 
 	const handleUpdate = async () => {
 		if (invalid) return
 
-		await updateBudget({
+		const updateBudgetResponse = await updateBudget({
 			token,
 			budget_id: budgetId,
 			name,
@@ -66,6 +66,8 @@ const EditBudgetModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => 
 			account_ids: accountIds,
 			category_ids: categoryIds
 		})
+
+		if ("error" in updateBudgetResponse) return
 
 		onClose()
 	}

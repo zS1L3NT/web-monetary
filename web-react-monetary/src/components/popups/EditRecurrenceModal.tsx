@@ -69,7 +69,7 @@ const EditRecurrenceModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
 	const handleUpdate = async () => {
 		if (invalid) return
 
-		await updateRecurrence({
+		const updateRecurrenceResponse = await updateRecurrence({
 			token,
 			recurrence_id: recurrenceId!,
 			category_id: categoryId,
@@ -81,6 +81,8 @@ const EditRecurrenceModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
 			from_account_id: fromAccountId,
 			to_account_id: toAccountId
 		})
+
+		if ("error" in updateRecurrenceResponse) return
 
 		onClose()
 	}
