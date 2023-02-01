@@ -41,7 +41,8 @@ const RecurrenceItem = ({
 					transform: "scale(1.01)"
 				}
 			}}
-			onClick={() => navigate(recurrence.id)}>
+			onClick={() => navigate(recurrence.id)}
+			data-cy={nextDate ? "active-recurrence" : "inactive-recurrence"}>
 			<CardBody>
 				{categoryLoading ? (
 					<Skeleton sx={{ height: nextDate ? 81 : 59 }} />
@@ -49,7 +50,7 @@ const RecurrenceItem = ({
 					<Flex sx={{ justifyContent: "space-between" }}>
 						<Box>
 							<Heading size="md">
-								{recurrence.name}
+								<span data-cy="recurrence-name">{recurrence.name}</span>
 
 								{recurrence.renderAutomatic()}
 							</Heading>

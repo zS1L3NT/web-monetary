@@ -1,5 +1,5 @@
 import Transaction from "../models/transaction"
-import api, { ApiResponse, optimistic, RequireToken } from "./api"
+import api, { ApiResponse, RequireToken } from "./api"
 
 const transactions = api.injectEndpoints({
 	endpoints: builder => ({
@@ -15,7 +15,16 @@ const transactions = api.injectEndpoints({
 				offset?: number
 			} & RequireToken
 		>({
-			query: ({ token, transaction_ids, from_account_ids, to_account_ids, category_ids, type, limit, offset }) => {
+			query: ({
+				token,
+				transaction_ids,
+				from_account_ids,
+				to_account_ids,
+				category_ids,
+				type,
+				limit,
+				offset
+			}) => {
 				const searchParams = new URLSearchParams()
 
 				if (transaction_ids !== undefined)
@@ -26,8 +35,7 @@ const transactions = api.injectEndpoints({
 					searchParams.append("to_account_ids", to_account_ids.join(","))
 				if (category_ids !== undefined)
 					searchParams.append("category_ids", category_ids.join(","))
-				if (type !== undefined)
-					searchParams.append("type", type)
+				if (type !== undefined) searchParams.append("type", type)
 				if (limit !== undefined) searchParams.append("limit", limit + "")
 				if (offset !== undefined) searchParams.append("offset", offset + "")
 
@@ -73,33 +81,6 @@ const transactions = api.injectEndpoints({
 				body: transaction,
 				token
 			}),
-			onQueryStarted: async ({ token, transaction_id, ...transaction }, mutators) => {
-				await optimistic(
-					mutators,
-					transactions.util.updateQueryData(
-						"getTransactions",
-						{ token },
-						_transactions => {
-							const index = _transactions.findIndex(a => a.id === transaction_id)
-							if (index === -1) return
-
-							_transactions[index] = Transaction.fromJSON({
-								..._transactions[index]!.toJSON(),
-								...transaction
-							})
-						}
-					),
-					transactions.util.updateQueryData(
-						"getTransaction",
-						{ token, transaction_id },
-						_transaction =>
-							Transaction.fromJSON({
-								..._transaction.toJSON(),
-								...transaction
-							})
-					)
-				)
-			},
 			invalidatesTags: ["Transaction"]
 		}),
 		deleteTransaction: builder.mutation<ApiResponse, { transaction_id: string } & RequireToken>(
@@ -109,22 +90,7 @@ const transactions = api.injectEndpoints({
 					method: "DELETE",
 					token
 				}),
-				onQueryStarted: async ({ token, transaction_id }, mutators) => {
-					await optimistic(
-						mutators,
-						transactions.util.updateQueryData(
-							"getTransactions",
-							{ token },
-							_transactions => {
-								const index = _transactions.findIndex(a => a.id === transaction_id)
-								if (index === -1) return
-
-								_transactions.splice(index, 1)
-							}
-						)
-					)
-				},
-				invalidatesTags: ["Transaction"]
+				invalidatesTags: ["Debt", "Recurrence", "Transaction"]
 			}
 		)
 	})

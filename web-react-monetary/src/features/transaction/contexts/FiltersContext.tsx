@@ -20,6 +20,8 @@ const FiltersContext = createContext<{
 	transactionTypes: ("Outgoing" | "Incoming" | "Transfer")[]
 	selectTransactionType: (type: "Outgoing" | "Incoming" | "Transfer") => void
 	deselectTransactionType: (type: "Outgoing" | "Incoming" | "Transfer") => void
+	range: "range-all" | "range-custom"
+	setRange: Dispatch<SetStateAction<"range-all" | "range-custom">>
 	minAmount: number
 	setMinAmount: Dispatch<SetStateAction<number>>
 	maxAmount: number | undefined
@@ -36,6 +38,8 @@ const FiltersContext = createContext<{
 	transactionTypes: [],
 	selectTransactionType: () => {},
 	deselectTransactionType: () => {},
+	range: "range-all",
+	setRange: () => {},
 	minAmount: 0,
 	setMinAmount: () => {},
 	maxAmount: undefined,
@@ -53,6 +57,7 @@ export const FiltersProvider = ({ children }: PropsWithChildren<{}>) => {
 	const [transactionTypes, setTransactionTypes] = useState<
 		("Outgoing" | "Incoming" | "Transfer")[]
 	>(["Outgoing", "Incoming", "Transfer"])
+	const [range, setRange] = useState<"range-all" | "range-custom">("range-all")
 	const [minAmount, setMinAmount] = useState(0)
 	const [maxAmount, setMaxAmount] = useState<number>()
 
@@ -116,6 +121,8 @@ export const FiltersProvider = ({ children }: PropsWithChildren<{}>) => {
 				deselectTransactionType: type => {
 					setTransactionTypes(transactionTypes.filter(t => t !== type))
 				},
+				range,
+				setRange,
 				minAmount,
 				setMinAmount,
 				maxAmount,

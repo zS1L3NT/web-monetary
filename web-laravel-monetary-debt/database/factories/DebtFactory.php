@@ -22,7 +22,7 @@ class DebtFactory extends Factory
             'type' => $this->faker->randomElement(['Lend', 'Borrow']),
             'amount' => $this->faker->randomFloat(2, 0, 1000),
             'due_date' => $this->faker->dateTimeBetween('now', '+1 year'),
-            'name' => $this->faker->name,
+            'name' => $this->faker->unique()->name,
             'description' => $this->faker->sentence,
             'active' => $this->faker->boolean,
             'transaction_ids' => []

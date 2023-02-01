@@ -1,5 +1,5 @@
 import Debt from "../models/debt"
-import api, { ApiResponse, optimistic, RequireToken } from "./api"
+import api, { ApiResponse, RequireToken } from "./api"
 
 const debts = api.injectEndpoints({
 	endpoints: builder => ({
@@ -43,26 +43,6 @@ const debts = api.injectEndpoints({
 				body: debt,
 				token
 			}),
-			onQueryStarted: async ({ token, debt_id, ...debt }, mutators) => {
-				await optimistic(
-					mutators,
-					debts.util.updateQueryData("getDebts", { token }, _debts => {
-						const index = _debts.findIndex(a => a.id === debt_id)
-						if (index === -1) return
-
-						_debts[index] = Debt.fromJSON({
-							..._debts[index]!.toJSON(),
-							...debt
-						})
-					}),
-					debts.util.updateQueryData("getDebt", { token, debt_id }, _debt =>
-						Debt.fromJSON({
-							..._debt.toJSON(),
-							...debt
-						})
-					)
-				)
-			},
 			invalidatesTags: ["Debt"]
 		}),
 		deleteDebt: builder.mutation<ApiResponse, { debt_id: string } & RequireToken>({
@@ -71,17 +51,6 @@ const debts = api.injectEndpoints({
 				method: "DELETE",
 				token
 			}),
-			onQueryStarted: async ({ token, debt_id }, mutators) => {
-				await optimistic(
-					mutators,
-					debts.util.updateQueryData("getDebts", { token }, _debts => {
-						const index = _debts.findIndex(a => a.id === debt_id)
-						if (index === -1) return
-
-						_debts.splice(index, 1)
-					})
-				)
-			},
 			invalidatesTags: ["Debt"]
 		})
 	})

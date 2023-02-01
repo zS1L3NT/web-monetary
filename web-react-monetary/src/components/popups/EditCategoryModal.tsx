@@ -33,7 +33,7 @@ const EditCategoryModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () =
 	const finalFocusRef = useRef(null)
 
 	useToastError(updateCategoryError)
-	useToastError(categoryError, true)
+	useToastError(categoryError)
 
 	useEffect(() => {
 		if (category) {
@@ -45,12 +45,14 @@ const EditCategoryModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () =
 	const handleUpdate = async () => {
 		if (invalid) return
 
-		await updateCategory({
+		const updateCategoryResponse = await updateCategory({
 			token,
 			category_id: categoryId,
 			name,
 			color
 		})
+
+		if ("error" in updateCategoryResponse) return
 
 		onClose()
 	}
@@ -89,7 +91,8 @@ const EditCategoryModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () =
 					<Button
 						isLoading={updateCategoryIsLoading}
 						disabled={invalid}
-						onClick={handleUpdate}>
+						onClick={handleUpdate}
+						data-cy="edit-button">
 						Edit
 					</Button>
 				</ModalFooter>

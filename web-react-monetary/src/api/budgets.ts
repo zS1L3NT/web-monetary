@@ -1,5 +1,5 @@
 import Budget from "../models/budget"
-import api, { ApiResponse, optimistic, RequireToken } from "./api"
+import api, { ApiResponse, RequireToken } from "./api"
 
 const budgets = api.injectEndpoints({
 	endpoints: builder => ({
@@ -43,26 +43,6 @@ const budgets = api.injectEndpoints({
 				body: budget,
 				token
 			}),
-			onQueryStarted: async ({ token, budget_id, ...budget }, mutators) => {
-				await optimistic(
-					mutators,
-					budgets.util.updateQueryData("getBudgets", { token }, _budgets => {
-						const index = _budgets.findIndex(a => a.id === budget_id)
-						if (index === -1) return
-
-						_budgets[index] = Budget.fromJSON({
-							..._budgets[index]!.toJSON(),
-							...budget
-						})
-					}),
-					budgets.util.updateQueryData("getBudget", { token, budget_id }, _budget =>
-						Budget.fromJSON({
-							..._budget.toJSON(),
-							...budget
-						})
-					)
-				)
-			},
 			invalidatesTags: ["Budget"]
 		}),
 		deleteBudget: builder.mutation<ApiResponse, { budget_id: string } & RequireToken>({
@@ -71,17 +51,6 @@ const budgets = api.injectEndpoints({
 				method: "DELETE",
 				token
 			}),
-			onQueryStarted: async ({ token, budget_id }, mutators) => {
-				await optimistic(
-					mutators,
-					budgets.util.updateQueryData("getBudgets", { token }, _budgets => {
-						const index = _budgets.findIndex(a => a.id === budget_id)
-						if (index === -1) return
-
-						_budgets.splice(index, 1)
-					})
-				)
-			},
 			invalidatesTags: ["Budget"]
 		})
 	})

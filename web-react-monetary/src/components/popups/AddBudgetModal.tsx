@@ -10,11 +10,11 @@ import { useCreateBudgetMutation } from "../../api/budgets"
 import { useGetCategoriesQuery } from "../../api/categories"
 import useOnlyAuthenticated from "../../hooks/useOnlyAuthenticated"
 import useToastError from "../../hooks/useToastError"
+import AccountsMultiInput from "./inputs/AccountsMultiInput"
 import AmountInput from "./inputs/AmountInput"
+import CategoriesMultiInput from "./inputs/CategoriesMultiInput"
 import NameInput from "./inputs/NameInput"
 import PeriodTypeInput from "./inputs/PeriodTypeInput"
-import AccountsMultiInput from "./inputs/AccountsMultiInput"
-import CategoriesMultiInput from "./inputs/CategoriesMultiInput"
 
 const AddBudgetModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
 	const { token } = useOnlyAuthenticated()
@@ -38,7 +38,7 @@ const AddBudgetModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => v
 	const handleCreate = async () => {
 		if (invalid) return
 
-		await createBudget({
+		const createBudgetResponse = await createBudget({
 			token,
 			name,
 			amount,
@@ -46,6 +46,8 @@ const AddBudgetModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => v
 			account_ids: accountIds,
 			category_ids: categoryIds
 		})
+
+		if ("error" in createBudgetResponse) return
 
 		onClose()
 	}
@@ -103,7 +105,8 @@ const AddBudgetModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => v
 					<Button
 						isLoading={createBudgetIsLoading}
 						disabled={invalid}
-						onClick={handleCreate}>
+						onClick={handleCreate}
+						data-cy="add-button">
 						Add
 					</Button>
 				</ModalFooter>

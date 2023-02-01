@@ -28,7 +28,8 @@ const AccountTypeInput = ({
 							setToAccountId(null)
 						}
 						setType(t)
-					}}>
+					}}
+					data-cy={t.toLowerCase() + "-button"}>
 					{t}
 				</Button>
 			))}

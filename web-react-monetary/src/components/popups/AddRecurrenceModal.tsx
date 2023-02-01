@@ -52,7 +52,7 @@ const AddRecurrenceModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () 
 	const handleCreate = async () => {
 		if (invalid) return
 
-		await createRecurrence({
+		const createRecurrenceResponse = await createRecurrence({
 			token,
 			category_id: categoryId,
 			type,
@@ -70,6 +70,8 @@ const AddRecurrenceModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () 
 			from_account_id: fromAccountId,
 			to_account_id: toAccountId
 		})
+
+		if ("error" in createRecurrenceResponse) return
 
 		onClose()
 	}
@@ -148,7 +150,8 @@ const AddRecurrenceModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () 
 
 							<Checkbox
 								isChecked={automatic}
-								onChange={e => setAutomatic(e.target.checked)}>
+								onChange={e => setAutomatic(e.target.checked)}
+								data-cy="automatic-checkbox">
 								Automatically approve transactions
 							</Checkbox>
 						</Stack>
@@ -164,7 +167,8 @@ const AddRecurrenceModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () 
 					<Button
 						isLoading={createRecurrenceIsLoading}
 						disabled={invalid}
-						onClick={handleCreate}>
+						onClick={handleCreate}
+						data-cy="add-button">
 						Add
 					</Button>
 				</ModalFooter>

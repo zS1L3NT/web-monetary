@@ -38,7 +38,7 @@ const EditDebtModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => vo
 	const finalFocusRef = useRef(null)
 
 	useToastError(updateDebtError)
-	useToastError(debtError, true)
+	useToastError(debtError)
 
 	useEffect(() => {
 		if (debt) {
@@ -54,7 +54,7 @@ const EditDebtModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => vo
 	const handleUpdate = async () => {
 		if (invalid) return
 
-		await updateDebt({
+		const updateDebtResponse = await updateDebt({
 			token,
 			debt_id: debtId,
 			type,
@@ -64,6 +64,8 @@ const EditDebtModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => vo
 			description,
 			active
 		})
+
+		if ("error" in updateDebtResponse) return
 
 		onClose()
 	}
@@ -109,7 +111,8 @@ const EditDebtModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => vo
 
 						<Checkbox
 							isChecked={active}
-							onChange={e => setActive(e.target.checked)}>
+							onChange={e => setActive(e.target.checked)}
+							data-cy="active-checkbox">
 							Active
 						</Checkbox>
 					</Stack>
@@ -124,7 +127,8 @@ const EditDebtModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => vo
 					<Button
 						isLoading={updateDebtIsLoading}
 						disabled={invalid}
-						onClick={handleUpdate}>
+						onClick={handleUpdate}
+						data-cy="edit-button">
 						Edit
 					</Button>
 				</ModalFooter>

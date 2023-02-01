@@ -84,6 +84,7 @@ const LineGraphCard = ({}: {}) => {
 							variant="ghost"
 							icon={<Icon as={HiDotsVertical} />}
 							onClick={onPeriodModalOpen}
+							data-cy="balance-trend-option"
 						/>
 					</Flex>
 				</CardHeader>

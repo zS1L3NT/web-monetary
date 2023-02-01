@@ -24,7 +24,7 @@ const Logout = () => {
 		}
 
 		setToken(null)
-		navigate("/login")
+		navigate("/")
 
 		const result = await logout({
 			token

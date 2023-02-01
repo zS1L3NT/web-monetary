@@ -55,7 +55,7 @@ const AddDebtTransactionModal = ({
 	const handleCreate = async () => {
 		if (invalid) return
 
-		const response = await createTransaction({
+		const createTransactionResponse = await createTransaction({
 			token,
 			category_id: categoryId,
 			from_account_id: fromAccountId,
@@ -73,15 +73,17 @@ const AddDebtTransactionModal = ({
 			date: date.toUTC().toISO()
 		})
 
-		if ("data" in response) {
-			await updateDebt({
-				token,
-				debt_id: debt.id,
-				transaction_ids: [...debt.transaction_ids, response.data.id]
-			})
+		if ("error" in createTransactionResponse) return
 
-			onClose()
-		}
+		const updateDebtResponse = await updateDebt({
+			token,
+			debt_id: debt.id,
+			transaction_ids: [...debt.transaction_ids, createTransactionResponse.data.id]
+		})
+
+		if ("error" in updateDebtResponse) return
+
+		onClose()
 	}
 
 	const invalid = !fromAccountId || !categoryId || !amount
@@ -161,7 +163,8 @@ const AddDebtTransactionModal = ({
 					<Button
 						isLoading={createTransactionIsLoading}
 						disabled={invalid}
-						onClick={handleCreate}>
+						onClick={handleCreate}
+						data-cy="add-button">
 						Add
 					</Button>
 				</ModalFooter>

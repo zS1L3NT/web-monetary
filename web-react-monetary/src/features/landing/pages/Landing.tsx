@@ -1,13 +1,14 @@
+import { useContext } from "react"
 import { AiOutlineGithub } from "react-icons/ai"
 import { useNavigate } from "react-router-dom"
 
 import { ArrowForwardIcon } from "@chakra-ui/icons"
 import { Box, Button, chakra, Container, Heading, HStack, Text } from "@chakra-ui/react"
 
-import useOnlyUnauthenticated from "../../../hooks/useOnlyUnautheticated"
+import AuthContext from "../../../contexts/AuthContext"
 
 const Landing = ({}: {}) => {
-	useOnlyUnauthenticated("/dashboard")
+	const { token } = useContext(AuthContext)
 
 	const navigate = useNavigate()
 
@@ -46,14 +47,16 @@ const Landing = ({}: {}) => {
 				<Button
 					size="lg"
 					rightIcon={<ArrowForwardIcon />}
-					onClick={() => navigate("/login")}>
+					onClick={() => navigate(token ? "/dashboard" : "/login")}
+					data-cy="get-started-button">
 					Get Started
 				</Button>
 				<Button
 					size="lg"
 					variant="outline"
 					leftIcon={<AiOutlineGithub size={20} />}
-					onClick={() => window.open("https://github.com/zS1L3NT/web-monetary")}>
+					onClick={() => window.open("https://github.com/zS1L3NT/web-monetary")}
+					data-cy="github-button">
 					GitHub
 				</Button>
 			</HStack>

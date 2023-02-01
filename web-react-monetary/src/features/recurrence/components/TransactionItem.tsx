@@ -46,7 +46,7 @@ const TransactionItem = ({ date, transaction }: { date: DateTime; transaction?: 
 		)
 			return
 
-		const response = await createTransaction({
+		const createTransactionResponse = await createTransaction({
 			token,
 			category_id: category.id,
 			type: recurrence.type,
@@ -57,13 +57,15 @@ const TransactionItem = ({ date, transaction }: { date: DateTime; transaction?: 
 			to_account_id: toAccount?.id ?? null
 		})
 
-		if ("data" in response) {
-			await updateRecurrence({
-				token,
-				recurrence_id: recurrence.id,
-				transaction_ids: [...recurrence.transaction_ids, response.data.id]
-			})
-		}
+		if ("error" in createTransactionResponse) return
+
+		const updateRecurrenceResponse = await updateRecurrence({
+			token,
+			recurrence_id: recurrence.id,
+			transaction_ids: [...recurrence.transaction_ids, createTransactionResponse.data.id]
+		})
+
+		if ("error" in updateRecurrenceResponse) return
 
 		onClose()
 	}
@@ -112,7 +114,8 @@ const TransactionItem = ({ date, transaction }: { date: DateTime; transaction?: 
 							variant="outline"
 							colorScheme="primary"
 							isDisabled={!!transaction}
-							onClick={onOpen}>
+							onClick={onOpen}
+							data-cy={transaction ? undefined : "confirm-button"}>
 							{transaction ? "Paid" : "Confirm"}
 						</Button>
 					</Flex>
@@ -158,11 +161,12 @@ const TransactionItem = ({ date, transaction }: { date: DateTime; transaction?: 
 								Cancel
 							</Button>
 							<Button
+								sx={{ ml: 3 }}
 								colorScheme="primary"
 								loadingText="Confirming"
 								isLoading={createTransactionIsLoading || updateRecurrenceIsLoading}
 								onClick={handleConfirm}
-								ml={3}>
+								data-cy="confirm-confirm-button">
 								Confirm
 							</Button>
 						</AlertDialogFooter>

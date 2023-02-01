@@ -38,11 +38,12 @@ const BudgetItem = ({
 					transform: "scale(1.01)"
 				}
 			}}
-			onClick={() => navigate(budget.id)}>
+			onClick={() => navigate(budget.id)}
+			data-cy="budget">
 			<CardBody>
 				<Flex sx={{ justifyContent: "space-between" }}>
 					<Heading size="md">
-						{budget.name}
+						<span data-cy="budget-name">{budget.name}</span>
 
 						<Badge sx={{ ml: 2 }}>
 							{budget.period_type === "Day" ? "Daily" : budget.period_type + "ly"}
@@ -53,7 +54,7 @@ const BudgetItem = ({
 							display: "flex",
 							mt: 1
 						}}>
-						${budget.amount}
+						${budget.amount.toFixed(2)}
 					</Text>
 				</Flex>
 				<Progress
@@ -76,7 +77,7 @@ const BudgetItem = ({
 							transform: "translateX(-50%)",
 							left: Math.max(5, Math.min(95, (spent / budget.amount) * 100)) + "%"
 						}}>
-						${spent}
+						${spent.toFixed(2)}
 					</Text>
 				</Box>
 			</CardBody>

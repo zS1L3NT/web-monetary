@@ -73,7 +73,8 @@ export default class Transaction extends Model {
 							: this.type === "Incoming"
 							? "green.500"
 							: "yellow.500"
-				}}>
+				}}
+				data-cy="transaction-amount">
 				{this.type === "Outgoing" ? "-" : this.type === "Incoming" ? "+" : ""}$
 				{this.amount.toFixed(2)}
 			</Text>

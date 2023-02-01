@@ -18,19 +18,17 @@ const Debt = ({}: {}) => {
 
 	const { debt_id } = useParams()
 
-	const { data: debt, error: debtError } = useGetDebtQuery({
-		token,
-		debt_id: debt_id!
-	})
+	const {
+		data: debt,
+		error: debtError,
+		isLoading: debtIsLoading
+	} = useGetDebtQuery({ token, debt_id: debt_id! })
 	const {
 		data: transactions,
 		error: transactionsError,
 		isLoading: transactionsAreLoading
 	} = useGetTransactionsQuery(
-		{
-			token,
-			transaction_ids: debt?.transaction_ids ?? []
-		},
+		{ token, transaction_ids: debt?.transaction_ids ?? [] },
 		{ skip: !debt || !debt.transaction_ids.length }
 	)
 
@@ -40,7 +38,7 @@ const Debt = ({}: {}) => {
 		onClose: onAddDebtTransactionModalClose
 	} = useDisclosure()
 
-	useToastError(debtError, true)
+	useToastError(debtError)
 	useToastError(transactionsError, true)
 
 	return (
@@ -48,6 +46,7 @@ const Debt = ({}: {}) => {
 			<Container variant="page">
 				<DebtDetails
 					debt={debt}
+					debtIsLoading={debtIsLoading}
 					transactions={transactionsAreLoading ? undefined : transactions ?? []}
 				/>
 				<Flex sx={{ alignItems: "center" }}>
@@ -66,6 +65,7 @@ const Debt = ({}: {}) => {
 						icon={<AddIcon />}
 						size="sm"
 						onClick={onAddDebtTransactionModalOpen}
+						data-cy="add-debt-transaction-button"
 					/>
 				</Flex>
 

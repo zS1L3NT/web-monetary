@@ -20,6 +20,8 @@ return new class extends Migration
             $table->decimal('amount', 10, 2);
             $table->enum('period_type', ['Day', 'Week', 'Month', 'Year']);
             $table->timestamps();
+
+            $table->unique(['user_id', 'name']);
         });
     }
 

@@ -57,6 +57,7 @@ const PieChartCard = ({}: {}) => {
 							variant="ghost"
 							icon={<Icon as={HiDotsVertical} />}
 							onClick={onPeriodModalOpen}
+							data-cy="spendings-categories-option"
 						/>
 					</Flex>
 				</CardHeader>

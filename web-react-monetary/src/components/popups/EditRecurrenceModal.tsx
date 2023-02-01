@@ -2,8 +2,8 @@ import { useEffect, useRef, useState } from "react"
 import { useLocation } from "react-router-dom"
 
 import {
-	Alert, AlertDescription, AlertIcon, Button, Checkbox, Modal, ModalBody, ModalCloseButton,
-	ModalContent, ModalFooter, ModalHeader, ModalOverlay, Stack
+	Button, Checkbox, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader,
+	ModalOverlay, Stack
 } from "@chakra-ui/react"
 
 import { useGetAccountsQuery } from "../../api/accounts"
@@ -49,7 +49,7 @@ const EditRecurrenceModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
 	const finalFocusRef = useRef(null)
 
 	useToastError(updateRecurrenceError)
-	useToastError(recurrenceError, true)
+	useToastError(recurrenceError)
 	useToastError(accountsError, true)
 	useToastError(categoriesError, true)
 
@@ -69,7 +69,7 @@ const EditRecurrenceModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
 	const handleUpdate = async () => {
 		if (invalid) return
 
-		await updateRecurrence({
+		const updateRecurrenceResponse = await updateRecurrence({
 			token,
 			recurrence_id: recurrenceId!,
 			category_id: categoryId,
@@ -81,6 +81,8 @@ const EditRecurrenceModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
 			from_account_id: fromAccountId,
 			to_account_id: toAccountId
 		})
+
+		if ("error" in updateRecurrenceResponse) return
 
 		onClose()
 	}
@@ -138,19 +140,10 @@ const EditRecurrenceModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
 
 							<Checkbox
 								isChecked={automatic}
-								onChange={e => setAutomatic(e.target.checked)}>
+								onChange={e => setAutomatic(e.target.checked)}
+								data-cy="automatic-checkbox">
 								Automatically approve transactions
 							</Checkbox>
-
-							<Alert
-								sx={{ display: "flex" }}
-								variant="left-accent"
-								status="info">
-								<AlertIcon />
-								<AlertDescription>
-									Editing the recurrence period is not allowed
-								</AlertDescription>
-							</Alert>
 						</Stack>
 					) : null}
 				</ModalBody>
@@ -164,7 +157,8 @@ const EditRecurrenceModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
 					<Button
 						isLoading={updateRecurrenceIsLoading}
 						disabled={invalid}
-						onClick={handleUpdate}>
+						onClick={handleUpdate}
+						data-cy="edit-button">
 						Edit
 					</Button>
 				</ModalFooter>

@@ -20,7 +20,8 @@ const AccountItem = ({ account }: { account: Account }) => {
 						transform: "scale(1.01)"
 					}
 				}}
-				onClick={onEditAccountModalOpen}>
+				onClick={onEditAccountModalOpen}
+				data-cy="account">
 				<CardBody>
 					<Flex sx={{ justifyContent: "space-between" }}>
 						{account.renderAccount()}

@@ -40,12 +40,14 @@ const EditAccountModal = ({
 	const handleUpdate = async () => {
 		if (invalid) return
 
-		await updateAccount({
+		const updateAccountResponse = await updateAccount({
 			token,
 			account_id: account.id,
 			name,
 			color
 		})
+
+		if ("error" in updateAccountResponse) return
 
 		onClose()
 	}
@@ -79,7 +81,8 @@ const EditAccountModal = ({
 						<Button
 							sx={{ mr: "auto" }}
 							colorScheme="red"
-							onClick={onDeleteAlertDialogOpen}>
+							onClick={onDeleteAlertDialogOpen}
+							data-cy="delete-account-button">
 							Delete
 						</Button>
 						<Button
@@ -91,7 +94,8 @@ const EditAccountModal = ({
 						<Button
 							isLoading={updateAccountIsLoading}
 							disabled={invalid}
-							onClick={handleUpdate}>
+							onClick={handleUpdate}
+							data-cy="edit-button">
 							Edit
 						</Button>
 					</ModalFooter>

@@ -22,7 +22,8 @@ const CategoryItem = ({
 				cursor: "pointer",
 				":hover": clickable ? { transform: "scale(1.01)" } : {}
 			}}
-			onClick={() => (clickable && category ? navigate("/categories/" + category.id) : null)}>
+			onClick={() => (clickable && category ? navigate("/categories/" + category.id) : null)}
+			data-cy="category">
 			<CardBody>
 				{category ? (
 					<>
@@ -39,11 +40,18 @@ const CategoryItem = ({
 									bg: category.color
 								}}
 							/>
-							<Heading size="md">{category.name}</Heading>
+							<Heading
+								size="md"
+								data-cy="category-name">
+								{category.name}
+							</Heading>
 						</Flex>
 
 						{category.category_ids.length ? (
-							<Text sx={{ mt: 2 }}>{category.category_ids.length} subcategories</Text>
+							<Text sx={{ mt: 2 }}>
+								{category.category_ids.length}{" "}
+								{category.category_ids.length > 1 ? "subcategories" : "subcategory"}
+							</Text>
 						) : null}
 					</>
 				) : (

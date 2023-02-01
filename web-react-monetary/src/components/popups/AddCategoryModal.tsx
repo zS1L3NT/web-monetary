@@ -38,19 +38,23 @@ const AddCategoryModal = ({
 	const handleCreate = async () => {
 		if (invalid) return
 
-		const response = await createCategory({
+		const createCategoryResponse = await createCategory({
 			token,
 			name,
 			color,
 			category_ids: []
 		})
 
-		if ("data" in response && parentCategory) {
-			await updateCategory({
+		if ("error" in createCategoryResponse) return
+
+		if (parentCategory) {
+			const updateCategoryResponse = await updateCategory({
 				token,
 				category_id: parentCategory.id,
-				category_ids: [...parentCategory.category_ids, response.data.id]
+				category_ids: [...parentCategory.category_ids, createCategoryResponse.data.id]
 			})
+
+			if ("error" in updateCategoryResponse) return
 		}
 
 		onClose()
@@ -90,7 +94,8 @@ const AddCategoryModal = ({
 					<Button
 						isLoading={createCategoryIsLoading || updateCategoryIsLoading}
 						disabled={invalid}
-						onClick={handleCreate}>
+						onClick={handleCreate}
+						data-cy="add-button">
 						Add
 					</Button>
 				</ModalFooter>

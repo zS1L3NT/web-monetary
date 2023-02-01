@@ -44,7 +44,7 @@ const AddTransactionModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
 	const handleCreate = async () => {
 		if (invalid) return
 
-		await createTransaction({
+		const createTransactionResponse = await createTransaction({
 			token,
 			category_id: categoryId,
 			from_account_id: fromAccountId,
@@ -54,6 +54,9 @@ const AddTransactionModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
 			description,
 			date: date.toUTC().toISO()
 		})
+
+		if ("error" in createTransactionResponse) return
+
 		onClose()
 	}
 
@@ -124,7 +127,8 @@ const AddTransactionModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
 					<Button
 						isLoading={createTransactionIsLoading}
 						disabled={invalid}
-						onClick={handleCreate}>
+						onClick={handleCreate}
+						data-cy="add-button">
 						Add
 					</Button>
 				</ModalFooter>

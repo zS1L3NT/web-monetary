@@ -99,6 +99,7 @@ const Login = ({}: {}) => {
 						isInvalid={!!emailError}
 						onChange={e => setEmail(e.target.value)}
 						onKeyDown={handleKeyDown}
+						data-cy="email-input"
 					/>
 					{emailError ? (
 						<Text
@@ -117,11 +118,13 @@ const Login = ({}: {}) => {
 							isInvalid={!!passwordError}
 							onChange={e => setPassword(e.target.value)}
 							onKeyDown={handleKeyDown}
+							data-cy="password-input"
 						/>
 						<InputRightElement h="full">
 							<Button
 								variant="ghost"
-								onClick={() => setShowPassword(showPassword => !showPassword)}>
+								onClick={() => setShowPassword(showPassword => !showPassword)}
+								data-cy="password-view-button">
 								{showPassword ? <ViewIcon /> : <ViewOffIcon />}
 							</Button>
 						</InputRightElement>
@@ -143,7 +146,8 @@ const Login = ({}: {}) => {
 						size="lg"
 						isLoading={loginIsLoading}
 						loadingText="Logging in..."
-						onClick={handleLogin}>
+						onClick={handleLogin}
+						data-cy="login-button">
 						Login
 					</Button>
 				</Stack>
@@ -158,7 +162,8 @@ const Login = ({}: {}) => {
 						Don't have an account yet?{" "}
 						<Link
 							color="primary.300"
-							onClick={() => navigate("/register")}>
+							onClick={() => navigate("/register")}
+							data-cy="register-link">
 							Register
 						</Link>
 					</Text>

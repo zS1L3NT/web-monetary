@@ -34,10 +34,26 @@ const FiltersSidebar = ({}: {}) => {
 							)
 						}>
 						<Stack>
-							<Radio value="name-asc">Name Asc</Radio>
-							<Radio value="name-desc">Name Desc</Radio>
-							<Radio value="balance-asc">Balance Asc</Radio>
-							<Radio value="balance-desc">Balance Desc</Radio>
+							<Radio
+								value="name-asc"
+								data-cy="name-asc-radio">
+								Name Asc
+							</Radio>
+							<Radio
+								value="name-desc"
+								data-cy="name-desc-radio">
+								Name Desc
+							</Radio>
+							<Radio
+								value="balance-asc"
+								data-cy="balance-asc-radio">
+								Balance Asc
+							</Radio>
+							<Radio
+								value="balance-desc"
+								data-cy="balance-desc-radio">
+								Balance Desc
+							</Radio>
 						</Stack>
 					</RadioGroup>
 				</Box>

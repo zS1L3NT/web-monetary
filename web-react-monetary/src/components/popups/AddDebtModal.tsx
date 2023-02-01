@@ -33,7 +33,7 @@ const AddDebtModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
 	const handleCreate = async () => {
 		if (invalid) return
 
-		await createDebt({
+		const createDebtResponse = await createDebt({
 			token,
 			type,
 			amount,
@@ -43,6 +43,8 @@ const AddDebtModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
 			active: true,
 			transaction_ids: []
 		})
+
+		if ("error" in createDebtResponse) return
 
 		onClose()
 	}
@@ -97,7 +99,8 @@ const AddDebtModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
 					<Button
 						isLoading={createDebtIsLoading}
 						disabled={invalid}
-						onClick={handleCreate}>
+						onClick={handleCreate}
+						data-cy="add-button">
 						Add
 					</Button>
 				</ModalFooter>

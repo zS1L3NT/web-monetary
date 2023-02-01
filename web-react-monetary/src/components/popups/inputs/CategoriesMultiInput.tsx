@@ -51,7 +51,8 @@ const CategoriesMultiInput = ({
 								isChecked={categoryIds.includes(c.id)}
 								onChange={e =>
 									e.target.checked ? selectCategory(c) : deselectCategory(c)
-								}>
+								}
+								data-cy="category-checkbox">
 								{c.name}
 							</Checkbox>
 							{c.category_ids.length

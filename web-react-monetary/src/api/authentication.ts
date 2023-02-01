@@ -1,5 +1,5 @@
 import User from "../models/user"
-import api, { ApiResponse, optimistic, RequireToken } from "./api"
+import api, { ApiResponse, RequireToken } from "./api"
 
 const authentication = api.injectEndpoints({
 	endpoints: builder => ({
@@ -49,17 +49,6 @@ const authentication = api.injectEndpoints({
 				body: user,
 				token
 			}),
-			onQueryStarted: async ({ token, ...user }, mutators) => {
-				await optimistic(
-					mutators,
-					authentication.util.updateQueryData("getUser", { token }, _user =>
-						User.fromJSON({
-							..._user.toJSON(),
-							...user
-						})
-					)
-				)
-			},
 			invalidatesTags: ["User"]
 		}),
 		updateUserPassword: builder.mutation<

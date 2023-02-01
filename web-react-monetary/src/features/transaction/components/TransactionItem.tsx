@@ -63,7 +63,8 @@ const TransactionItem = ({
 						transform: "scale(1.01)"
 					}
 				}}
-				onClick={onEditTransactionModalOpen}>
+				onClick={onEditTransactionModalOpen}
+				data-cy="transaction">
 				<CardBody>
 					{categoryLoading || fromAccountLoading || toAccountLoading ? (
 						<Skeleton sx={{ height: 59 }} />

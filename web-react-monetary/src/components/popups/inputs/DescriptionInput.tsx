@@ -16,6 +16,7 @@ const DescriptionInput = ({
 				value={description}
 				onChange={e => setDescription(e.target.value)}
 				placeholder="Enter a description"
+				data-cy="description-input"
 			/>
 		</Box>
 	)

@@ -19,7 +19,7 @@ class CategoryFactory extends Factory
     {
         return [
             'user_id' => DB::table('users')->first()->id,
-            'name' => $this->faker->word,
+            'name' => $this->faker->unique()->word,
             'color' => $this->faker->hexColor,
             'category_ids' => [],
         ];

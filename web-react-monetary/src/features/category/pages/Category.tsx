@@ -62,6 +62,7 @@ const Category = ({}: {}) => {
 						icon={<AddIcon />}
 						size="sm"
 						onClick={onAddCategoryModalOpen}
+						data-cy="add-subcategory-button"
 					/>
 				</Flex>
 				{!categoriesAreLoading ? (

@@ -54,15 +54,23 @@ class Handler extends ExceptionHandler
         if ($throwable instanceof ModelNotFoundException) {
             return response([
                 "type" => "Account not found",
-                "message" => "There was no account with the requested id: " . $throwable->getIds()[0],
+                "message" => "There is no account with the requested id: " . $throwable->getIds()[0],
             ], 404);
         }
 
-        if ($throwable instanceof \PDOException && $throwable->getCode() === "22P02" && $throwable->errorInfo[1] === 7) {
-            return response([
-                "type" => "Account not found",
-                "message" => "There was no account with the requested id: " . substr($request->getPathInfo(), strlen("/api/accounts/")),
-            ], 404);
+        if ($throwable instanceof \PDOException) {
+            switch ($throwable->getCode()) {
+                case "22P02":
+                    return response([
+                        "type" => "Account not found",
+                        "message" => "There is no account with the requested id: " . substr(request()->getPathInfo(), strlen("/api/accounts/")),
+                    ], 404);
+                case "23505":
+                    return response([
+                        "type" => "Account with that name already exists",
+                        "message" => "There is already an account with the requested name: " . request("name"),
+                    ], 409);
+            }
         }
 
         return response([

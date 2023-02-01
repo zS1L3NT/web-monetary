@@ -31,6 +31,8 @@ return new class extends Migration
             $table->timestamp('period_end_date')->nullable();
             $table->integer('period_end_count')->nullable();
             $table->timestamps();
+
+            $table->unique(['user_id', 'name']);
         });
     }
 

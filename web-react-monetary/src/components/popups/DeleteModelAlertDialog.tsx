@@ -6,14 +6,15 @@ import {
 	AlertDialogOverlay, Button
 } from "@chakra-ui/react"
 
+import { useDeleteAccountMutation } from "../../api/accounts"
+import { useDeleteUserMutation } from "../../api/authentication"
+import { useDeleteBudgetMutation } from "../../api/budgets"
 import { useDeleteCategoryMutation } from "../../api/categories"
+import { useDeleteDebtMutation } from "../../api/debts"
 import { useDeleteRecurrenceMutation } from "../../api/recurrences"
 import { useDeleteTransactionMutation } from "../../api/transactions"
 import useOnlyAuthenticated from "../../hooks/useOnlyAuthenticated"
 import useToastError from "../../hooks/useToastError"
-import { useDeleteBudgetMutation } from "../../api/budgets"
-import { useDeleteDebtMutation } from "../../api/debts"
-import { useDeleteAccountMutation } from "../../api/accounts"
 
 const DeleteModelAlertDialog = ({
 	model,
@@ -21,7 +22,7 @@ const DeleteModelAlertDialog = ({
 	isOpen,
 	onClose
 }: {
-	model: "Recurrence" | "Category" | "Transaction" | "Debt" | "Budget" | "Account"
+	model: "Recurrence" | "Category" | "Transaction" | "Debt" | "Budget" | "Account" | "User"
 	modelId?: string
 	isOpen: boolean
 	onClose: () => void
@@ -37,6 +38,7 @@ const DeleteModelAlertDialog = ({
 	const [deleteDebt, { error: deleteDebtError }] = useDeleteDebtMutation()
 	const [deleteBudget, { error: deleteBudgetError }] = useDeleteBudgetMutation()
 	const [deleteAccount, { error: deleteAccountError }] = useDeleteAccountMutation()
+	const [deleteUser, { error: deleteUserError }] = useDeleteUserMutation()
 
 	const message = useMemo(() => {
 		switch (model) {
@@ -52,6 +54,8 @@ const DeleteModelAlertDialog = ({
 				return "Are you sure you want to delete this Budget?"
 			case "Account":
 				return "Are you sure you want to delete this Account? All transactions under this account will be deleted too"
+			case "User":
+				return "Are you sure you want to delete your Account? All your data will be deleted too"
 		}
 	}, [model])
 	const cancelRef = useRef(null)
@@ -62,55 +66,67 @@ const DeleteModelAlertDialog = ({
 	useToastError(deleteDebtError)
 	useToastError(deleteBudgetError)
 	useToastError(deleteAccountError)
+	useToastError(deleteUserError)
 
 	const handleDelete = async () => {
-		onClose()
+		let response
 
 		switch (model) {
 			case "Transaction":
 				if (location.pathname.startsWith("/transactions/")) {
 					navigate("/transactions")
 				}
-				await deleteTransaction({
+				response = await deleteTransaction({
 					token,
 					transaction_id: modelId!
 				})
 				break
 			case "Recurrence":
 				navigate("/recurrences")
-				await deleteRecurrence({
+				response = await deleteRecurrence({
 					token,
 					recurrence_id: location.pathname.slice("/recurrences/".length)
 				})
 				break
 			case "Category":
 				navigate("/categories")
-				await deleteCategory({
+				response = await deleteCategory({
 					token,
 					category_id: location.pathname.slice("/categories/".length)
 				})
 				break
 			case "Debt":
 				navigate("/debts")
-				await deleteDebt({
+				response = await deleteDebt({
 					token,
 					debt_id: location.pathname.slice("/debts/".length)
 				})
 				break
 			case "Budget":
 				navigate("/budgets")
-				await deleteBudget({
+				response = await deleteBudget({
 					token,
 					budget_id: location.pathname.slice("/budgets/".length)
 				})
 				break
 			case "Account":
 				navigate("/accounts")
-				await deleteAccount({
+				response = await deleteAccount({
 					token,
 					account_id: modelId!
 				})
+				break
+			case "User":
+				navigate("/")
+				response = await deleteUser({
+					token
+				})
+				break
 		}
+
+		if ("error" in response) return
+
+		onClose()
 	}
 
 	return (
@@ -131,9 +147,10 @@ const DeleteModelAlertDialog = ({
 						Cancel
 					</Button>
 					<Button
+						sx={{ ml: 3 }}
 						colorScheme="red"
 						onClick={handleDelete}
-						ml={3}>
+						data-cy="delete-confirm-button">
 						Delete
 					</Button>
 				</AlertDialogFooter>

@@ -61,7 +61,7 @@ const EditTransactionModal = ({
 	const handleUpdate = async () => {
 		if (invalid) return
 
-		await updateTransaction({
+		const updateTransactionResponse = await updateTransaction({
 			token,
 			transaction_id: transaction.id,
 			category_id: categoryId,
@@ -72,6 +72,8 @@ const EditTransactionModal = ({
 			description,
 			date: date.toUTC().toISO()
 		})
+
+		if ("error" in updateTransactionResponse) return
 
 		onClose()
 	}
@@ -148,7 +150,8 @@ const EditTransactionModal = ({
 						<Button
 							sx={{ mr: "auto" }}
 							colorScheme="red"
-							onClick={onDeleteAlertDialogOpen}>
+							onClick={onDeleteAlertDialogOpen}
+							data-cy="delete-transaction-button">
 							Delete
 						</Button>
 						<Button
@@ -160,7 +163,8 @@ const EditTransactionModal = ({
 						<Button
 							isLoading={updateTransactionIsLoading}
 							disabled={invalid}
-							onClick={handleUpdate}>
+							onClick={handleUpdate}
+							data-cy="edit-button">
 							Edit
 						</Button>
 					</ModalFooter>
