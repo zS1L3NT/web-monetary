@@ -14,8 +14,15 @@ import TransactionItem from "./TransactionItem"
 const TransactionList = ({}: {}) => {
 	const { token } = useOnlyAuthenticated()
 	const { transactions } = useContext(TransactionsContext)
-	const { sortBy, selectedAccounts, selectedCategories, transactionTypes, minAmount, maxAmount } =
-		useContext(FiltersContext)
+	const {
+		sortBy,
+		selectedAccounts,
+		selectedCategories,
+		transactionTypes,
+		range,
+		minAmount,
+		maxAmount
+	} = useContext(FiltersContext)
 
 	const { data: recurrences, error: recurrencesError } = useGetRecurrencesQuery({ token })
 
@@ -40,7 +47,9 @@ const TransactionList = ({}: {}) => {
 							.filter(t => selectedCategories?.find(c => c.id === t.category_id))
 							.filter(t => transactionTypes?.find(tt => tt === t.type))
 							.filter(
-								t => t.amount > minAmount && (!maxAmount || t.amount < maxAmount)
+								t =>
+									range === "range-all" ||
+									(t.amount >= minAmount && (!maxAmount || t.amount <= maxAmount))
 							)
 							.reduce<Record<string, Transaction[]>>((ts, t) => {
 								const header = t.date.toFormat("d LLLL")

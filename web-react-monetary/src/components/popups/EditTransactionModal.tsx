@@ -148,7 +148,8 @@ const EditTransactionModal = ({
 						<Button
 							sx={{ mr: "auto" }}
 							colorScheme="red"
-							onClick={onDeleteAlertDialogOpen}>
+							onClick={onDeleteAlertDialogOpen}
+							data-cy="delete-button">
 							Delete
 						</Button>
 						<Button
@@ -160,7 +161,8 @@ const EditTransactionModal = ({
 						<Button
 							isLoading={updateTransactionIsLoading}
 							disabled={invalid}
-							onClick={handleUpdate}>
+							onClick={handleUpdate}
+							data-cy="edit-button">
 							Edit
 						</Button>
 					</ModalFooter>

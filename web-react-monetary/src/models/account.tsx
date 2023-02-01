@@ -50,7 +50,8 @@ export default class Account extends Model {
 						ml: 2,
 						fontSize: 18,
 						fontWeight: 500
-					}}>
+					}}
+					data-cy="account-name">
 					{this.name}
 				</Text>
 				{toAccount ? (
@@ -69,7 +70,8 @@ export default class Account extends Model {
 								ml: 2,
 								fontSize: 18,
 								fontWeight: 500
-							}}>
+							}}
+							data-cy="account-name">
 							{toAccount.name}
 						</Text>
 					</>

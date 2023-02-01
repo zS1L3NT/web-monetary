@@ -45,7 +45,6 @@ describe("Reading accounts", () => {
 		cy.login("/accounts")
 
 		cy.wait("@getAccounts").its("response.statusCode").should("eq", 200)
-
 		cy.get(".chakra-stack .chakra-card").should("have.length", 6)
 		cy.contains("Test Account 1").should("exist")
 		cy.contains("$1000.00").should("exist")

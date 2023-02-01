@@ -124,7 +124,8 @@ const AddTransactionModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
 					<Button
 						isLoading={createTransactionIsLoading}
 						disabled={invalid}
-						onClick={handleCreate}>
+						onClick={handleCreate}
+						data-cy="add-button">
 						Add
 					</Button>
 				</ModalFooter>

@@ -47,7 +47,8 @@ export default class Category extends Model {
 					color: textColorOnBackground(this.color),
 					bg: this.color
 				}}
-				variant="subtle">
+				variant="subtle"
+				data-cy="category-name">
 				{this.name}
 			</Tag>
 		)

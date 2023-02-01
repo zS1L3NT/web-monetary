@@ -27,6 +27,8 @@ const FiltersSidebar = ({}: {}) => {
 		transactionTypes,
 		selectTransactionType,
 		deselectTransactionType,
+		range,
+		setRange,
 		minAmount,
 		setMinAmount,
 		maxAmount,
@@ -49,7 +51,8 @@ const FiltersSidebar = ({}: {}) => {
 								isChecked={!!selectedCategories?.find(sc => sc.id === c.id)}
 								onChange={e =>
 									e.target.checked ? selectCategory(c) : deselectCategory(c)
-								}>
+								}
+								data-cy="category-checkbox">
 								{c.name}
 							</Checkbox>
 							{c.category_ids.length
@@ -110,7 +113,8 @@ const FiltersSidebar = ({}: {}) => {
 													e.target.checked
 														? selectAccount(a)
 														: deselectAccount(a)
-												}>
+												}
+												data-cy="account-checkbox">
 												{a.name}
 											</Checkbox>
 										))}
@@ -166,7 +170,8 @@ const FiltersSidebar = ({}: {}) => {
 												e.target.checked
 													? selectTransactionType(tt)
 													: deselectTransactionType(tt)
-											}>
+											}
+											data-cy="transaction-type-checkbox">
 											{tt}
 										</Checkbox>
 									))}
@@ -180,8 +185,24 @@ const FiltersSidebar = ({}: {}) => {
 							<AccordionIcon sx={{ ml: "auto" }} />
 						</AccordionButton>
 						<AccordionPanel sx={{ px: 2 }}>
-							{transactions && maxAmount !== undefined ? (
-								<Box>
+							<RadioGroup
+								value={range}
+								onChange={e => setRange(e as "range-all" | "range-custom")}>
+								<Stack>
+									<Radio
+										value="range-all"
+										data-cy="range-all-radio">
+										All
+									</Radio>
+									<Radio
+										value="range-custom"
+										data-cy="range-custom-radio">
+										Custom
+									</Radio>
+								</Stack>
+							</RadioGroup>
+							{range === "range-custom" && transactions && maxAmount !== undefined ? (
+								<Box sx={{ mt: 2 }}>
 									<Flex
 										sx={{
 											justifyContent: "space-between",
@@ -200,6 +221,7 @@ const FiltersSidebar = ({}: {}) => {
 													setMinAmount(+e.target.value)
 												}
 											}}
+											data-cy="min-amount-input"
 										/>
 										<Input
 											defaultValue={maxAmount}
@@ -210,14 +232,15 @@ const FiltersSidebar = ({}: {}) => {
 													setMaxAmount(+e.target.value)
 												}
 											}}
+											data-cy="max-amount-input"
 										/>
 									</Flex>
 								</Box>
-							) : (
+							) : range === "range-custom" ? (
 								<Center mt={2}>
 									<Spinner size="sm" />
 								</Center>
-							)}
+							) : null}
 						</AccordionPanel>
 					</AccordionItem>
 				</Accordion>
