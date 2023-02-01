@@ -1,4 +1,4 @@
-describe("Appropriate authentication redirects", () => {
+describe("Appropriate category authentication redirects", () => {
 	it("Redirects /categories to /login when unauthenticated", () => {
 		cy.visit("http://localhost:8000/categories")
 

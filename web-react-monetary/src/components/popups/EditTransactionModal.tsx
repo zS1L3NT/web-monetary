@@ -149,7 +149,7 @@ const EditTransactionModal = ({
 							sx={{ mr: "auto" }}
 							colorScheme="red"
 							onClick={onDeleteAlertDialogOpen}
-							data-cy="delete-button">
+							data-cy="delete-transaction-button">
 							Delete
 						</Button>
 						<Button

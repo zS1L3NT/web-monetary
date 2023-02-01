@@ -1,4 +1,4 @@
-describe("Appropriate authentication redirects", () => {
+describe("Appropriate account authentication redirects", () => {
 	it("Redirects /accounts to /login when unauthenticated", () => {
 		cy.visit("http://localhost:8000/accounts")
 
@@ -19,7 +19,7 @@ describe("Creating accounts", () => {
 
 		cy.el("add-button").should("be.disabled")
 
-		cy.el("amount-input").clear().type("1000")
+		cy.el("name-input").type("Test Account 1")
 
 		cy.el("add-button").should("be.enabled")
 	})
@@ -124,7 +124,7 @@ describe("Deleting accounts", () => {
 		cy.login("/accounts")
 
 		cy.get(".chakra-stack .chakra-card").not(':contains("Test Account 2")').first().click()
-		cy.el("delete-button").click()
+		cy.el("delete-account-button").click()
 		cy.el("delete-confirm-button").click()
 
 		cy.wait("@deleteAccount").its("response.statusCode").should("eq", 400)
@@ -136,7 +136,7 @@ describe("Deleting accounts", () => {
 		cy.login("/accounts")
 
 		cy.contains("Test Account 2").first().click()
-		cy.el("delete-button").click()
+		cy.el("delete-account-button").click()
 		cy.el("delete-confirm-button").click()
 
 		cy.wait("@deleteAccount").its("response.statusCode").should("eq", 200)

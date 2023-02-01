@@ -1,4 +1,4 @@
-describe("Appropriate authentication redirects", () => {
+describe("Appropriate transaction authentication redirects", () => {
 	it("Redirects /transactions to /login when unauthenticated", () => {
 		cy.visit("http://localhost:8000/transactions")
 
@@ -189,7 +189,7 @@ describe("Deleting transactions", () => {
 		cy.login("/transactions")
 
 		cy.contains("-$2000.00").first().click()
-		cy.el("delete-button").click()
+		cy.el("delete-transaction-button").click()
 		cy.el("delete-confirm-button").click()
 
 		cy.wait("@deleteTransaction").its("response.statusCode").should("eq", 200)

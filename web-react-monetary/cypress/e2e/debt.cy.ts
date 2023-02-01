@@ -1,4 +1,4 @@
-describe("Appropriate authentication redirects", () => {
+describe("Appropriate debt authentication redirects", () => {
 	it("Redirects /debts to /login when unauthenticated", () => {
 		cy.visit("http://localhost:8000/debts")
 
@@ -279,6 +279,9 @@ describe("Deleting debts", () => {
 		cy.login("/debts")
 
 		cy.contains("Test Debt 2").first().click()
+		cy.contains("+$2000.00").first().click()
+		cy.el("delete-transaction-button").click()
+		cy.el("delete-confirm-button").click()
 		cy.el("delete-debt-button").click()
 		cy.el("delete-confirm-button").click()
 

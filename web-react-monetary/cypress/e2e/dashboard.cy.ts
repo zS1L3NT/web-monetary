@@ -1,4 +1,4 @@
-describe("Appropriate authentication redirects", () => {
+describe("Appropriate dashboard authentication redirects", () => {
 	it("Redirects /dashboard to /login when unauthenticated", () => {
 		cy.visit("http://localhost:8000/dashboard")
 

@@ -1,4 +1,4 @@
-describe("Appropriate authentication redirects", () => {
+describe("Appropriate recurrence authentication redirects", () => {
 	it("Redirects /recurrences to /login when unauthenticated", () => {
 		cy.visit("http://localhost:8000/recurrences")
 
@@ -259,6 +259,7 @@ describe("Updating recurrences", () => {
 describe("Deleting recurrences", () => {
 	it("Can delete a recurrence", () => {
 		cy.intercept("DELETE", "/api/recurrences/*").as("deleteRecurrence")
+		cy.intercept("DELETE", "/api/transactions/*").as("deleteTransaction")
 		cy.login("/recurrences")
 
 		cy.contains("Test Recurrence 2").first().click()
@@ -267,5 +268,13 @@ describe("Deleting recurrences", () => {
 
 		cy.wait("@deleteRecurrence").its("response.statusCode").should("eq", 200)
 		cy.location("pathname").should("eq", "/recurrences")
+	
+		cy.push("/transactions")
+
+		cy.contains("-$1000.00").first().click()
+		cy.el("delete-transaction-button").click()
+		cy.el("delete-confirm-button").click()
+
+		cy.wait("@deleteTransaction").its("response.statusCode").should("eq", 200)
 	})
 })

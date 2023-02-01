@@ -1,4 +1,4 @@
-describe("Appropriate button redirects", () => {
+describe("Appropriate landing button redirects", () => {
 	it("Redirects / to /login on getting started when unauthenticated", () => {
 		cy.visit("http://localhost:8000/")
 

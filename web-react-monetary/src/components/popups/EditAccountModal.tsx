@@ -80,7 +80,7 @@ const EditAccountModal = ({
 							sx={{ mr: "auto" }}
 							colorScheme="red"
 							onClick={onDeleteAlertDialogOpen}
-							data-cy="delete-button">
+							data-cy="delete-account-button">
 							Delete
 						</Button>
 						<Button
