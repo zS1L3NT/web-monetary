@@ -18,19 +18,20 @@ jobs:
       - name: Run update command
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.LINODE_HOST_RECURRENCE }}
-          username: ${{ secrets.LINODE_USERNAME }}
-          password: ${{ secrets.LINODE_PASSWORD }}
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
           script: |
-            cd /home/web-monetary
-            echo APP_KEY="${{ secrets.APP_KEY }}" > .env
-            echo DB_CONNECTION="${{ secrets.DB_CONNECTION }}" >> .env
-            echo DB_HOST="${{ secrets.DB_HOST }}" >> .env
-            echo DB_PORT="${{ secrets.DB_PORT }}" >> .env
-            echo DB_DATABASE="${{ secrets.DB_DATABASE }}" >> .env
-            echo DB_USERNAME="${{ secrets.DB_USERNAME }}" >> .env
-            echo DB_PASSWORD="${{ secrets.DB_PASSWORD }}" >> .env
-            echo JWT_SECRET="${{ secrets.JWT_SECRET }}" >> .env
+            [ ! -d web-monetary ] && git clone https://github.com/zS1L3NT/web-monetary
+            cd web-monetary
             git pull origin main
-            docker-compose up -d --build web-laravel-monetary-recurrence
+            APP_KEY="${{ secrets.APP_KEY }}" \
+            DB_CONNECTION="${{ secrets.DB_CONNECTION }}" \
+            DB_HOST="${{ secrets.DB_HOST }}" \
+            DB_PORT="${{ secrets.DB_PORT }}" \
+            DB_DATABASE="${{ secrets.DB_DATABASE }}" \
+            DB_USERNAME="${{ secrets.DB_USERNAME }}" \
+            DB_PASSWORD="${{ secrets.DB_PASSWORD }}" \
+            JWT_SECRET="${{ secrets.JWT_SECRET }}" \
+            web-laravel-monetary-account web-laravel-monetary-recurrence \
             docker-compose up -d --build web-laravel-monetary-recurrence-scheduler

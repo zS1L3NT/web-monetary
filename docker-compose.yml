@@ -7,8 +7,15 @@ services:
     image: web-laravel-monetary-account
     ports:
       - 8001:80
-    env_file:
-      - .env
+    environment:
+      APP_KEY: ${APP_KEY}
+      DB_CONNECTION: ${DB_CONNECTION}
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+      DB_DATABASE: ${DB_DATABASE}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET}
   web-laravel-monetary-authentication:
     build: 
       context: web-laravel-monetary-authentication
@@ -17,8 +24,15 @@ services:
     image: web-laravel-monetary-authentication
     ports:
       - 8002:80
-    env_file:
-      - .env
+    environment:
+      APP_KEY: ${APP_KEY}
+      DB_CONNECTION: ${DB_CONNECTION}
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+      DB_DATABASE: ${DB_DATABASE}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET}
   web-laravel-monetary-budget:
     build: 
       context: web-laravel-monetary-budget
@@ -27,8 +41,15 @@ services:
     image: web-laravel-monetary-budget
     ports:
       - 8003:80
-    env_file:
-      - .env
+    environment:
+      APP_KEY: ${APP_KEY}
+      DB_CONNECTION: ${DB_CONNECTION}
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+      DB_DATABASE: ${DB_DATABASE}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET}
   web-laravel-monetary-category:
     build: 
       context: web-laravel-monetary-category
@@ -37,8 +58,15 @@ services:
     image: web-laravel-monetary-category
     ports:
       - 8004:80
-    env_file:
-      - .env
+    environment:
+      APP_KEY: ${APP_KEY}
+      DB_CONNECTION: ${DB_CONNECTION}
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+      DB_DATABASE: ${DB_DATABASE}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET}
   web-laravel-monetary-debt:
     build: 
       context: web-laravel-monetary-debt
@@ -47,8 +75,15 @@ services:
     image: web-laravel-monetary-debt
     ports:
       - 8005:80
-    env_file:
-      - .env
+    environment:
+      APP_KEY: ${APP_KEY}
+      DB_CONNECTION: ${DB_CONNECTION}
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+      DB_DATABASE: ${DB_DATABASE}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET}
   web-laravel-monetary-recurrence:
     build: 
       context: web-laravel-monetary-recurrence
@@ -57,16 +92,30 @@ services:
     image: web-laravel-monetary-recurrence
     ports:
       - 8006:80
-    env_file:
-      - .env
+    environment:
+      APP_KEY: ${APP_KEY}
+      DB_CONNECTION: ${DB_CONNECTION}
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+      DB_DATABASE: ${DB_DATABASE}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET}
   web-laravel-monetary-recurrence-scheduler:
     build: 
       context: web-laravel-monetary-recurrence
       dockerfile: Dockerfile
     container_name: web-laravel-monetary-recurrence-scheduler
     image: web-laravel-monetary-recurrence-scheduler
-    env_file:
-      - .env
+    environment:
+      APP_KEY: ${APP_KEY}
+      DB_CONNECTION: ${DB_CONNECTION}
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+      DB_DATABASE: ${DB_DATABASE}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET}
   web-laravel-monetary-transaction:
     build: 
       context: web-laravel-monetary-transaction
@@ -75,5 +124,12 @@ services:
     image: web-laravel-monetary-transaction
     ports:
       - 8007:80
-    env_file:
-      - .env
+    environment:
+      APP_KEY: ${APP_KEY}
+      DB_CONNECTION: ${DB_CONNECTION}
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+      DB_DATABASE: ${DB_DATABASE}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET}
