@@ -47,7 +47,7 @@ const DeleteModelAlertDialog = ({
 			case "Recurrence":
 				return "Are you sure you want to delete this Recurrence?"
 			case "Category":
-				return "Are you sure you want to delete this Category? All Subcategories will be deleted too"
+				return "Are you sure you want to delete this Category? This will make all subcategories top level categories"
 			case "Debt":
 				return "Are you sure you want to delete this Debt?"
 			case "Budget":

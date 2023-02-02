@@ -20,9 +20,9 @@ const CategoryList = ({}: {}) => {
 
 	return (
 		<AnimatePresence>
-			{!categoriesAreLoading ? (
+			{!categoriesAreLoading && categories ? (
 				<Stack>
-					{categories!
+					{categories
 						.filter(c => !categories?.find(c_ => c_.category_ids.includes(c.id)))
 						.map(c => (
 							<motion.div
