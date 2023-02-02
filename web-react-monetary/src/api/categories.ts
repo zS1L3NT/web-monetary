@@ -14,7 +14,7 @@ const categories = api.injectEndpoints({
 		}),
 		createCategory: builder.mutation<
 			ApiResponse & { id: string },
-			typeof Category.fillable & RequireToken
+			typeof Category.fillable & { parent_category_id?: string } & RequireToken
 		>({
 			query: ({ token, ...category }) => ({
 				url: `/categories`,

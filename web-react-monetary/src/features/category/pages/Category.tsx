@@ -65,9 +65,9 @@ const Category = ({}: {}) => {
 						data-cy="add-subcategory-button"
 					/>
 				</Flex>
-				{!categoriesAreLoading ? (
+				{!categoriesAreLoading && categories ? (
 					<Stack>
-						{categories!
+						{categories
 							.filter(c => category?.category_ids.includes(c.id))
 							.map(c => (
 								<CategoryItem

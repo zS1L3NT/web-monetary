@@ -5,7 +5,7 @@ import {
 	ModalOverlay, Stack
 } from "@chakra-ui/react"
 
-import { useCreateCategoryMutation, useUpdateCategoryMutation } from "../../api/categories"
+import { useCreateCategoryMutation } from "../../api/categories"
 import useOnlyAuthenticated from "../../hooks/useOnlyAuthenticated"
 import useToastError from "../../hooks/useToastError"
 import Category from "../../models/category"
@@ -25,15 +25,12 @@ const AddCategoryModal = ({
 
 	const [createCategory, { error: createCategoryError, isLoading: createCategoryIsLoading }] =
 		useCreateCategoryMutation()
-	const [updateCategory, { error: updateCategoryError, isLoading: updateCategoryIsLoading }] =
-		useUpdateCategoryMutation()
 
 	const [name, setName] = useState("")
 	const [color, setColor] = useState("#FFFFFF")
 	const finalFocusRef = useRef(null)
 
 	useToastError(createCategoryError)
-	useToastError(updateCategoryError)
 
 	const handleCreate = async () => {
 		if (invalid) return
@@ -42,20 +39,11 @@ const AddCategoryModal = ({
 			token,
 			name,
 			color,
-			category_ids: []
+			category_ids: [],
+			parent_category_id: parentCategory?.id
 		})
 
 		if ("error" in createCategoryResponse) return
-
-		if (parentCategory) {
-			const updateCategoryResponse = await updateCategory({
-				token,
-				category_id: parentCategory.id,
-				category_ids: [...parentCategory.category_ids, createCategoryResponse.data.id]
-			})
-
-			if ("error" in updateCategoryResponse) return
-		}
 
 		onClose()
 	}
@@ -92,7 +80,7 @@ const AddCategoryModal = ({
 						Close
 					</Button>
 					<Button
-						isLoading={createCategoryIsLoading || updateCategoryIsLoading}
+						isLoading={createCategoryIsLoading}
 						disabled={invalid}
 						onClick={handleCreate}
 						data-cy="add-button">

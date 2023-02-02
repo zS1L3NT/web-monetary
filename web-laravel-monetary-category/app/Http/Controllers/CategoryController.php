@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\NestedCategory;
 use Illuminate\Database\QueryException;
 use Illuminate\Validation\Rule;
 
@@ -20,7 +21,12 @@ class CategoryController extends Controller
                 'uuid',
                 'distinct',
                 Rule::exists('categories', 'id')->where(fn($query) => $query->where('user_id', request('user_id'))),
-            ]
+            ],
+            "parent_category_id" => [
+                "nullable",
+                "uuid",
+                Rule::exists('categories', 'id')->where(fn($query) => $query->where('user_id', request('user_id'))),
+            ],
         ]);
 
         $this->validate('update', [
@@ -46,6 +52,13 @@ class CategoryController extends Controller
     {
         $category = Category::query()->create(request()->all());
         $category->category_ids = request('category_ids');
+
+        if ($parentCategoryId = request('parent_category_id')) {
+            NestedCategory::query()->create([
+                'parent_category_id' => $parentCategoryId,
+                'child_category_id' => $category->id,
+            ]);
+        }
 
         return [
             "message" => "Category created successfully!",
