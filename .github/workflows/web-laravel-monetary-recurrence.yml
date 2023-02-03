@@ -1,19 +1,18 @@
-name: Deploy Recurrence Microservice
+name: Test and Deploy Recurrence Microservice
 
 on:
   push:
     branches:
-      - deployment
+      - main
     paths:
       - web-laravel-monetary-recurrence/**
-      - .github/workflows/web-laravel-monetary-recurrence-deploy.yml
-      - docker compose.yml
+      - .github/workflows/web-laravel-monetary-recurrence.yml
+      - docker-compose.yml
       - Dockerfile
 
 jobs:
-  deploy:
+  test:
     runs-on: ubuntu-latest
-    environment: production
     env:
       DB_CONNECTION: pgsql
       DB_HOST: localhost
@@ -48,22 +47,27 @@ jobs:
           extensions: mbstring, dom, fileinfo, pgsql
           coverage: xdebug
 
-      - name: Install Composer dependencies
+      - name: Install composer dependencies
         run: head -n -1 install.sh | bash
 
       - name: Run database migrations
-        run: chmod +x migrate.sh && ./migrate.sh
+        run: ./migrate.sh
 
-      - name: Create App key
-        run: echo "APP_KEY=$(php web-laravel-monetary-authentication/artisan key:generate --show)" >> $GITHUB_ENV
+      - name: Create app key
+        run: echo "APP_KEY=$(php web-laravel-monetary-recurrence/artisan key:generate --show)" >> $GITHUB_ENV
 
-      - name: Run authentication Microservice
+      - name: Run authentication microservice
         run: nohup php web-laravel-monetary-authentication/artisan serve &
 
-      - name: Run PHP Unit Tests
-        run: web-laravel-monetary-recurrence/vendor/bin/phpunit web-laravel-monetary-recurrence/tests
+      - name: Run tests with PHP Unit
+        run: cd web-laravel-monetary-recurrence && vendor/bin/phpunit tests
 
-      - name: Run update command
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production
+    needs: test
+    steps:
+      - name: Redeploy the docker containers on the server
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SSH_HOST }}
@@ -72,7 +76,7 @@ jobs:
           script: |
             [ ! -d web-monetary ] && git clone https://github.com/zS1L3NT/web-monetary
             cd web-monetary
-            git pull origin deployment
+            git pull origin main
             APP_KEY="${{ secrets.APP_KEY }}" \
             DB_CONNECTION="${{ secrets.DB_CONNECTION }}" \
             DB_HOST="${{ secrets.DB_HOST }}" \

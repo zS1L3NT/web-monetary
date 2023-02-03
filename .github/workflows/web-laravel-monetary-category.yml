@@ -1,0 +1,88 @@
+name: Test and Deploy Category Microservice
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - web-laravel-monetary-category/**
+      - .github/workflows/web-laravel-monetary-category.yml
+      - docker-compose.yml
+      - Dockerfile
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      DB_CONNECTION: pgsql
+      DB_HOST: localhost
+      DB_PASSWORD: postgres
+      DB_USERNAME: postgres
+      DB_DATABASE: postgres
+      JWT_SECRET: bp1YZ1lfj5FceqNeccHoKiIkZUX5rLa1msSWy9zzjpCdiDGRdrvM4WN6IUYqhkSL
+    services:
+      postgres:
+        image: postgres:14
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        env:
+          runner: self-hosted
+        with:
+          php-version: 8.2
+          extensions: mbstring, dom, fileinfo, pgsql
+          coverage: xdebug
+
+      - name: Install composer dependencies
+        run: head -n -1 install.sh | bash
+
+      - name: Run database migrations
+        run: chmod +x migrate.sh && ./migrate.sh
+
+      - name: Create app key
+        run: echo "APP_KEY=$(php web-laravel-monetary-category/artisan key:generate --show)" >> $GITHUB_ENV
+
+      - name: Run authentication microservice
+        run: nohup php web-laravel-monetary-authentication/artisan serve &
+
+      - name: Run tests with PHP Unit
+        run: cd web-laravel-monetary-category && vendor/bin/phpunit tests
+
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production
+    needs: test
+    steps:
+      - name: Redeploy the docker containers on the server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            [ ! -d web-monetary ] && git clone https://github.com/zS1L3NT/web-monetary
+            cd web-monetary
+            git pull origin main
+            APP_KEY="${{ secrets.APP_KEY }}" \
+            DB_CONNECTION="${{ secrets.DB_CONNECTION }}" \
+            DB_HOST="${{ secrets.DB_HOST }}" \
+            DB_PORT="${{ secrets.DB_PORT }}" \
+            DB_DATABASE="${{ secrets.DB_DATABASE }}" \
+            DB_USERNAME="${{ secrets.DB_USERNAME }}" \
+            DB_PASSWORD="${{ secrets.DB_PASSWORD }}" \
+            JWT_SECRET="${{ secrets.JWT_SECRET }}" \
+            docker compose up -d --build web-laravel-monetary-category
