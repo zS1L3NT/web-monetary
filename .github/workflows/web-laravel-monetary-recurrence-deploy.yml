@@ -72,6 +72,11 @@ jobs:
         run: |
           echo "APP_KEY=$(php web-laravel-monetary-authentication/artisan key:generate --show)" >> $GITHUB_ENV
 
+      - name: Run authentication Microservice
+        run: |
+          cd web-laravel-monetary-authentication
+          nohup php artisan serve &
+
       - name: Run PHP Unit Tests
         run: |
           cd web-laravel-monetary-recurrence
