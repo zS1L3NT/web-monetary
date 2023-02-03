@@ -33,5 +33,4 @@ jobs:
             DB_USERNAME="${{ secrets.DB_USERNAME }}" \
             DB_PASSWORD="${{ secrets.DB_PASSWORD }}" \
             JWT_SECRET="${{ secrets.JWT_SECRET }}" \
-            web-laravel-monetary-account web-laravel-monetary-recurrence \
-            docker compose up -d --build web-laravel-monetary-recurrence-scheduler
+            docker compose up -d --build web-laravel-monetary-recurrence web-laravel-monetary-recurrence-scheduler
