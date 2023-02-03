@@ -48,24 +48,17 @@ jobs:
           extensions: mbstring, dom, fileinfo, pgsql
           coverage: xdebug
 
-      - name: Copy environment variables
-        run: |
-          php -r "file_exists('.env') || copy('.env.example', '.env');"
-          cd web-laravel-monetary-recurrence
-          ln -s ../.env .env
-
       - name: Install Composer dependencies
         run: |
-          cd web-laravel-monetary-recurrence
-          composer install --no-progress --prefer-dist --optimize-autoloader
+          php -r "file_exists('.env') || copy('.env.example', '.env');"
           php artisan key:generate --force
-          php artisan cache:clear
-          ln -s $PWD/vendor ../web-laravel-monetary-account/vendor
-          ln -s $PWD/vendor ../web-laravel-monetary-authentication/vendor
-          ln -s $PWD/vendor ../web-laravel-monetary-budget/vendor
-          ln -s $PWD/vendor ../web-laravel-monetary-category/vendor
-          ln -s $PWD/vendor ../web-laravel-monetary-debt/vendor
-          ln -s $PWD/vendor ../web-laravel-monetary-transaction/vendor
+          composer install --working-dir=web-laravel-monetary-account --no-progress --prefer-dist --optimize-autoloader
+          composer install --working-dir=web-laravel-monetary-authentication --no-progress --prefer-dist --optimize-autoloader
+          composer install --working-dir=web-laravel-monetary-budget --no-progress --prefer-dist --optimize-autoloader
+          composer install --working-dir=web-laravel-monetary-category --no-progress --prefer-dist --optimize-autoloader
+          composer install --working-dir=web-laravel-monetary-debt --no-progress --prefer-dist --optimize-autoloader
+          composer install --working-dir=web-laravel-monetary-recurrence --no-progress --prefer-dist --optimize-autoloader
+          composer install --working-dir=web-laravel-monetary-transaction --no-progress --prefer-dist --optimize-autoloader
 
       - name: Run database migrations
         run: |
