@@ -3,7 +3,7 @@ name: Deploy Authentication Microservice
 on:
   push:
     branches:
-      - main
+      - deployment
     paths:
       - web-laravel-monetary-authentication/**
       - .github/workflows/web-laravel-monetary-authentication-deploy.yml
@@ -24,7 +24,7 @@ jobs:
           script: |
             [ ! -d web-monetary ] && git clone https://github.com/zS1L3NT/web-monetary
             cd web-monetary
-            git pull origin main
+            git pull origin deployment
             APP_KEY="${{ secrets.APP_KEY }}" \
             DB_CONNECTION="${{ secrets.DB_CONNECTION }}" \
             DB_HOST="${{ secrets.DB_HOST }}" \
