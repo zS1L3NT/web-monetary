@@ -78,9 +78,9 @@ jobs:
           
       - name: Setup nginx
         run: |
-          apt-get install nginx -y
-          cp nginx.dev.conf /etc/nginx/nginx.conf
-          service nginx restart
+          sudo apt-get install nginx -y
+          sudo cp nginx.dev.conf /etc/nginx/nginx.conf
+          sudo service nginx restart
 
       - name: Run tests with Cypress
         uses: cypress-io/github-action@v4
