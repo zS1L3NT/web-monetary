@@ -124,5 +124,5 @@ jobs:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_KEY }}
-          source: ./web-react-monetary/dist
-          target: /var/www
+          source: web-react-monetary/dist
+          target: /home/ubuntu/web-monetary/web-react-monetary/dist
