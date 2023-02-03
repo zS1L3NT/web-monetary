@@ -80,6 +80,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           file: Dockerfile
+          context: web-laravel-monetary-account
           push: true
           tags: zs1l3nt/web-laravel-monetary-account:latest
 
