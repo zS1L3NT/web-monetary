@@ -1,30 +1,95 @@
-name: Cypress Tests
+name: Test and Deploy Client
 
 on:
   push:
     branches:
-      - main
+      - deployment
     paths:
+      - web-laravel-monetary-account/**
+      - web-laravel-monetary-authentication/**
+      - web-laravel-monetary-budget/**
+      - web-laravel-monetary-category/**
+      - web-laravel-monetary-debt/**
+      - web-laravel-monetary-recurrence/**
+      - web-laravel-monetary-transaction/**
       - web-react-monetary/**
       - .github/workflows/web-react-monetary.yml
 
 jobs:
-  cypress-run:
+  test:
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        containers: [1, 2]
+    env:
+      DB_CONNECTION: pgsql
+      DB_HOST: localhost
+      DB_PASSWORD: postgres
+      DB_USERNAME: postgres
+      DB_DATABASE: postgres
+      JWT_SECRET: bp1YZ1lfj5FceqNeccHoKiIkZUX5rLa1msSWy9zzjpCdiDGRdrvM4WN6IUYqhkSL
+    services:
+      postgres:
+        image: postgres:14
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Cypress run
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        env:
+          runner: self-hosted
+        with:
+          php-version: 8.2
+          extensions: mbstring, dom, fileinfo, pgsql
+          coverage: xdebug
+
+      - name: Setup PNPM
+        uses: pnpm/action-setup@v2
+        with:
+          version: 6.0.2
+
+      - name: Install composer and pnpm dependencies
+        run: ./install.sh 
+
+      - name: Run database migrations
+        run: ./migrate.sh
+
+      - name: Create app key
+        run: echo "APP_KEY=$(php web-laravel-monetary-account/artisan key:generate --show)" >> $GITHUB_ENV
+
+      - name: Run microservices
+        run: |
+          nohup php web-laravel-monetary-account/artisan serve --port=8001 &
+          nohup php web-laravel-monetary-authentication/artisan serve --port=8002 &
+          nohup php web-laravel-monetary-budget/artisan serve --port=8003 &
+          nohup php web-laravel-monetary-category/artisan serve --port=8004 &
+          nohup php web-laravel-monetary-debt/artisan serve --port=8005 &
+          nohup php web-laravel-monetary-recurrence/artisan serve --port=8006 &
+          nohup php web-laravel-monetary-transaction/artisan serve --port=8007 &
+          
+      - name: Setup nginx
+        run: |
+          apt-get install nginx -y
+          cp nginx.dev.conf /etc/nginx/nginx.conf
+          service nginx restart
+
+      - name: Run tests with Cypress
         uses: cypress-io/github-action@v4
         with:
-          start: npm start
-          wait-on: "http://localhost:3000"
+          start: pnpm dev
+          wait-on: "http://localhost:8000"
+          working-directory: web-react-monetary
+          install: false
           record: true
           parallel: true
         env:
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
