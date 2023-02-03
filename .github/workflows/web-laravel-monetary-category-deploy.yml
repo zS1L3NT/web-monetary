@@ -7,7 +7,7 @@ on:
     paths:
       - web-laravel-monetary-category/**
       - .github/workflows/web-laravel-monetary-category-deploy.yml
-      - docker-compose.yml
+      - docker compose.yml
       - Dockerfile
 
 jobs:
@@ -33,4 +33,4 @@ jobs:
             DB_USERNAME="${{ secrets.DB_USERNAME }}" \
             DB_PASSWORD="${{ secrets.DB_PASSWORD }}" \
             JWT_SECRET="${{ secrets.JWT_SECRET }}" \
-            docker-compose up -d --build web-laravel-monetary-category
+            docker compose up -d --build web-laravel-monetary-category
