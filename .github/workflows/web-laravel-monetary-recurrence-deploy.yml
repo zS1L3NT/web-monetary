@@ -16,7 +16,7 @@ jobs:
     environment: production
     env:
       DB_CONNECTION: pgsql
-      DB_HOST: postgres
+      DB_HOST: localhost
       DB_PASSWORD: postgres
       DB_USERNAME: postgres
       DB_DATABASE: postgres
