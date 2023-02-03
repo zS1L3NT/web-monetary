@@ -68,6 +68,10 @@ jobs:
           php web-laravel-monetary-debt/artisan migrate --seed --force
           php web-laravel-monetary-budget/artisan migrate --seed --force
 
+      - name: Create App key
+        run: |
+          echo "APP_KEY=$(php web-laravel-monetary-authentication/artisan key:generate --show)" >> $GITHUB_ENV
+
       - name: Run PHP Unit Tests
         run: |
           cd web-laravel-monetary-recurrence
