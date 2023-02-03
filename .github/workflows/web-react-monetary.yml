@@ -99,15 +99,30 @@ jobs:
     environment: production
     # needs: test
     steps:
-      - name: Redeploy the docker containers on the server
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup PNPM
+        uses: pnpm/action-setup@v2
+        with:
+          version: 6.0.2
+      
+      - name: Build the client
+        run: cd web-react-monetary && pnpm i && pnpm build
+      
+      - name: Remove the old files on the server
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_KEY }}
-          script: |
-            [ ! -d web-monetary ] && git clone https://github.com/zS1L3NT/web-monetary
-            cd web-monetary
-            git pull origin main
-            rm -rf dist
-            pnpm build
+          script: sudo rm -rf /var/www/*
+        
+      - name: Upload the dist files to the server
+        uses: garygrossgarten/github-action-scp@release
+        with:
+          local: web-react-monetary/dist
+          remote: /var/www
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          privateKey: ${{ secrets.SSH_KEY }}
