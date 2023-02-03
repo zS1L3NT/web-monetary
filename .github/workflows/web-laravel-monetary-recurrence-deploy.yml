@@ -69,7 +69,9 @@ jobs:
           php web-laravel-monetary-budget/artisan migrate --seed --force
 
       - name: Run PHP Unit Tests
-        run: web-laravel-monetary-recurrence/vendor/bin/phpunit tests/
+        run: |
+          cd web-laravel-monetary-recurrence
+          vendor/bin/phpunit
 
       - name: Run update command
         uses: appleboy/ssh-action@master
