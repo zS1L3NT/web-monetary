@@ -49,38 +49,19 @@ jobs:
           coverage: xdebug
 
       - name: Install Composer dependencies
-        run: |
-          composer install --working-dir=web-laravel-monetary-account --no-progress --prefer-dist --optimize-autoloader
-          composer install --working-dir=web-laravel-monetary-authentication --no-progress --prefer-dist --optimize-autoloader
-          composer install --working-dir=web-laravel-monetary-budget --no-progress --prefer-dist --optimize-autoloader
-          composer install --working-dir=web-laravel-monetary-category --no-progress --prefer-dist --optimize-autoloader
-          composer install --working-dir=web-laravel-monetary-debt --no-progress --prefer-dist --optimize-autoloader
-          composer install --working-dir=web-laravel-monetary-recurrence --no-progress --prefer-dist --optimize-autoloader
-          composer install --working-dir=web-laravel-monetary-transaction --no-progress --prefer-dist --optimize-autoloader
+        run: head -n -1 install.sh | bash
 
       - name: Run database migrations
-        run: |
-          php web-laravel-monetary-authentication/artisan migrate:fresh --seed --force
-          php web-laravel-monetary-account/artisan migrate --seed --force
-          php web-laravel-monetary-category/artisan migrate --seed --force
-          php web-laravel-monetary-transaction/artisan migrate --seed --force
-          php web-laravel-monetary-recurrence/artisan migrate --seed --force
-          php web-laravel-monetary-debt/artisan migrate --seed --force
-          php web-laravel-monetary-budget/artisan migrate --seed --force
+        run: chmod +x migrate.sh && ./migrate.sh
 
       - name: Create App key
-        run: |
-          echo "APP_KEY=$(php web-laravel-monetary-authentication/artisan key:generate --show)" >> $GITHUB_ENV
+        run: echo "APP_KEY=$(php web-laravel-monetary-authentication/artisan key:generate --show)" >> $GITHUB_ENV
 
       - name: Run authentication Microservice
-        run: |
-          cd web-laravel-monetary-authentication
-          nohup php artisan serve &
+        run: nohup php web-laravel-monetary-authentication/artisan serve &
 
       - name: Run PHP Unit Tests
-        run: |
-          cd web-laravel-monetary-recurrence
-          vendor/bin/phpunit
+        run: web-laravel-monetary-recurrence/vendor/bin/phpunit web-laravel-monetary-recurrence/tests
 
       - name: Run update command
         uses: appleboy/ssh-action@master
