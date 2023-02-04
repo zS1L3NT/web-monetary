@@ -73,54 +73,54 @@ const DeleteModelAlertDialog = ({
 
 		switch (model) {
 			case "Transaction":
-				if (location.pathname.startsWith("/transactions/")) {
-					navigate("/transactions")
-				}
 				response = await deleteTransaction({
 					token,
 					transaction_id: modelId!
 				})
+				if (location.pathname.startsWith("/transactions/")) {
+					navigate("/transactions")
+				}
 				break
 			case "Recurrence":
-				navigate("/recurrences")
 				response = await deleteRecurrence({
 					token,
 					recurrence_id: location.pathname.slice("/recurrences/".length)
 				})
+				navigate("/recurrences")
 				break
 			case "Category":
-				navigate(-1)
 				response = await deleteCategory({
 					token,
 					category_id: location.pathname.slice("/categories/".length)
 				})
+				navigate(-1)
 				break
 			case "Debt":
-				navigate("/debts")
 				response = await deleteDebt({
 					token,
 					debt_id: location.pathname.slice("/debts/".length)
 				})
+				navigate("/debts")
 				break
 			case "Budget":
-				navigate("/budgets")
 				response = await deleteBudget({
 					token,
 					budget_id: location.pathname.slice("/budgets/".length)
 				})
+				navigate("/budgets")
 				break
 			case "Account":
-				navigate("/accounts")
 				response = await deleteAccount({
 					token,
 					account_id: modelId!
 				})
+				navigate("/accounts")
 				break
 			case "User":
-				navigate("/")
 				response = await deleteUser({
 					token
 				})
+				navigate("/")
 				break
 		}
 
