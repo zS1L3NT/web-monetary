@@ -121,6 +121,7 @@ jobs:
               -e DB_PASSWORD="${{ secrets.DB_PASSWORD }}" \
               -e JWT_SECRET="${{ secrets.JWT_SECRET }}" \
               --name web-laravel-monetary-recurrence \
+              --restart unless-stopped \
               zs1l3nt/web-laravel-monetary-recurrence:latest
 
             docker stop web-laravel-monetary-recurrence-scheduler
@@ -137,4 +138,5 @@ jobs:
               -e DB_PASSWORD="${{ secrets.DB_PASSWORD }}" \
               -e JWT_SECRET="${{ secrets.JWT_SECRET }}" \
               --name web-laravel-monetary-recurrence-scheduler \
+              --restart unless-stopped \
               zs1l3nt/web-laravel-monetary-recurrence-scheduler:latest
