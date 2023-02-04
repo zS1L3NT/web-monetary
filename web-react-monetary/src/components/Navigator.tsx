@@ -1,8 +1,8 @@
 import { useContext, useMemo } from "react"
 import { useLocation, useNavigate } from "react-router-dom"
 
-import { AddIcon, DeleteIcon, EditIcon, HamburgerIcon } from "@chakra-ui/icons"
-import { Button, Flex, IconButton, Show, Text, useDisclosure } from "@chakra-ui/react"
+import { AddIcon, ArrowBackIcon, DeleteIcon, EditIcon, HamburgerIcon } from "@chakra-ui/icons"
+import { Button, Flex, HStack, IconButton, Show, Text, useDisclosure } from "@chakra-ui/react"
 
 import AuthContext from "../contexts/AuthContext"
 import AddAccountModal from "./popups/AddAccountModal"
@@ -105,13 +105,23 @@ const Navigator = () => {
 		} else if (location.pathname.startsWith("/accounts")) {
 			return "Account"
 		} else if (location.pathname === "/profile") {
-			return "User" 
+			return "User"
 		} else if (location.pathname === "/transactions" || location.pathname === "/dashboard") {
 			return "Transaction"
 		} else {
 			return
 		}
 	}, [location])
+
+	const models = useMemo(() => {
+		if (model) {
+			if (model === "Category") {
+				return "Categories"
+			}
+			return model + "s"
+		}
+		return
+	}, [model])
 
 	const handleActionButtonClick = () => {
 		if (location.pathname.startsWith("/recurrences")) {
@@ -151,86 +161,108 @@ const Navigator = () => {
 				sx={{
 					h: "60px",
 					w: "full",
+					justifyContent: "space-between",
 					alignItems: "center",
 					p: 2,
 					zIndex: 10,
 					shadow: "lg"
 				}}>
-				<IconButton
-					aria-label="Open Drawer"
-					variant="ghost"
-					onClick={onMainDrawerToggle}
-					icon={
-						<HamburgerIcon
-							sx={{
-								w: 5,
-								h: 5
-							}}
+				<HStack>
+					{location.pathname.match(/^\/\w*$/) ? (
+						<IconButton
+							aria-label="Open Drawer"
+							variant="ghost"
+							onClick={onMainDrawerToggle}
+							icon={
+								<HamburgerIcon
+									sx={{
+										w: 5,
+										h: 5
+									}}
+								/>
+							}
 						/>
-					}
-				/>
-				<Text
-					sx={{
-						ml: 2,
-						mr: "auto",
-						fontFamily: "heading",
-						fontWeight: "medium",
-						fontSize: "xl",
-						_hover: { cursor: "pointer" }
-					}}
-					onClick={() => navigate("/")}>
-					Monetary
-				</Text>
+					) : (
+						<IconButton
+							aria-label="Back"
+							variant="ghost"
+							onClick={() => navigate(-1)}
+							icon={
+								<ArrowBackIcon
+									sx={{
+										w: 5,
+										h: 5
+									}}
+								/>
+							}
+						/>
+					)}
 
-				{token && model && location.pathname !== "/profile" ? (
-					<>
-						<Show above="md">
-							<Button
-								sx={{ mr: 2 }}
-								variant="outline"
-								leftIcon={action === "Edit" ? <EditIcon /> : <AddIcon />}
-								onClick={handleActionButtonClick}
-								data-cy={`${action}-${model}-button`.toLowerCase()}>
-								{action} {model}
-							</Button>
-						</Show>
-						<Show below="md">
-							<IconButton
-								sx={{ mr: 2 }}
-								aria-label={`${action} ${model}`}
-								variant="outline"
-								icon={action === "Edit" ? <EditIcon /> : <AddIcon />}
-								onClick={handleActionButtonClick}
-								data-cy={`${action}-${model}-button`.toLowerCase()}
-							/>
-						</Show>
-					</>
-				) : null}
+					{location.pathname.match(/^\/\w*$/) ? (
+						<Text
+							sx={{
+								fontFamily: "heading",
+								fontWeight: "medium",
+								fontSize: "xl",
+								_hover: { cursor: "pointer" }
+							}}
+							onClick={() => navigate("/")}>
+							{["/", "/login", "/register"].includes(location.pathname)
+								? "Monetary"
+								: location.pathname[1]!.toUpperCase() + location.pathname.slice(2)}
+						</Text>
+					) : null}
+				</HStack>
 
-				{action === "Edit" ? (
-					<>
-						<Show above="md">
-							<Button
-								variant="outline"
-								colorScheme="red"
-								leftIcon={<DeleteIcon />}
-								onClick={onDeleteAlertDialogOpen}
-								data-cy={`delete-${model}-button`.toLowerCase()}>
-								Delete {model}
-							</Button>
-						</Show>
-						<Show below="md">
-							<IconButton
-								aria-label={`Delete ${model}`}
-								variant="outline"
-								colorScheme="red"
-								icon={<DeleteIcon />}
-								onClick={onDeleteAlertDialogOpen}
-								data-cy={`delete-${model}-button`.toLowerCase()}
-							/>
-						</Show>
-					</>
-				) : null}
+				<HStack>
+					{token && model && location.pathname !== "/profile" ? (
+						<>
+							<Show above="md">
+								<Button
+									variant="outline"
+									leftIcon={action === "Edit" ? <EditIcon /> : <AddIcon />}
+									onClick={handleActionButtonClick}
+									data-cy={`${action}-${model}-button`.toLowerCase()}>
+									{action} {model}
+								</Button>
+							</Show>
+							<Show below="md">
+								<IconButton
+									aria-label={`${action} ${model}`}
+									variant="outline"
+									icon={action === "Edit" ? <EditIcon /> : <AddIcon />}
+									onClick={handleActionButtonClick}
+									data-cy={`${action}-${model}-button`.toLowerCase()}
+								/>
+							</Show>
+						</>
+					) : null}
+
+					{action === "Edit" ? (
+						<>
+							<Show above="md">
+								<Button
+									variant="outline"
+									colorScheme="red"
+									leftIcon={<DeleteIcon />}
+									onClick={onDeleteAlertDialogOpen}
+									data-cy={`delete-${model}-button`.toLowerCase()}>
+									Delete {model}
+								</Button>
+							</Show>
+							<Show below="md">
+								<IconButton
+									aria-label={`Delete ${model}`}
+									variant="outline"
+									colorScheme="red"
+									icon={<DeleteIcon />}
+									onClick={onDeleteAlertDialogOpen}
+									data-cy={`delete-${model}-button`.toLowerCase()}
+								/>
+							</Show>
+						</>
+					) : null}
+				</HStack>
 
 				<MainDrawer
 					isOpen={isMainDrawerOpen}
