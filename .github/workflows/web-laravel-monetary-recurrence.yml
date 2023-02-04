@@ -111,16 +111,16 @@ jobs:
             docker rmi zs1l3nt/web-laravel-monetary-recurrence:latest
             docker pull zs1l3nt/web-laravel-monetary-recurrence:latest
             docker run -d \
-              -p 8006:80
-              -e APP_KEY="${{ secrets.APP_KEY }}"
-              -e DB_CONNECTION="${{ secrets.DB_CONNECTION }}"
-              -e DB_HOST="${{ secrets.DB_HOST }}"
-              -e DB_PORT="${{ secrets.DB_PORT }}"
-              -e DB_DATABASE="${{ secrets.DB_DATABASE }}"
-              -e DB_USERNAME="${{ secrets.DB_USERNAME }}"
-              -e DB_PASSWORD="${{ secrets.DB_PASSWORD }}"
-              -e JWT_SECRET="${{ secrets.JWT_SECRET }}"
-              --name web-laravel-monetary-recurrence
+              -p 8006:80 \
+              -e APP_KEY="${{ secrets.APP_KEY }}" \
+              -e DB_CONNECTION="${{ secrets.DB_CONNECTION }}" \
+              -e DB_HOST="${{ secrets.DB_HOST }}" \
+              -e DB_PORT="${{ secrets.DB_PORT }}" \
+              -e DB_DATABASE="${{ secrets.DB_DATABASE }}" \
+              -e DB_USERNAME="${{ secrets.DB_USERNAME }}" \
+              -e DB_PASSWORD="${{ secrets.DB_PASSWORD }}" \
+              -e JWT_SECRET="${{ secrets.JWT_SECRET }}" \
+              --name web-laravel-monetary-recurrence \
               zs1l3nt/web-laravel-monetary-recurrence:latest
 
             docker stop web-laravel-monetary-recurrence-scheduler
@@ -128,13 +128,13 @@ jobs:
             docker rmi zs1l3nt/web-laravel-monetary-recurrence-scheduler:latest
             docker pull zs1l3nt/web-laravel-monetary-recurrence-scheduler:latest
             docker run -d \
-              -e APP_KEY="${{ secrets.APP_KEY }}"
-              -e DB_CONNECTION="${{ secrets.DB_CONNECTION }}"
-              -e DB_HOST="${{ secrets.DB_HOST }}"
-              -e DB_PORT="${{ secrets.DB_PORT }}"
-              -e DB_DATABASE="${{ secrets.DB_DATABASE }}"
-              -e DB_USERNAME="${{ secrets.DB_USERNAME }}"
-              -e DB_PASSWORD="${{ secrets.DB_PASSWORD }}"
-              -e JWT_SECRET="${{ secrets.JWT_SECRET }}"
-              --name web-laravel-monetary-recurrence-scheduler
+              -e APP_KEY="${{ secrets.APP_KEY }}" \
+              -e DB_CONNECTION="${{ secrets.DB_CONNECTION }}" \
+              -e DB_HOST="${{ secrets.DB_HOST }}" \
+              -e DB_PORT="${{ secrets.DB_PORT }}" \
+              -e DB_DATABASE="${{ secrets.DB_DATABASE }}" \
+              -e DB_USERNAME="${{ secrets.DB_USERNAME }}" \
+              -e DB_PASSWORD="${{ secrets.DB_PASSWORD }}" \
+              -e JWT_SECRET="${{ secrets.JWT_SECRET }}" \
+              --name web-laravel-monetary-recurrence \-scheduler
               zs1l3nt/web-laravel-monetary-recurrence-scheduler:latest

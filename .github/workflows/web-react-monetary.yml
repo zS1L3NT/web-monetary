@@ -104,6 +104,14 @@ jobs:
       
       - name: Build the client
         run: cd web-react-monetary && pnpm i && pnpm build
+
+      - name: Remove old dist files from the server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          script: sudo rm -rf ~/web-monetary/web-react-monetary/dist
       
       - name: Upload the dist files to the server
         uses: appleboy/scp-action@master
@@ -114,7 +122,6 @@ jobs:
           source: web-react-monetary/dist
           target: ~/web-monetary/web-react-monetary/dist
           strip_components: 2
-          rm: true
 
   deploy:
     runs-on: ubuntu-latest

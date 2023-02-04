@@ -101,14 +101,14 @@ jobs:
             docker rmi zs1l3nt/web-laravel-monetary-transaction:latest
             docker pull zs1l3nt/web-laravel-monetary-transaction:latest
             docker run -d \
-              -p 8007:80
-              -e APP_KEY="${{ secrets.APP_KEY }}"
-              -e DB_CONNECTION="${{ secrets.DB_CONNECTION }}"
-              -e DB_HOST="${{ secrets.DB_HOST }}"
-              -e DB_PORT="${{ secrets.DB_PORT }}"
-              -e DB_DATABASE="${{ secrets.DB_DATABASE }}"
-              -e DB_USERNAME="${{ secrets.DB_USERNAME }}"
-              -e DB_PASSWORD="${{ secrets.DB_PASSWORD }}"
-              -e JWT_SECRET="${{ secrets.JWT_SECRET }}"
-              --name web-laravel-monetary-transaction
+              -p 8007:80 \
+              -e APP_KEY="${{ secrets.APP_KEY }}" \
+              -e DB_CONNECTION="${{ secrets.DB_CONNECTION }}" \
+              -e DB_HOST="${{ secrets.DB_HOST }}" \
+              -e DB_PORT="${{ secrets.DB_PORT }}" \
+              -e DB_DATABASE="${{ secrets.DB_DATABASE }}" \
+              -e DB_USERNAME="${{ secrets.DB_USERNAME }}" \
+              -e DB_PASSWORD="${{ secrets.DB_PASSWORD }}" \
+              -e JWT_SECRET="${{ secrets.JWT_SECRET }}" \
+              --name web-laravel-monetary-transaction \
               zs1l3nt/web-laravel-monetary-transaction:latest
