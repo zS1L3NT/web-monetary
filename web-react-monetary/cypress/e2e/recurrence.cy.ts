@@ -154,7 +154,9 @@ describe("Reading recurrences", () => {
 				.then(doc =>
 					Array.from(
 						doc.querySelectorAll(
-							`[data-cy=${active ? "active" : "inactive"}-recurrence] h2`
+							`[data-cy=${
+								active ? "active" : "inactive"
+							}-recurrence] [data-cy=recurrence-name]`
 						)
 					).map(el => el.textContent)
 				)

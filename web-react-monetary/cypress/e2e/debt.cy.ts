@@ -146,7 +146,9 @@ describe("Reading debts", () => {
 				.document()
 				.then(doc =>
 					Array.from(
-						doc.querySelectorAll(`[data-cy=${active ? "active" : "inactive"}-debt] h2`)
+						doc.querySelectorAll(
+							`[data-cy=${active ? "active" : "inactive"}-debt] [data-cy=debt-name]`
+						)
 					).map(el => el.textContent)
 				)
 
