@@ -1,9 +1,9 @@
-name: Test and Deploy Recurrence Microservice
+name: Test, Build and Deploy Recurrence Microservice
 
 on:
   push:
     branches:
-      - deployment
+      - main
     paths:
       - web-laravel-monetary-recurrence/**
       - .github/workflows/web-laravel-monetary-recurrence.yml
@@ -62,7 +62,7 @@ jobs:
       - name: Run tests with PHP Unit
         run: cd web-laravel-monetary-recurrence && vendor/bin/phpunit tests
 
-  push:
+  build:
     runs-on: ubuntu-latest
     needs: test
     steps:
@@ -97,7 +97,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     environment: production
-    needs: push
+    needs: build
     steps:
       - name: Redeploy the docker containers on the server
         uses: appleboy/ssh-action@master
@@ -110,21 +110,21 @@ jobs:
             docker rm web-laravel-monetary-recurrence
             docker rmi zs1l3nt/web-laravel-monetary-recurrence:latest
             docker pull zs1l3nt/web-laravel-monetary-recurrence:latest
-            APP_KEY="${{ env.APP_KEY }}" \
-            DB_CONNECTION="${{ env.DB_CONNECTION }}" \
-            DB_HOST="${{ env.DB_HOST }}" \
-            DB_PORT="${{ env.DB_PORT }}" \
-            DB_DATABASE="${{ env.DB_DATABASE }}" \
-            DB_USERNAME="${{ env.DB_USERNAME }}" \
-            DB_PASSWORD="${{ env.DB_PASSWORD }}" \
-            JWT_SECRET="${{ env.JWT_SECRET }}" \
+            APP_KEY="${{ secrets.APP_KEY }}" \
+            DB_CONNECTION="${{ secrets.DB_CONNECTION }}" \
+            DB_HOST="${{ secrets.DB_HOST }}" \
+            DB_PORT="${{ secrets.DB_PORT }}" \
+            DB_DATABASE="${{ secrets.DB_DATABASE }}" \
+            DB_USERNAME="${{ secrets.DB_USERNAME }}" \
+            DB_PASSWORD="${{ secrets.DB_PASSWORD }}" \
+            JWT_SECRET="${{ secrets.JWT_SECRET }}" \
             docker run -d -p 8006:80 --name web-laravel-monetary-recurrence zs1l3nt/web-laravel-monetary-recurrence:latest
-            APP_KEY="${{ env.APP_KEY }}" \
-            DB_CONNECTION="${{ env.DB_CONNECTION }}" \
-            DB_HOST="${{ env.DB_HOST }}" \
-            DB_PORT="${{ env.DB_PORT }}" \
-            DB_DATABASE="${{ env.DB_DATABASE }}" \
-            DB_USERNAME="${{ env.DB_USERNAME }}" \
-            DB_PASSWORD="${{ env.DB_PASSWORD }}" \
-            JWT_SECRET="${{ env.JWT_SECRET }}" \
+            APP_KEY="${{ secrets.APP_KEY }}" \
+            DB_CONNECTION="${{ secrets.DB_CONNECTION }}" \
+            DB_HOST="${{ secrets.DB_HOST }}" \
+            DB_PORT="${{ secrets.DB_PORT }}" \
+            DB_DATABASE="${{ secrets.DB_DATABASE }}" \
+            DB_USERNAME="${{ secrets.DB_USERNAME }}" \
+            DB_PASSWORD="${{ secrets.DB_PASSWORD }}" \
+            JWT_SECRET="${{ secrets.JWT_SECRET }}" \
             docker run -d -p 8006:80 --name web-laravel-monetary-recurrence-scheduler zs1l3nt/web-laravel-monetary-recurrence-scheduler:latest

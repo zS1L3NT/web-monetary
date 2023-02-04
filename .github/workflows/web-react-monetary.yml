@@ -1,4 +1,4 @@
-name: Test and Deploy Client
+name: Test, Build and Deploy Client
 
 on:
   push:
@@ -91,10 +91,9 @@ jobs:
           parallel: true
         env:
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
-
-  deploy:
+  
+  build:
     runs-on: ubuntu-latest
-    environment: production
     needs: test
     steps:
       - name: Checkout
@@ -118,7 +117,12 @@ jobs:
           target: ~/web-monetary/web-react-monetary/dist
           strip_components: 2
           rm: true
-        
+
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production
+    needs: build
+    steps:
       - name: Move the dist files to NGINX folder
         uses: appleboy/ssh-action@master
         with:
