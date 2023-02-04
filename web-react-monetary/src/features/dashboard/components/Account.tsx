@@ -83,7 +83,7 @@ const AccountComponent = ({ account }: { account: Account }) => {
 							color: textColor,
 							fontWeight: "bold"
 						}}>
-						${account.balance}
+						${account.balance.toFixed(2)}
 					</Text>
 				</Box>
 			</Flex>
