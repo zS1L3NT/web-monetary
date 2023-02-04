@@ -16,7 +16,7 @@ class BudgetTest extends TestCase
     {
         $response = Http::post('http://localhost:8000/api/login', [
             'email' => 'zechariahtan144@gmail.com',
-            'password' => 'P@ssw0rd'
+            'password' => 's3cuReP@ssw0rd'
         ]);
 
         return [

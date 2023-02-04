@@ -17,7 +17,7 @@ Cypress.Commands.add("login", (pathname = "/dashboard") => {
 		cy.wait("@getUser").its("response.statusCode").should("eq", 200)
 	} else {
 		cy.el("email-input").type("zechariahtan144@gmail.com")
-		cy.el("password-input").type("P@ssw0rd")
+		cy.el("password-input").type("s3cuReP@ssw0rd")
 		cy.el("login-button").click()
 
 		cy.toasts(["Logged in successfully!"])
