@@ -1,10 +1,9 @@
 import { useContext } from "react"
 import { useNavigate } from "react-router-dom"
 
-import { MoonIcon, SunIcon } from "@chakra-ui/icons"
 import {
-	Button, Divider, Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerFooter,
-	DrawerHeader, DrawerOverlay, useColorMode, useColorModeValue
+	Button, Divider, Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerHeader,
+	DrawerOverlay
 } from "@chakra-ui/react"
 
 import AuthContext from "../../contexts/AuthContext"
@@ -19,7 +18,6 @@ const MainDrawer = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void 
 	const { token } = useContext(AuthContext)
 
 	const navigate = useNavigate()
-	const { toggleColorMode } = useColorMode()
 
 	const items: iNavItem[] = [
 		{
@@ -122,18 +120,6 @@ const MainDrawer = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void 
 						) : null
 					)}
 				</DrawerBody>
-				<DrawerFooter>
-					<Button
-						sx={{
-							display: "block",
-							w: "full"
-						}}
-						variant="outline"
-						leftIcon={useColorModeValue(<SunIcon />, <MoonIcon />)}
-						onClick={toggleColorMode}>
-						Toggle Theme
-					</Button>
-				</DrawerFooter>
 				<DrawerCloseButton
 					sx={{
 						mt: 2,

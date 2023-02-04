@@ -1,7 +1,5 @@
 import Select, { components } from "react-select"
 
-import { useColorModeValue } from "@chakra-ui/react"
-
 const Dropdown = ({
 	choices,
 	selectedChoiceId,
@@ -77,11 +75,9 @@ const Dropdown = ({
 						cursor: "pointer",
 						color: "var(--chakra-colors-chakra-body-text)",
 						background: "var(--chakra-colors-gray-600)",
-						filter: state.isSelected
-							? useColorModeValue("brightness(0.9)", "brightness(1.2)")
-							: "none",
+						filter: state.isSelected ? "brightness(0.9)" : "none",
 						":hover": {
-							filter: useColorModeValue("brightness(0.9)", "brightness(1.2)"),
+							filter: "brightness(0.9)",
 							background: "var(--chakra-colors-gray-600)"
 						}
 					}),
