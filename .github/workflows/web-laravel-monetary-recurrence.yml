@@ -119,6 +119,11 @@ jobs:
             DB_PASSWORD="${{ secrets.DB_PASSWORD }}" \
             JWT_SECRET="${{ secrets.JWT_SECRET }}" \
             docker run -d -p 8006:80 --name web-laravel-monetary-recurrence zs1l3nt/web-laravel-monetary-recurrence:latest
+
+            docker stop web-laravel-monetary-recurrence-scheduler
+            docker rm web-laravel-monetary-recurrence-scheduler
+            docker rmi zs1l3nt/web-laravel-monetary-recurrence-scheduler:latest
+            docker pull zs1l3nt/web-laravel-monetary-recurrence-scheduler:latest
             APP_KEY="${{ secrets.APP_KEY }}" \
             DB_CONNECTION="${{ secrets.DB_CONNECTION }}" \
             DB_HOST="${{ secrets.DB_HOST }}" \
@@ -127,4 +132,4 @@ jobs:
             DB_USERNAME="${{ secrets.DB_USERNAME }}" \
             DB_PASSWORD="${{ secrets.DB_PASSWORD }}" \
             JWT_SECRET="${{ secrets.JWT_SECRET }}" \
-            docker run -d -p 8006:80 --name web-laravel-monetary-recurrence-scheduler zs1l3nt/web-laravel-monetary-recurrence-scheduler:latest
+            docker run -d --name web-laravel-monetary-recurrence-scheduler zs1l3nt/web-laravel-monetary-recurrence-scheduler:latest
