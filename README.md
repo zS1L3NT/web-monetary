@@ -96,9 +96,9 @@ You also need to have a local installation of NGINX, then set the configuration 
 
 ### Deployment
 
-Since deployment can be different for everyone in terms what OS do deploy to, I will give a general overview of how I deploy the application. You also need a PostgreSQL database hosted somewhere on the internet or locally. I will also assume that you have a fork of this repository so that you can use Github actions to deploy the application automatically.
+Since deployment can be different for everyone in terms what OS you're deploying to, I will give a general overview of how I deploy the application. You also need a PostgreSQL database hosted somewhere on the internet or locally. I will also assume that you have a fork of this repository so that you can use Github actions to deploy the application automatically.
 
-With this configuration, all the Github Actions workflows will deploy to one server. If you want you can change that to deploy to multiple servers to follow the microserviecs architecture properly.
+With this current configuration, all the Github Actions workflows will deploy to one server. If you want you can change that to deploy to multiple servers to follow the microserviecs architecture properly.
 
 #### Setting up the server
 
