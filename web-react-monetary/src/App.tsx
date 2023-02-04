@@ -1,4 +1,5 @@
 import { Chart, registerables } from "chart.js"
+import chartjsPluginAnnotation from "chartjs-plugin-annotation"
 import { Route, Routes, useNavigate } from "react-router-dom"
 
 import { Flex } from "@chakra-ui/react"
@@ -21,7 +22,7 @@ import Recurrence from "./features/recurrence/pages/Recurrence"
 import Recurrences from "./features/recurrence/pages/Recurrences"
 import Transactions from "./features/transaction/pages/Transactions"
 
-Chart.register(...registerables)
+Chart.register(...registerables, chartjsPluginAnnotation)
 
 const App = () => {
 	window.$navigate = useNavigate()

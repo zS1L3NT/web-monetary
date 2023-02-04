@@ -57,7 +57,8 @@ const BudgetGraph = ({}: {}) => {
 								}
 							},
 							y: {
-								min: budget?.amount ?? 0,
+								suggestedMax: budget.amount,
+								min: 0,
 								grid: {
 									display: false
 								}
@@ -69,6 +70,17 @@ const BudgetGraph = ({}: {}) => {
 						plugins: {
 							legend: {
 								display: false
+							},
+							annotation: {
+								annotations: {
+									Limit: {
+										type: "line",
+										yMin: budget.amount,
+										yMax: budget.amount,
+										borderWidth: 2,
+										borderDash: [12, 4]
+									}
+								}
 							}
 						}
 					}}

@@ -15,6 +15,7 @@ specifiers:
   '@vitejs/plugin-react': ^3.0.0
   axios: ^1.2.1
   chart.js: ^4.1.1
+  chartjs-plugin-annotation: ^2.1.2
   cypress: ^12.4.0
   formik: ^2.2.9
   framer-motion: ^8.0.2
@@ -41,6 +42,7 @@ dependencies:
   '@reduxjs/toolkit': 1.9.1_k4ae6lp43ej6mezo3ztvx6pykq
   axios: 1.2.1
   chart.js: 4.1.1
+  chartjs-plugin-annotation: 2.1.2_chart.js@4.1.1
   formik: 2.2.9_react@18.2.0
   framer-motion: 8.0.2_biqbaboplfbrettd7655fr4n2y
   immer: 9.0.16
@@ -2106,6 +2108,14 @@ packages:
     engines: {pnpm: ^7.0.0}
     dependencies:
       '@kurkle/color': 0.3.1
+    dev: false
+
+  /chartjs-plugin-annotation/2.1.2_chart.js@4.1.1:
+    resolution: {integrity: sha512-kmEp2WtpogwnKKnDPO3iO3mVwvVGtmG5BkZVtAEZm5YzJ9CYxojjYEgk7OTrFbJ5vU098b84UeJRe8kRfNcq5g==}
+    peerDependencies:
+      chart.js: '>=3.7.0'
+    dependencies:
+      chart.js: 4.1.1
     dev: false
 
   /check-more-types/2.24.0:
