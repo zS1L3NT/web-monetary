@@ -44,9 +44,6 @@ export default extendTheme(
 				}
 			},
 			Modal: {
-				defaultProps: {
-					isCentered: true
-				},
 				baseStyle: {
 					dialog: {
 						w: {

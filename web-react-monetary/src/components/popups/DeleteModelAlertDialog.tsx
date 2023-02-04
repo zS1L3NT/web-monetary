@@ -89,7 +89,7 @@ const DeleteModelAlertDialog = ({
 				})
 				break
 			case "Category":
-				navigate("/categories")
+				navigate(-1)
 				response = await deleteCategory({
 					token,
 					category_id: location.pathname.slice("/categories/".length)

@@ -74,25 +74,25 @@ describe("Reading accounts", () => {
 			)
 
 		getTexts().then(texts => {
-			cy.el("name-asc-radio").click().wait(500)
+			cy.el("name-asc-radio").click()
 			getTexts().should(
 				"deep.equal",
 				[...texts].sort((a, b) => a[0].localeCompare(b[0]))
 			)
 
-			cy.el("name-desc-radio").click().wait(500)
+			cy.el("name-desc-radio").click()
 			getTexts().should(
 				"deep.equal",
 				[...texts].sort((a, b) => b[0].localeCompare(a[0]))
 			)
 
-			cy.el("balance-asc-radio").click().wait(500)
+			cy.el("balance-asc-radio").click()
 			getTexts().should(
 				"deep.equal",
 				[...texts].sort((a, b) => a[1] - b[1])
 			)
 
-			cy.el("balance-desc-radio").click().wait(500)
+			cy.el("balance-desc-radio").click()
 			getTexts().should(
 				"deep.equal",
 				[...texts].sort((a, b) => b[1] - a[1])

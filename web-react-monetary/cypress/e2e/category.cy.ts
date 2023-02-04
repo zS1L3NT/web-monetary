@@ -79,7 +79,7 @@ describe("Reading categories", () => {
 
 		cy.wait("@getCategories").its("response.statusCode").should("eq", 200)
 
-		cy.el("category").should("have.length", 3)
+		cy.el("category").should("have.length", 7)
 		cy.contains("Test Category 1").should("exist")
         cy.contains("1 subcategory")
 	})
@@ -162,7 +162,9 @@ describe("Deleting categories", () => {
 		cy.intercept("DELETE", "/api/categories/*").as("deleteCategory")
 		cy.login("/categories")
 
-		cy.el("category").not(':contains("Test Category 2")').first().click()
+		cy.el("category").contains("Food & Drinks").first().click()
+		cy.el("category").contains("Meals").first().click()
+		cy.el("category").contains("Breakfast").first().click()
 		cy.el("delete-category-button").click()
 		cy.el("delete-confirm-button").click()
 
@@ -180,7 +182,6 @@ describe("Deleting categories", () => {
 		cy.el("delete-confirm-button").click()
 
 		cy.wait("@deleteCategory").its("response.statusCode").should("eq", 200)
-		cy.location("pathname").should("eq", "/categories")
 	})
 
 	it("Can delete a category", () => {

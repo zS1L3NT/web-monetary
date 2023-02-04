@@ -130,7 +130,7 @@ describe("Reading debts", () => {
 		cy.login("/debts")
 
 		cy.wait("@getDebts").its("response.statusCode").should("eq", 200)
-		cy.el("debt", "$").should("have.length", 6)
+		cy.el("debt", "$").should("have.length", 2)
 		cy.contains("Test Debt 1").should("exist")
 		cy.contains("$500.00 left").should("exist")
 	})
@@ -140,7 +140,7 @@ describe("Reading debts", () => {
 		cy.login("/debts")
 
 		cy.wait("@getDebts").its("response.statusCode").should("eq", 200)
-		cy.el("debt-name").should("have.length", 6)
+		cy.el("debt-name").should("have.length", 2)
 
 		const getNames = (active: boolean) =>
 			cy
@@ -155,13 +155,13 @@ describe("Reading debts", () => {
 
 		for (const bool of [true, false]) {
 			getNames(bool).then(names => {
-				cy.el("name-asc-radio").click().wait(500)
+				cy.el("name-asc-radio").click()
 				getNames(bool).should(
 					"deep.equal",
 					[...names].sort((a, b) => a.localeCompare(b))
 				)
 
-				cy.el("name-desc-radio").click().wait(500)
+				cy.el("name-desc-radio").click()
 				getNames(bool).should(
 					"deep.equal",
 					[...names].sort((a, b) => b.localeCompare(a))

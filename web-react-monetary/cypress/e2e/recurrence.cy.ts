@@ -137,7 +137,7 @@ describe("Reading recurrences", () => {
 		cy.login("/recurrences")
 
 		cy.wait("@getRecurrences").its("response.statusCode").should("eq", 200)
-		cy.el("recurrence", "$").should("have.length", 11)
+		cy.el("recurrence", "$").should("have.length", 8)
 		cy.contains("Test Recurrence 1").should("exist")
 	})
 
@@ -146,7 +146,7 @@ describe("Reading recurrences", () => {
 		cy.login("/recurrences")
 
 		cy.wait("@getRecurrence").its("response.statusCode").should("eq", 200)
-		cy.el("recurrence-name").should("have.length", 11)
+		cy.el("recurrence-name").should("have.length", 8)
 
 		const getNames = (active: boolean) =>
 			cy
@@ -163,13 +163,13 @@ describe("Reading recurrences", () => {
 
 		for (const bool of [true, false]) {
 			getNames(bool).then(names => {
-				cy.el("name-asc-radio").click().wait(500)
+				cy.el("name-asc-radio").click()
 				getNames(bool).should(
 					"deep.equal",
 					[...names].sort((a, b) => a.localeCompare(b))
 				)
 
-				cy.el("name-desc-radio").click().wait(500)
+				cy.el("name-desc-radio").click()
 				getNames(bool).should(
 					"deep.equal",
 					[...names].sort((a, b) => b.localeCompare(a))

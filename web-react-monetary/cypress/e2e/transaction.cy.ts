@@ -66,37 +66,40 @@ describe("Reading transactions", () => {
 	it("Can read transactions", () => {
 		cy.login("/transactions")
 
-		cy.el("transaction").should("have.length", 151)
+		cy.el("transaction").should("have.length", 23)
 		cy.contains("-$1000.00").should("exist")
 	})
 
 	it("Can read transactions filtered by accounts", () => {
-		cy.login("/transactions").wait(500)
+		cy.login("/transactions")
 
+        cy.el("transaction-amount").should("have.length", 23)
 		cy.el("account-checkbox").each(el => {
-			cy.wrap(el).click().wait(500)
+			cy.wrap(el).click()
 			cy.el("account-name").should("not.have.text", el.children().last().text())
-			cy.wrap(el).click().wait(500)
+			cy.wrap(el).click()
 		})
 	})
 
 	it("Can read transactions filtered by categories", () => {
-		cy.login("/transactions").wait(500)
+		cy.login("/transactions")
 
+		cy.el("category-name").should("have.length", 23)
 		cy.el("category-checkbox").each(el => {
-			cy.wrap(el).click().wait(500)
+			cy.wrap(el).click()
 			cy.el("category-name").should("not.have.text", el.children().last().text())
-			cy.wrap(el).click().wait(500)
+			cy.wrap(el).click()
 		})
 	})
 
 	it("Can read transactions filtered by transaction type", () => {
-		cy.login("/transactions").wait(500)
+		cy.login("/transactions")
 
+        cy.el("transaction-amount").should("have.length", 23)
 		cy.el("transaction-type-checkbox").each(el => {
 			const transactionType = el.children().last().text()
 
-			cy.wrap(el).click().wait(500)
+			cy.wrap(el).click()
 
 			cy.el("transaction-amount").should(
 				"not.have.css",
@@ -110,14 +113,14 @@ describe("Reading transactions", () => {
 				}-500)`
 			)
 
-			cy.wrap(el).click().wait(500)
+			cy.wrap(el).click()
 		})
 	})
 
 	it("Can read transactions filtered by amount range", () => {
-		cy.login("/transactions").wait(500)
+		cy.login("/transactions")
 
-        cy.el("transaction-amount").should("have.length", 151)
+        cy.el("transaction-amount").should("have.length", 23)
 
         cy.el("range-custom-radio").click()
 		cy.el("max-amount-input").clear().type("100")
@@ -128,7 +131,7 @@ describe("Reading transactions", () => {
 		})
 
 		cy.el("min-amount-input").clear().type("900")
-		cy.el("max-amount-input").focus().wait(500)
+		cy.el("max-amount-input").focus()
 		cy.el("max-amount-input").clear().type("1000")
 		cy.el("min-amount-input").focus().wait(500)
 
@@ -136,9 +139,9 @@ describe("Reading transactions", () => {
 			expect(parseFloat(el.text().replace("$", "").replace("-", ""))).to.be.gte(900)
 		})
 
-        cy.el("range-all-radio").click().wait(500)
+        cy.el("range-all-radio").click()
 
-        cy.el("transaction-amount").should("have.length", 151)
+        cy.el("transaction-amount").should("have.length", 23)
 	})
 })
 
