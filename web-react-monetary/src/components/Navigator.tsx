@@ -168,7 +168,7 @@ const Navigator = () => {
 					shadow: "lg"
 				}}>
 				<HStack>
-					{location.pathname.match(/^\/\w*$/) ? (
+					{location.pathname.match(/^\/\w*\/?$/) ? (
 						<IconButton
 							aria-label="Open Drawer"
 							variant="ghost"
@@ -186,7 +186,7 @@ const Navigator = () => {
 						<IconButton
 							aria-label="Back"
 							variant="ghost"
-							onClick={() => navigate(-1)}
+							onClick={() => navigate("/" + models!.toLowerCase())}
 							icon={
 								<ArrowBackIcon
 									sx={{
@@ -198,7 +198,7 @@ const Navigator = () => {
 						/>
 					)}
 
-					{location.pathname.match(/^\/\w*$/) ? (
+					{location.pathname.match(/^\/\w*\/?$/) ? (
 						<Text
 							sx={{
 								fontFamily: "heading",
@@ -209,7 +209,7 @@ const Navigator = () => {
 							onClick={() => navigate("/")}>
 							{["/", "/login", "/register"].includes(location.pathname)
 								? "Monetary"
-								: location.pathname[1]!.toUpperCase() + location.pathname.slice(2)}
+								: location.pathname[1]!.toUpperCase() + location.pathname.slice(2).replace("/", "")}
 						</Text>
 					) : null}
 				</HStack>
