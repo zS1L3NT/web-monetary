@@ -120,25 +120,29 @@ const EditTransactionModal = ({
 									setAmount={setAmount}
 								/>
 
-								<DateTimeInput
-									date={date}
-									setDate={setDate}
-								/>
+								{!recurrence ? (
+									<DateTimeInput
+										date={date}
+										setDate={setDate}
+									/>
+								) : null}
 
 								<DescriptionInput
 									description={description}
 									setDescription={setDescription}
 								/>
 
-								<Alert
-									sx={{ display: recurrence ? "flex" : "none" }}
-									variant="left-accent"
-									status="info">
-									<AlertIcon />
-									<AlertDescription>
-										You cannot edit the date of a recurring transaction
-									</AlertDescription>
-								</Alert>
+								{recurrence ? (
+									<Alert
+										sx={{ display: recurrence ? "flex" : "none" }}
+										variant="left-accent"
+										status="info">
+										<AlertIcon />
+										<AlertDescription>
+											You cannot edit the date of a recurring transaction
+										</AlertDescription>
+									</Alert>
+								) : null}
 							</Stack>
 						) : (
 							<Center>
