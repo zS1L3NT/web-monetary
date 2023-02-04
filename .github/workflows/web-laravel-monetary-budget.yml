@@ -3,7 +3,7 @@ name: Test, Build and Deploy Budget Microservice
 on:
   push:
     branches:
-      - deployment
+      - main
     paths:
       - web-laravel-monetary-budget/**
       - .github/workflows/web-laravel-monetary-budget.yml

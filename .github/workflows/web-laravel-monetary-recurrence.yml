@@ -3,7 +3,7 @@ name: Test, Build and Deploy Recurrence Microservice
 on:
   push:
     branches:
-      - deployment
+      - main
     paths:
       - web-laravel-monetary-recurrence/**
       - .github/workflows/web-laravel-monetary-recurrence.yml

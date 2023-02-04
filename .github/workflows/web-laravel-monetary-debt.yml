@@ -3,7 +3,7 @@ name: Test, Build and Deploy Debt Microservice
 on:
   push:
     branches:
-      - deployment
+      - main
     paths:
       - web-laravel-monetary-debt/**
       - .github/workflows/web-laravel-monetary-debt.yml

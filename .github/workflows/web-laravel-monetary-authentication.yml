@@ -3,7 +3,7 @@ name: Test, Build and Deploy Authentication Microservice
 on:
   push:
     branches:
-      - deployment
+      - main
     paths:
       - web-laravel-monetary-authentication/**
       - .github/workflows/web-laravel-monetary-authentication.yml

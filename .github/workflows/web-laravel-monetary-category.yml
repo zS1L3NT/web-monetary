@@ -3,7 +3,7 @@ name: Test, Build and Deploy Category Microservice
 on:
   push:
     branches:
-      - deployment
+      - main
     paths:
       - web-laravel-monetary-category/**
       - .github/workflows/web-laravel-monetary-category.yml

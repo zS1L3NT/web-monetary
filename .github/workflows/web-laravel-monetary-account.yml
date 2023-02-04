@@ -3,7 +3,7 @@ name: Test, Build and Deploy Account Microservice
 on:
   push:
     branches:
-      - deployment
+      - main
     paths:
       - web-laravel-monetary-account/**
       - .github/workflows/web-laravel-monetary-account.yml

@@ -3,7 +3,7 @@ name: Test, Build and Deploy Transaction Microservice
 on:
   push:
     branches:
-      - deployment
+      - main
     paths:
       - web-laravel-monetary-transaction/**
       - .github/workflows/web-laravel-monetary-transaction.yml

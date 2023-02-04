@@ -3,7 +3,7 @@ name: Test, Build and Deploy Client
 on:
   push:
     branches:
-      - deployment
+      - main
     paths:
       - web-laravel-monetary-account/**
       - web-laravel-monetary-authentication/**
