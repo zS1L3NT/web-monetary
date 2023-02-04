@@ -39,7 +39,7 @@ const FiltersSidebar = ({}: {}) => {
 		return (
 			<Stack
 				sx={{
-					pl: depth * 6,
+					pl: depth ? 6 : 0,
 					mt: 1
 				}}
 				spacing={1}>
