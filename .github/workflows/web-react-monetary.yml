@@ -87,6 +87,7 @@ jobs:
           wait-on: "http://localhost:8000"
           working-directory: web-react-monetary
           install: false
+          config: video=false
         env:
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
   

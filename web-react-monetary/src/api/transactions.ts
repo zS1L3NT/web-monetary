@@ -81,7 +81,7 @@ const transactions = api.injectEndpoints({
 				body: transaction,
 				token
 			}),
-			invalidatesTags: ["Transaction"]
+			invalidatesTags: ["Account", "Debt", "Recurrence", "Transaction"]
 		}),
 		deleteTransaction: builder.mutation<ApiResponse, { transaction_id: string } & RequireToken>(
 			{
@@ -90,7 +90,7 @@ const transactions = api.injectEndpoints({
 					method: "DELETE",
 					token
 				}),
-				invalidatesTags: ["Debt", "Recurrence", "Transaction"]
+				invalidatesTags: ["Account", "Debt", "Recurrence", "Transaction"]
 			}
 		)
 	})
