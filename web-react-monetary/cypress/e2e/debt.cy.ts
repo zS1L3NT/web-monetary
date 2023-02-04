@@ -140,6 +140,7 @@ describe("Reading debts", () => {
 		cy.login("/debts")
 
 		cy.wait("@getDebts").its("response.statusCode").should("eq", 200)
+		cy.el("debt-name").should("have.length", 6)
 
 		const getNames = (active: boolean) =>
 			cy

@@ -146,7 +146,7 @@ describe("Reading recurrences", () => {
 		cy.login("/recurrences")
 
 		cy.wait("@getRecurrence").its("response.statusCode").should("eq", 200)
-		cy.wait(500)
+		cy.el("recurrence-name").should("have.length", 11)
 
 		const getNames = (active: boolean) =>
 			cy
