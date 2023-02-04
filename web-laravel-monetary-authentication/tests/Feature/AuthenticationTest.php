@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Http;
+use Symfony\Component\Console\Output\ConsoleOutput;
 use Tests\TestCase;
 
 class AuthenticationTest extends TestCase
@@ -15,7 +16,7 @@ class AuthenticationTest extends TestCase
     {
         $response = Http::post('http://localhost:8000/api/login', [
             'email' => 'zechariahtan144@gmail.com',
-            'password' => 'P@ssw0rd'
+            'password' => 's3cuReP@ssw0rd'
         ]);
 
         return [
@@ -41,7 +42,7 @@ class AuthenticationTest extends TestCase
     {
         $response = $this->post('/api/login', [
             'email' => 'zechariahtan144@gmail.com',
-            'password' => 'P@ssw0rd'
+            'password' => 's3cuReP@ssw0rd'
         ]);
 
         $response->assertStatus(200);
@@ -73,7 +74,7 @@ class AuthenticationTest extends TestCase
     {
         $response = $this->post('/api/register', [
             'email' => 'test@gmail.com',
-            'password' => 'P@ssw0rd',
+            'password' => 's3cuReP@ssw0rd',
         ]);
 
         $response->assertStatus(200);
@@ -165,8 +166,8 @@ class AuthenticationTest extends TestCase
     public function test_update_password_fails_with_wrong_old_password()
     {
         $response = $this->put('/api/user/password', [
-            'old_password' => 'P@ssw0rd$$$',
-            'new_password' => 'P@ssw0rd'
+            'old_password' => 's3cuReP@ssw0rd$$$',
+            'new_password' => 's3cuReP@ssw0rd'
         ], $this->getAuthHeaders());
 
         $response->assertStatus(400);
@@ -197,8 +198,8 @@ class AuthenticationTest extends TestCase
     public function test_update_password_succeeds()
     {
         $response = $this->put('/api/user/password', [
-            'old_password' => 'P@ssw0rd',
-            'new_password' => 'P@ssw0rd'
+            'old_password' => 's3cuReP@ssw0rd',
+            'new_password' => 's3cuReP@ssw0rd'
         ], $this->getAuthHeaders());
 
         $response->assertStatus(200);

@@ -64,6 +64,7 @@ describe("Reading accounts", () => {
 		cy.login("/accounts")
 
 		cy.wait("@getAccounts").its("response.statusCode").should("eq", 200)
+		cy.el("account-name").should("have.length", 6)
 
 		const getTexts = () =>
 			cy.document().then(doc =>

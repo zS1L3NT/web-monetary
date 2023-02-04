@@ -1,30 +1,139 @@
-name: Cypress Tests
+name: Test, Build and Deploy Client
 
 on:
-    push:
-        branches:
-            - main
-        paths:
-            - web-react-monetary/**
-            - .github/workflows/web-react-monetary.yml
+  push:
+    branches:
+      - main
+    paths:
+      - web-laravel-monetary-account/**
+      - web-laravel-monetary-authentication/**
+      - web-laravel-monetary-budget/**
+      - web-laravel-monetary-category/**
+      - web-laravel-monetary-debt/**
+      - web-laravel-monetary-recurrence/**
+      - web-laravel-monetary-transaction/**
+      - web-react-monetary/**
+      - .github/workflows/web-react-monetary.yml
 
 jobs:
-    cypress-run:
-        runs-on: ubuntu-latest
-        strategy:
-            fail-fast: false
-            matrix:
-                containers: [1, 2]
-        steps:
-            - name: Checkout
-              uses: actions/checkout@v3
-            - name: Cypress run
-              uses: cypress-io/github-action@v4
-              with:
-                  start: npm start
-                  wait-on: "http://localhost:3000"
-                  record: true
-                  parallel: true
-              env:
-                  CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
-                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  test:
+    runs-on: ubuntu-latest
+    env:
+      DB_CONNECTION: pgsql
+      DB_HOST: localhost
+      DB_PASSWORD: postgres
+      DB_USERNAME: postgres
+      DB_DATABASE: postgres
+      JWT_SECRET: bp1YZ1lfj5FceqNeccHoKiIkZUX5rLa1msSWy9zzjpCdiDGRdrvM4WN6IUYqhkSL
+    services:
+      postgres:
+        image: postgres:14
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.2
+          extensions: mbstring, dom, fileinfo, pgsql
+          coverage: xdebug
+
+      - name: Setup PNPM
+        uses: pnpm/action-setup@v2
+        with:
+          version: 6.0.2
+
+      - name: Install composer and pnpm dependencies
+        run: ./install.sh 
+
+      - name: Run database migrations
+        run: ./migrate.sh
+
+      - name: Create app key
+        run: echo "APP_KEY=$(php web-laravel-monetary-account/artisan key:generate --show)" >> $GITHUB_ENV
+
+      - name: Run microservices
+        run: |
+          nohup php web-laravel-monetary-account/artisan serve --port=8001 &
+          nohup php web-laravel-monetary-authentication/artisan serve --port=8002 &
+          nohup php web-laravel-monetary-budget/artisan serve --port=8003 &
+          nohup php web-laravel-monetary-category/artisan serve --port=8004 &
+          nohup php web-laravel-monetary-debt/artisan serve --port=8005 &
+          nohup php web-laravel-monetary-recurrence/artisan serve --port=8006 &
+          nohup php web-laravel-monetary-transaction/artisan serve --port=8007 &
+          
+      - name: Setup nginx
+        run: |
+          sudo apt-get install nginx -y
+          sudo cp nginx.dev.conf /etc/nginx/nginx.conf
+          sudo service nginx restart
+
+      - name: Run tests with Cypress
+        uses: cypress-io/github-action@v4
+        with:
+          start: pnpm dev
+          wait-on: "http://localhost:8000"
+          working-directory: web-react-monetary
+          install: false
+        env:
+          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+  
+  build:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup PNPM
+        uses: pnpm/action-setup@v2
+        with:
+          version: 6.0.2
+      
+      - name: Build the client
+        run: cd web-react-monetary && pnpm i && pnpm build
+
+      - name: Remove old dist files from the server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          script: sudo rm -rf ~/web-monetary/web-react-monetary/dist
+      
+      - name: Upload the dist files to the server
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          source: web-react-monetary/dist
+          target: ~/web-monetary/web-react-monetary/dist
+          strip_components: 2
+
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production
+    needs: build
+    steps:
+      - name: Move the dist files to NGINX folder
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            sudo mv ~/web-monetary/web-react-monetary/dist/* /usr/share/nginx/html
+            sudo service nginx restart

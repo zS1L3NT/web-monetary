@@ -99,7 +99,7 @@ describe("Login", () => {
         cy.visit("http://localhost:8000/login")
 
         cy.el("email-input").type("zechariahtan144@gmail.com")
-        cy.el("password-input").type("P@ssw0rd")
+        cy.el("password-input").type("s3cuReP@ssw0rd")
         cy.el("login-button").click()
 
         cy.wait("@login").its("response.statusCode").should("eq", 200)
@@ -163,7 +163,7 @@ describe("Register", () => {
         cy.visit("http://localhost:8000/register")
 
         cy.el("email-input").type("test@gmail.com")
-        cy.el("password-input").type("test_P@ssw0rd")
+        cy.el("password-input").type("s3cuReP@ssw0rd")
         cy.el("register-button").click()
 
         cy.wait("@register").its("response.statusCode").should("eq", 200)
@@ -213,7 +213,7 @@ describe("Profile", () => {
 			cy.wait("@getUser").its("response.statusCode").should("eq", 200)
 		} else {
 			cy.el("email-input").type("test@gmail.com")
-			cy.el("password-input").type("test_P@ssw0rd")
+			cy.el("password-input").type("s3cuReP@ssw0rd")
 			cy.el("login-button").click()
 
             cy.toasts(["Logged in successfully!"])
@@ -256,17 +256,17 @@ describe("Profile", () => {
         
 		cy.el("password-save-button").should("be.disabled")
 
-        cy.el("password-old-input").type("P@ssw0rd")
+        cy.el("password-old-input").type("test_s3cuReP@ssw0rd")
   
 		cy.el("password-save-button").should("be.disabled")
 
-        cy.el("password-new-input").type("test_P@ssw0rd")
+        cy.el("password-new-input").type("s3cuReP@ssw0rd")
 		cy.el("password-save-button").click()
 
         cy.wait("@updateUserPassword").its("response.statusCode").should("eq", 400)
         cy.toasts(["Password Update Error"])
 
-        cy.el("password-old-input").clear().type("test_P@ssw0rd")
+        cy.el("password-old-input").clear().type("test_s3cuReP@ssw0rd")
         cy.el("password-new-input").clear().type("P@ssw0rd")
 		cy.el("password-save-button").click()
 
@@ -278,8 +278,8 @@ describe("Profile", () => {
 	it("Can update password", () => {
 		cy.intercept("PUT", "/api/user/password").as("updateUserPassword")
 
-		cy.el("password-old-input").clear().type("test_P@ssw0rd")
-		cy.el("password-new-input").clear().type("test_P@ssw0rd")
+		cy.el("password-old-input").clear().type("s3cuReP@ssw0rd")
+		cy.el("password-new-input").clear().type("test_s3cuReP@ssw0rd")
 		cy.el("password-save-button").click()
 
 		cy.wait("@updateUserPassword").its("response.statusCode").should("eq", 200)

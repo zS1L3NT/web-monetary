@@ -146,7 +146,7 @@ describe("Reading recurrences", () => {
 		cy.login("/recurrences")
 
 		cy.wait("@getRecurrence").its("response.statusCode").should("eq", 200)
-		cy.wait(500)
+		cy.el("recurrence-name").should("have.length", 11)
 
 		const getNames = (active: boolean) =>
 			cy
@@ -154,7 +154,9 @@ describe("Reading recurrences", () => {
 				.then(doc =>
 					Array.from(
 						doc.querySelectorAll(
-							`[data-cy=${active ? "active" : "inactive"}-recurrence] h2`
+							`[data-cy=${
+								active ? "active" : "inactive"
+							}-recurrence] [data-cy=recurrence-name]`
 						)
 					).map(el => el.textContent)
 				)
