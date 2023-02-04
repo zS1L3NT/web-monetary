@@ -111,7 +111,7 @@ jobs:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_KEY }}
-          script: sudo rm -rf ~/web-monetary/web-react-monetary/dist
+          script: sudo rm -rf /usr/share/nginx/html/*
       
       - name: Upload the dist files to the server
         uses: appleboy/scp-action@master
