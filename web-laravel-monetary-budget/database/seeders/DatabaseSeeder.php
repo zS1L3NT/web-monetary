@@ -17,7 +17,11 @@ class DatabaseSeeder extends Seeder
     {
         $userId = DB::table('users')->first()->id;
 
-        $budget = Budget::factory(1)->create()[0];
+        $budget = Budget::factory()->create([
+            'name' => "Monthly Budget",
+            'amount' => 300,
+            'period_type' => "Month",
+        ]);
         $budget->account_ids = DB::table('accounts')->where('user_id', $userId)->pluck('id')->toArray();
         $budget->category_ids = DB::table('categories')->where('user_id', $userId)->pluck('id')->toArray();
     }
