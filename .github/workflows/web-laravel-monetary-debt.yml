@@ -6,7 +6,7 @@ on:
       - deployment
     paths:
       - web-laravel-monetary-debt/**
-      - .github/workflows/web-laravel-monetary.yml
+      - .github/workflows/web-laravel-monetary-debt.yml
       - docker-compose.yml
       - Dockerfile
 
