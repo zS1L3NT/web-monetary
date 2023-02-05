@@ -6,9 +6,11 @@ Monetary is an expense tracking website that allows you to take control of your 
 
 Monetary is build using the microservices architecture and is split into 7 microservices. The backend has been tested with PHPUnit and the frontend has been tested with Cypress. Github Action will automatically test the application and make sure the tests pass before deploying them to the server, see the [Actions](http://github.com/zS1L3NT/web-monetary/actions) tab
 
+View the video demonstration of the website, pipelines and testing [here](https://youtu.be/dPQL6_mx2CA)
+
 ## Motivation
 
-I needed a deliverable for my CDAV (Cloud Application Development) and DevOps (Development Operations) submissions. I decided to clone Wallet because it was a big project and I was looking for a challenge.
+I needed a deliverable for my CADV (Cloud Application Development) and DevOps (Development Operations) submissions. I decided to clone Wallet because it was a big project and I was looking for a challenge.
 
 ## Subrepositories
 
